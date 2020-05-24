@@ -1,0 +1,23 @@
+﻿<div class="modal fade @(IsVisible ? " show" : string.Empty)" tabindex="-1" role="dialog" style="@(IsVisible ? "display: block;" : "display: none;")">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>@Title</h5>
+                <button type="button" class="close" @onclick="ModalDialog_OnClose">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <CascadingValue Value="this">
+                    <CascadingValue Value="@Parameters">
+                        @Content
+                    </CascadingValue>
+                </CascadingValue>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @onclick="ModalDialog_OnClose">Anuluj</button>
+                <button class="btn btn-primary" @onclick="ModalDialog_OnClose">Zatwierdź</button>
+            </div>
+        </div>
+    </div>
+</div>

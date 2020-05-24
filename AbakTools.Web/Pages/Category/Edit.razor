@@ -1,0 +1,139 @@
+﻿@page "/category/edit"
+@page "/category/edit/{categoryId:int}"
+@using AbakTools.Web.Components.ModalDialog;
+@using AbakTools.Web.Models.Category
+@inject AbakTools.Web.Framework.WebApiClient ApiClient
+
+@if (category == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div>
+        <EditForm Model="@category">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <ul class="nav nav-tabs" id="topTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab">Ogólne</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="seo-tab" data-toggle="tab" href="#seo" role="tab">SEO</a>
+                </li>
+            </ul>
+
+            <div class="tab-content p-3" id="topTabContent">
+                @* Home tab *@
+                <div class="tab-pane fade show active" id="home" role="tabpanel">
+                    @* Parent *@
+                    <div class="form-group row">
+                        <label class="col-sm-3" for="parent">Kategoria nadrzędna</label>
+                        <div class="col-sm-9">
+                            <InputText @bind-Value="@category.ParentName" class="form-control" id="name" readonly />
+                        </div>
+                    </div>
+                    @* Name *@
+                    <div class="form-group row">
+                        <label class="col-sm-3" for="name">Nazwa</label>
+                        <div class="col-sm-9">
+                            <InputText @bind-Value="@category.Name" class="form-control" id="name" />
+                        </div>
+                    </div>
+                    @* Description *@
+                    <div class="form-group row">
+                        <label class="col-sm-3" for="description">Opis</label>
+                        <div class="col-sm-9">
+                            <InputTextArea @bind-Value="@category.Description" class="form-control" id="description" />
+                        </div>
+                    </div>
+
+                    @* *@
+                    <div class="form-group row">
+                        <label class="col-sm-3" for="display_order">Kolejność</label>
+                        <div class="col-sm-9">
+                            <InputNumber @bind-Value="@category.DisplayOrder" class="form-control" id="display_order" />
+                        </div>
+                    </div>
+
+
+                    @* Active *@
+                    <div class="row">
+                        <div class="offset-3 col-sm-9">
+                            <div class="custom-control custom-checkbox">
+                                <InputCheckbox @bind-Value="@category.Active" class="custom-control-input" id="active" />
+                                <label class="custom-control-label" for="active">Aktywna</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @* Seo tab *@
+                <div class="tab-pane fade p-3" id="seo" role="tabpanel">
+                    <div class="form-group row">
+                        <label class="col-sm-3" for="meta_title">Meta tytuł</label>
+                        <div class="col-sm-9">
+                            <InputText @bind-Value="@category.MetaTitle" class="form-control" id="meta_title" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3" for="meta_description">Meta opis</label>
+                        <div class="col-sm-9">
+                            <InputTextArea @bind-Value="@category.MetaDescription" class="form-control" id="meta_description" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3" for="meta_keywords">Meta słowa</label>
+                        <div class="col-sm-9">
+                            <InputText @bind-Value="@category.MetaKeywords" class="form-control" id="meta_keywords" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3" for="link_rewrite">Przyjazdny link</label>
+                        <div class="col-sm-9">
+                            <InputText @bind-Value="@category.LinkRewrite" class="form-control" id="link_rewrite" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </EditForm>
+    </div>
+}
+
+@code {
+
+    [CascadingParameter]
+    public AbakTools.Web.Components.ModalDialog.ModalDialogParameters Parameters { get; set; }
+
+    [Parameter]
+    public int CategoryId { get; set; } = 0;
+
+    private CategoryEditModel category = null;
+
+    protected override void OnParametersSet()
+    {
+        if (Parameters != null)
+        {
+            CategoryId = Parameters.Get<int>("CategoryId");
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Parameters != null)
+        {
+            CategoryId = Parameters.Get<int>("CategoryId");
+        }
+
+        if (CategoryId != 0)
+        {
+            category = await ApiClient.GetCategoryAsync(CategoryId);
+        }
+        else
+        {
+            category = new CategoryEditModel();
+        }
+    }
+}
