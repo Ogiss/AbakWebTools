@@ -47,9 +47,10 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                logger.LogInformation("Synchronize suppliers");
+                logger.LogDebug("Synchronize suppliers, categories andproducts");
                 SynchronizeSuppliers();
                 SynchronizeCategories();
+                SynchronizeProduct();
 
                 await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
             }
