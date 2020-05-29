@@ -32,7 +32,6 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                 categories = categoryRepository.GetAllModified(stampFrom, null);
             }
 
-
             if (categories.Any())
             {
                 logger.LogInformation("Starting synchronize categories");

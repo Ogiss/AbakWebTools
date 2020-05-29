@@ -34,7 +34,6 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                 products = productRepository.GetAllReady();
             }
 
-
             if (products.Any())
             {
                 logger.LogInformation("Starting synchronize products");

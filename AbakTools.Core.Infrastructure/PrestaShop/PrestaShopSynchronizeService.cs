@@ -21,6 +21,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private readonly ICategoryRepository categoryRepository;
         private readonly IProductRepository productRepository;
         private readonly ITaxRepository taxRepository;
+        private readonly IPrestaShopSynchronizeCustomer prestaShopSynchronizeCustomer;
 
 
         public PrestaShopSynchronizeService(
@@ -31,7 +32,8 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             ISupplierRepository _supplierRepository,
             ICategoryRepository _categoryRepository,
             IProductRepository _productRepository,
-            ITaxRepository _taxRepository)
+            ITaxRepository _taxRepository,
+            IPrestaShopSynchronizeCustomer _prestaShopSynchronizeCustomer)
         {
             logger = _logger;
             unitOfWorkProvider = _unitOfWorkProvider;
@@ -41,10 +43,13 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             categoryRepository = _categoryRepository;
             productRepository = _productRepository;
             taxRepository = _taxRepository;
+            prestaShopSynchronizeCustomer = _prestaShopSynchronizeCustomer;
         }
 
         public async Task DoWork(CancellationToken stoppingToken)
         {
+            _ = Task.Run(() => prestaShopSynchronizeCustomer.DoWork(stoppingToken));
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 logger.LogDebug("Synchronize suppliers, categories andproducts");

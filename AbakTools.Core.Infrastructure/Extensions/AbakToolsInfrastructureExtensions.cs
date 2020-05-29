@@ -10,6 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             service.AddTransient<IPrestaShopClient, PrestaShopClient>();
             service.AddTransient<IStringEncryptor, TripleDESStringEncryptor>();
+            service.AddTransient<IPrestaShopSynchronizeCustomer, PrestaShopSynchronizeCustomer>();
         }
     }
 }
