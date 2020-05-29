@@ -9,13 +9,16 @@ namespace AbakTools.Core.DataAccess.Mappings
         where TEntity : IBusinessEntity
     {
         protected virtual string IsDeletedColumnName => "deleted";
+        protected virtual string CreationDateColumnName => "date_add";
+        protected virtual string ModificationDateColumnName => "date_upd";
+
         public override void CreateMapping()
         {
             base.CreateMapping();
 
             Map(x => x.IsDeleted, IsDeletedColumnName);
-            Map(x => x.CreationDate, "date_add");
-            Map(x => x.ModificationDate, "date_upd");
+            Map(x => x.CreationDate, CreationDateColumnName);
+            Map(x => x.ModificationDate, ModificationDateColumnName);
         }
     }
 }

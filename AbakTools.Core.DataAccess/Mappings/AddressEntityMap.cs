@@ -5,6 +5,10 @@ namespace AbakTools.Core.DataAccess.Mappings
 {
     class AddressEntityMap : BusinessEntityMap<AddressEntity>
     {
+        protected override string IsDeletedColumnName => "Usuniety";
+        protected override string CreationDateColumnName => "CreationDate";
+        protected override string ModificationDateColumnName => "ModificationDate";
+
         public override void CreateMapping()
         {
             base.CreateMapping();

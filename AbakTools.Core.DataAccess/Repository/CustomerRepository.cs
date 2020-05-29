@@ -22,5 +22,17 @@ namespace AbakTools.Core.DataAccess.Repository
 
             return query.Select(x => x.Id).ToList();
         }
+
+        public IReadOnlyCollection<int> GetModifiedCustomersIdsWithWebAccount(DateTime stampFrom, DateTime? stampTo)
+        {
+            var query = GetQueryBase().Where(x => x.ModificationDate > stampFrom && x.WebAccountLogin != null && x.WebAccountLogin != "");
+
+            if (stampTo.HasValue)
+            {
+                query = query.Where(x => x.ModificationDate <= stampTo);
+            }
+
+            return query.Select(x => x.Id).ToList();
+        }
     }
 }
