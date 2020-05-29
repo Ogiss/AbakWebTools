@@ -63,53 +63,60 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
         private void ProcessCategory(CategoryEntity category)
         {
-            category psCategory = category.Parent == null
-                ? prestaShopClient.GetRootCategory()
-                : (category.WebId.HasValue ? prestaShopClient.CategoryFactory.Get(category.WebId.Value) : null);
-
-            if (psCategory == null && (category.Parent == null || category.WebId.HasValue))
+            try
             {
-                throw new PrestaShopSynchronizeException(category.Parent == null
-                    ? "Category synchronize error. Didn't find root category"
-                    : $"Category synchronize error. Didn't find category with id {category.WebId}");
-            }
+                category psCategory = category.Parent == null
+                    ? prestaShopClient.GetRootCategory()
+                    : (category.WebId.HasValue ? prestaShopClient.CategoryFactory.Get(category.WebId.Value) : null);
 
-
-            if (psCategory == null)
-            {
-                psCategory = new category();
-                psCategory.id_parent = (long)category.Parent.WebId.Value;
-            }
-
-            if (psCategory.is_root_category == 0)
-            {
-                prestaShopClient.SetLangValue(psCategory, x => x.name, Functions.GetPrestaShopName(category.Name));
-                prestaShopClient.SetLangValue(psCategory, x => x.link_rewrite, Functions.GetLinkRewrite(category.Name));
-
-
-                psCategory.active = (category.Active ?? false && !category.IsDeleted) ? 1 : 0;
-
-                if (psCategory.id.HasValue && psCategory.id.Value > 0)
+                if (psCategory == null && (category.Parent == null || category.WebId.HasValue))
                 {
-                    logger.LogInformation($"Update category id: {category.Id}, name: {category.Name}");
-                    prestaShopClient.CategoryFactory.Update(psCategory);
+                    throw new PrestaShopSynchronizeException(category.Parent == null
+                        ? "Category synchronize error. Didn't find root category"
+                        : $"Category synchronize error. Didn't find category with id {category.WebId}");
                 }
-                else
+
+
+                if (psCategory == null)
                 {
-                    logger.LogInformation($"Add new category id: {category.Id}, name: {category.Name}");
-                    psCategory = prestaShopClient.CategoryFactory.Add(psCategory);
+                    psCategory = new category();
+                    psCategory.id_parent = (long)category.Parent.WebId.Value;
+                }
+
+                if (psCategory.is_root_category == 0)
+                {
+                    prestaShopClient.SetLangValue(psCategory, x => x.name, Functions.GetPrestaShopName(category.Name));
+                    prestaShopClient.SetLangValue(psCategory, x => x.link_rewrite, Functions.GetLinkRewrite(category.Name));
+
+
+                    psCategory.active = (category.Active ?? false && !category.IsDeleted) ? 1 : 0;
+
+                    if (psCategory.id.HasValue && psCategory.id.Value > 0)
+                    {
+                        logger.LogInformation($"Update category id: {category.Id}, name: {category.Name}");
+                        prestaShopClient.CategoryFactory.Update(psCategory);
+                    }
+                    else
+                    {
+                        logger.LogInformation($"Add new category id: {category.Id}, name: {category.Name}");
+                        psCategory = prestaShopClient.CategoryFactory.Add(psCategory);
+                    }
+                }
+
+                if (!category.WebId.HasValue)
+                {
+                    category.WebId = (int)psCategory.id;
+
+                    using (var uow = unitOfWorkProvider.Create())
+                    {
+                        categoryRepository.SaveOrUpdate(category);
+                        uow.Commit();
+                    }
                 }
             }
-
-            if (!category.WebId.HasValue)
+            catch(Exception ex)
             {
-                category.WebId = (int)psCategory.id;
-
-                using (var uow = unitOfWorkProvider.Create())
-                {
-                    categoryRepository.SaveOrUpdate(category);
-                    uow.Commit();
-                }
+                logger.LogError($"Synchronize category Id:{category.Id} error.{Environment.NewLine}{ex}");
             }
         }
     }

@@ -64,17 +64,24 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
         private void ProcessSupplier(SupplierEntity supplier)
         {
-            Dictionary<string, string> dtn = new Dictionary<string, string>();
-            dtn.Add("name", supplier.Name);
-
-            var psSupplier = prestaShopClient.SupplierFactory.GetByFilter(dtn, null, null).SingleOrDefault();
-
-            if (psSupplier == null)
+            try
             {
-                psSupplier = new supplier();
-                psSupplier.active = 1;
-                psSupplier.name = supplier.Name;
-                prestaShopClient.SupplierFactory.Add(psSupplier);
+                Dictionary<string, string> dtn = new Dictionary<string, string>();
+                dtn.Add("name", supplier.Name);
+
+                var psSupplier = prestaShopClient.SupplierFactory.GetByFilter(dtn, null, null).SingleOrDefault();
+
+                if (psSupplier == null)
+                {
+                    psSupplier = new supplier();
+                    psSupplier.active = 1;
+                    psSupplier.name = supplier.Name;
+                    prestaShopClient.SupplierFactory.Add(psSupplier);
+                }
+            }
+            catch(Exception ex)
+            {
+                logger.LogError($"Synchronize suplier {supplier.Name} error.{Environment.NewLine}{ex}");
             }
         }
     }
