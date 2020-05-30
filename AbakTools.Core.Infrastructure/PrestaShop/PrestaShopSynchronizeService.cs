@@ -4,6 +4,7 @@ using AbakTools.Core.Domain.Supplier;
 using AbakTools.Core.Domain.Synchronize;
 using AbakTools.Core.Domain.Tax;
 using AbakTools.Core.Framework.UnitOfWork;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
@@ -13,18 +14,22 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 {
     public partial class PrestaShopSynchronizeService : IPrestaShopSynchronizeService
     {
+        private readonly IConfiguration configuration;
         private readonly ILogger logger;
-        private IUnitOfWorkProvider unitOfWorkProvider;
-        private ISynchronizeStampRepository synchronizeStampRepository;
-        private IPrestaShopClient prestaShopClient;
+        private readonly IUnitOfWorkProvider unitOfWorkProvider;
+        private readonly ISynchronizeStampRepository synchronizeStampRepository;
+        private readonly  IPrestaShopClient prestaShopClient;
         private readonly ISupplierRepository supplierRepository;
         private readonly ICategoryRepository categoryRepository;
         private readonly IProductRepository productRepository;
         private readonly ITaxRepository taxRepository;
         private readonly IPrestaShopSynchronizeCustomer prestaShopSynchronizeCustomer;
 
+        private bool CustomerSynchronizeDisabled = false;
+
 
         public PrestaShopSynchronizeService(
+            IConfiguration _configuration,
             ILogger<PrestaShopSynchronizeService> _logger,
             IUnitOfWorkProvider _unitOfWorkProvider,
             ISynchronizeStampRepository _synchronizeStampRepository,
@@ -35,6 +40,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             ITaxRepository _taxRepository,
             IPrestaShopSynchronizeCustomer _prestaShopSynchronizeCustomer)
         {
+            configuration = _configuration;
             logger = _logger;
             unitOfWorkProvider = _unitOfWorkProvider;
             prestaShopClient = _prestaShopClient;
@@ -44,11 +50,16 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             productRepository = _productRepository;
             taxRepository = _taxRepository;
             prestaShopSynchronizeCustomer = _prestaShopSynchronizeCustomer;
+
+            CustomerSynchronizeDisabled = bool.TryParse(configuration["PrestaShop:Synchronization:Customers:Disabled"], out bool b) ? b : false;
         }
 
         public async Task DoWork(CancellationToken stoppingToken)
         {
-            _ = Task.Run(() => prestaShopSynchronizeCustomer.DoWork(stoppingToken));
+            if (!CustomerSynchronizeDisabled)
+            {
+                _ = Task.Run(() => prestaShopSynchronizeCustomer.DoWork(stoppingToken));
+            }
 
             while (!stoppingToken.IsCancellationRequested)
             {
