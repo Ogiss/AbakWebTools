@@ -1,13 +1,14 @@
 ﻿using AbakTools.Core.Domain.Customer;
 using AbakTools.Core.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AbakTools.Core.DataAccess.Mappings
 {
     class CustomerEntityMap : BusinessEntityMap<CustomerEntity>
     {
+        protected override string IsDeletedColumnName => "Usuniety";
+        protected override string CreationDateColumnName => "CreationDate";
+        protected override string ModificationDateColumnName => "ModificationDate";
+
         public override void CreateMapping()
         {
             base.CreateMapping();
