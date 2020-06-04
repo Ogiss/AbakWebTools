@@ -17,8 +17,16 @@ namespace AbakTools.Core.DataAccess.Mappings
             base.CreateMapping();
 
             Map(x => x.IsDeleted, IsDeletedColumnName);
-            Map(x => x.CreationDate, CreationDateColumnName);
-            Map(x => x.ModificationDate, ModificationDateColumnName);
+
+            if (!string.IsNullOrEmpty(CreationDateColumnName))
+            {
+                Map(x => x.CreationDate, CreationDateColumnName);
+            }
+
+            if (!string.IsNullOrEmpty(ModificationDateColumnName))
+            {
+                Map(x => x.ModificationDate, ModificationDateColumnName);
+            }
         }
     }
 }

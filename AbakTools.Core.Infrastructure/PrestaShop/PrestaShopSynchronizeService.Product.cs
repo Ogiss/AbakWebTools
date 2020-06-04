@@ -142,6 +142,16 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                         SynchronizeImage(product, psProduct, image);
                     }
 
+                    if(psProduct.associations.images.Count != product.Images.Count)
+                    {
+                        foreach(var psImage in psProduct.associations.images)
+                        {
+                            if(!product.Images.Any(x =>x.WebId.HasValue && x.WebId == psImage.id))
+                            {
+                                prestaShopClient.ImageFactory.DeleteProductImage(psProduct.id.Value, psImage.id);
+                            }
+                        }
+                    }
 
                     if (product.Synchronize == Framework.SynchronizeType.Deleted)
                     {
@@ -167,7 +177,12 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
             if (localImage.WebId.HasValue)
             {
-
+                if((localImage.IsDeleted || localImage.Synchronize == Framework.SynchronizeType.Deleted) && psProduct.associations.images.Any(x=>x.id == localImage.WebId))
+                {
+                    prestaShopClient.ImageFactory.DeleteProductImage(psProduct.id.Value, localImage.WebId.Value);
+                    localImage.Synchronize = Framework.SynchronizeType.Synchronized;
+                    localImage.IsDeleted = true;
+                }
             }
             else if (localImage.ImageBytes != null && localImage.ImageBytes.Length > 0
                 && localImage.IsDeleted == false && localImage.Synchronize != Framework.SynchronizeType.Deleted)

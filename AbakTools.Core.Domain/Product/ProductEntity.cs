@@ -4,6 +4,7 @@ using AbakTools.Core.Domain.Tax;
 using AbakTools.Core.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace AbakTools.Core.Domain.Product
@@ -40,5 +41,10 @@ namespace AbakTools.Core.Domain.Product
 
         public virtual ISet<CategoryEntity> Categories { get; set; } = new HashSet<CategoryEntity>();
         public virtual ISet<ImageEntity> Images { get; set; } = new HashSet<ImageEntity>();
+
+        public virtual IEnumerable<ImageEntity> GetUndeletedImages()
+        {
+            return Images.Where(x => x.IsDeleted == false && x.Synchronize != SynchronizeType.Deleted);
+        }
     }
 }
