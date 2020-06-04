@@ -16,6 +16,7 @@ namespace AbakTools.Core.Api
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseWindowsService()
                 .ConfigureLogging(logging => {
                     logging.AddFile("Logs/application-{Date}.txt");
                 })
