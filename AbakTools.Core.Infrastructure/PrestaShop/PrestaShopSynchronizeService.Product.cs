@@ -36,7 +36,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
             if (products.Any())
             {
-                logger.LogInformation("Starting synchronize products");
+                logger.LogDebug("Starting synchronize products");
 
                 stampTo = products.Max(x => x.ModificationDate);
 
@@ -58,7 +58,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     uow.Commit();
                 }
 
-                logger.LogInformation($"Synchronize products finished at {(DateTime.Now - stampTo).TotalSeconds} sec.");
+                logger.LogDebug($"Synchronize products finished at {(DateTime.Now - stampTo).TotalSeconds} sec.");
             }
         }
 

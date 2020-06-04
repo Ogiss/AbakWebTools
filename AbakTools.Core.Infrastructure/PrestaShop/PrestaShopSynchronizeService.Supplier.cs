@@ -28,7 +28,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             {
                 DateTime startDt = DateTime.Now;
 
-                logger.LogInformation("Starting synchronize suppliers");
+                logger.LogDebug("Starting synchronize suppliers");
 
                 IReadOnlyCollection<SupplierEntity> suppliers = null;
 
@@ -58,7 +58,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     uow.Commit();
                 }
 
-                logger.LogInformation($"Synchronize suppliers finished at {(DateTime.Now - startDt).TotalSeconds} sec.");
+                logger.LogDebug($"Synchronize suppliers finished at {(DateTime.Now - startDt).TotalSeconds} sec.");
             }
         }
 
