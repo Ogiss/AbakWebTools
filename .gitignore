@@ -270,3 +270,6 @@ Sources/Sis/Sis.Web/App_Data/EstateNewObjectDocuments/
 
 # GitLab CI builds
 builds
+
+#Loggining
+Logs/

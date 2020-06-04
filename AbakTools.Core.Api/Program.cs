@@ -3,6 +3,7 @@ using AbakTools.Core.Infrastructure.PrestaShop;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace AbakTools.Core.Api
 {
@@ -15,6 +16,9 @@ namespace AbakTools.Core.Api
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging => {
+                    logging.AddFile("Logs/application-{Date}.txt");
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
