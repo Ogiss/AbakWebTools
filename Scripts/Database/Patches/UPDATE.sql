@@ -1,4 +1,5 @@
 UPDATE category SET id_local_parent = NULL WHERE id_local_parent = 0;
+UPDATE category SET id_category = NULL;
 UPDATE product SET id_product = NULL;
 UPDATE image SET id_image = NULL;
 UPDATE product SET Usuniety = 0 WHERE Usuniety IS NULL;
