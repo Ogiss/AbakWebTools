@@ -5,6 +5,8 @@ UPDATE image SET id_image = NULL;
 UPDATE product SET Usuniety = 0 WHERE Usuniety IS NULL;
 UPDATE product SET synchronize = 2 where Usuniety = 0 AND synchronize = 0 AND id_product IS NULL;
 UPDATE [tax] SET id_tax = NULL;
+UPDATE Kontrahenci SET PSID = NULL;
+UPDATE Adresy SET PSID = NULL;
 
 -- Customer
 
@@ -13,7 +15,7 @@ ALTER TABLE Kontrahenci ADD ModificationDate DateTime2(4) NOT NULL DEFAULT (GETD
 
 GO
 UPDATE Kontrahenci SET ModificationDate = CreationDate;
-UPDATE Kontrahenci SET PSID = NULL;
+
 GO
 ALTER TABLE Kontrahenci ADD WebAccountLogin VARCHAR(100);
 ALTER TABLE Kontrahenci ADD WebAccountPassword VARCHAR(255);
@@ -38,7 +40,7 @@ GO
 ALTER TABLE Adresy ADD Guid UNIQUEIDENTIFIER NOT NULL DEFAULT(NEWID());
 GO
 UPDATE Adresy SET ModificationDate = CreationDate;
-UPDATE Adresy SET PSID = NULL;
+
 UPDATE Adresy SET DomyslnyAdresFaktury = 0 WHERE DomyslnyAdresFaktury IS NULL;
 UPDATE Adresy SET DomyslnyAdresWysylki = 0 WHERE DomyslnyAdresWysylki IS NULL;
 UPDATE Adresy SET DomyslnyAdresFaktury = 1 WHERE DomyslnyAdresFaktury = 0 AND DomyslnyAdresWysylki = 0;
