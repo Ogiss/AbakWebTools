@@ -21,6 +21,9 @@ namespace AbakTools.Core.Domain.Customer
 
         public virtual ISet<AddressEntity> Addresses { get; set; } = new HashSet<AddressEntity>();
 
+
+        public virtual bool IsDeleting => Synchronize == SynchronizeType.Deleted;
+
         public virtual AddressEntity GetMainAddress()
         {
             var address = Addresses.Where(x => x.IsDefaultInvoiceAddress).SingleOrDefault();
