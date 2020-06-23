@@ -17,17 +17,20 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private readonly IUnitOfWorkProvider unitOfWorkProvider;
         private readonly ISynchronizeStampRepository synchronizeStampRepository;
         private readonly ICustomerRepository customerRepository;
+        private readonly IPrestaShopClient prestaShopClient;
 
         public PrestaShopSynchronizeCustomer(
             ILogger<PrestaShopSynchronizeCustomer> _logger,
             IUnitOfWorkProvider _unitOfWorkProvider,
             ISynchronizeStampRepository _synchronizeStampRepository,
-            ICustomerRepository _customerRepository)
+            ICustomerRepository _customerRepository,
+            IPrestaShopClient _prestaShopClient)
         {
             logger = _logger;
             unitOfWorkProvider = _unitOfWorkProvider;
             synchronizeStampRepository = _synchronizeStampRepository;
             customerRepository = _customerRepository;
+            prestaShopClient = _prestaShopClient;
         }
 
         public async Task DoWork(CancellationToken stoppingToken)
