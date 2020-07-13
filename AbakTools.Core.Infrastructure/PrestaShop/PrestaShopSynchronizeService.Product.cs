@@ -69,7 +69,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                 using (var uow = unitOfWorkProvider.Create())
                 {
                     product = productRepository.Get(product.Id);
-                    Bukimedia.PrestaSharp.Entities.product psProduct = product.WebId.HasValue ? prestaShopClient.ProductFactory.Get(product.WebId.Value) : null;
+                    Bukimedia.PrestaSharp.Entities.product psProduct = product.WebId.HasValue && product.WebId > 0 ? prestaShopClient.ProductFactory.Get(product.WebId.Value) : null;
 
                     if (product.Synchronize == Framework.SynchronizeType.Deleted || product.NotWebAvailable)
                     {
