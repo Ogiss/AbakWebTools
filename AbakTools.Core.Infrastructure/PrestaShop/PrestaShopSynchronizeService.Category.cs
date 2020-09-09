@@ -36,8 +36,6 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             {
                 logger.LogDebug("Starting synchronize categories");
 
-                stampTo = categories.Max(x => x.ModificationDate);
-
                 foreach (var category in categories)
                 {
                     ProcessCategory(category);
@@ -48,7 +46,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     synchronizeStamp = SynchronizeStampFactory.Create(SynchronizeCodes.Category, SynchronizeDirectionType.Export);
                 }
 
-                synchronizeStamp.DateTimeStamp = stampTo;
+                synchronizeStamp.DateTimeStamp = categories.Max(x => x.ModificationDate);
 
                 using (var uow = unitOfWorkProvider.Create())
                 {
@@ -66,7 +64,12 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             {
                 category psCategory = category.Parent == null
                     ? prestaShopClient.GetRootCategory()
-                    : (category.WebId.HasValue ? prestaShopClient.CategoryFactory.Get(category.WebId.Value) : null);
+                    : GetPsCategory(category.WebId);
+
+                if(psCategory == null && category.WebId.HasValue)
+                {
+                    category.WebId = null;
+                }
 
                 if (psCategory == null && (category.Parent == null || category.WebId.HasValue))
                 {
@@ -117,6 +120,28 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             {
                 logger.LogError($"Synchronize category Id:{category.Id} error.{Environment.NewLine}{ex}");
             }
+        }
+
+        private category GetPsCategory(int? id)
+        {
+            if (id.HasValue)
+            {
+                try
+                {
+                    return prestaShopClient.CategoryFactory.Get(id.Value);
+                }
+                catch(Bukimedia.PrestaSharp.PrestaSharpException ex)
+                {
+                    if(ex.ResponseHttpStatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        return null;
+                    }
+
+                    throw;
+                }
+            }
+
+            return null;
         }
     }
 }

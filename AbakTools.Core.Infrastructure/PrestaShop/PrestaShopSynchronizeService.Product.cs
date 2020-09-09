@@ -38,8 +38,6 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             {
                 logger.LogDebug("Starting synchronize products");
 
-                stampTo = products.Max(x => x.ModificationDate);
-
                 foreach (var product in products)
                 {
                     ProcessProduct(product);
@@ -50,7 +48,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     synchronizeStamp = SynchronizeStampFactory.Create(SynchronizeCodes.Product, SynchronizeDirectionType.Export);
                 }
 
-                synchronizeStamp.DateTimeStamp = stampTo;
+                synchronizeStamp.DateTimeStamp = products.Max(x => x.ModificationDate);
 
                 using (var uow = unitOfWorkProvider.Create())
                 {
@@ -69,24 +67,11 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                 using (var uow = unitOfWorkProvider.Create())
                 {
                     product = productRepository.Get(product.Id);
-                    Bukimedia.PrestaSharp.Entities.product psProduct = null;
+                    Bukimedia.PrestaSharp.Entities.product psProduct = GetPsProduct(product.WebId);
 
-                    try
+                    if(psProduct == null && product.WebId.HasValue)
                     {
-
-                        psProduct = product.WebId.HasValue && product.WebId > 0 ? prestaShopClient.ProductFactory.Get(product.WebId.Value) : null;
-                    }
-                    catch (Bukimedia.PrestaSharp.PrestaSharpException ex)
-                    {
-                        switch (ex.ResponseHttpStatusCode)
-                        {
-                            case System.Net.HttpStatusCode.NotFound:
-                                product.WebId = null;
-                                break;
-
-                            default:
-                                throw;
-                        }
+                        product.WebId = null;
                     }
 
                     if (product.Synchronize == Framework.SynchronizeType.Deleted || product.NotWebAvailable)
@@ -194,6 +179,30 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             {
                 logger.LogError($"Synchronize product Id: {product.Id} error.{Environment.NewLine}{ex}");
             }
+        }
+
+        private Bukimedia.PrestaSharp.Entities.product GetPsProduct(int? id)
+        {
+            if (id.HasValue && id > 0)
+            {
+                try
+                {
+                    return prestaShopClient.ProductFactory.Get(id.Value);
+                }
+                catch (Bukimedia.PrestaSharp.PrestaSharpException ex)
+                {
+                    switch (ex.ResponseHttpStatusCode)
+                    {
+                        case System.Net.HttpStatusCode.NotFound:
+                            return null;
+
+                        default:
+                            throw;
+                    }
+                }
+            }
+
+            return null;
         }
 
         private void SynchronizeImage(ProductEntity localProduct, Bukimedia.PrestaSharp.Entities.product psProduct, ImageEntity localImage)
