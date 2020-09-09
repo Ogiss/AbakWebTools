@@ -14,7 +14,10 @@ namespace AbakTools.Core.DataAccess.Interceptors
                 var now = DateTime.Now;
 
                 var idx = Array.IndexOf(propertyNames, nameof(IBusinessEntity.ModificationDate));
-                currentState[idx] = now;
+
+                if (idx >= 0 && idx < currentState.Length) {
+                    currentState[idx] = now;
+                }
 
                 entityWithModificationDate.ModificationDate = now;
             }
