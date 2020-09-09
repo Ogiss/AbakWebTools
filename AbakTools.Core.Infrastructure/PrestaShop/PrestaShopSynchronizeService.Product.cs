@@ -69,7 +69,25 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                 using (var uow = unitOfWorkProvider.Create())
                 {
                     product = productRepository.Get(product.Id);
-                    Bukimedia.PrestaSharp.Entities.product psProduct = product.WebId.HasValue && product.WebId > 0 ? prestaShopClient.ProductFactory.Get(product.WebId.Value) : null;
+                    Bukimedia.PrestaSharp.Entities.product psProduct = null;
+
+                    try
+                    {
+
+                        psProduct = product.WebId.HasValue && product.WebId > 0 ? prestaShopClient.ProductFactory.Get(product.WebId.Value) : null;
+                    }
+                    catch (Bukimedia.PrestaSharp.PrestaSharpException ex)
+                    {
+                        switch (ex.ResponseHttpStatusCode)
+                        {
+                            case System.Net.HttpStatusCode.NotFound:
+                                product.WebId = null;
+                                break;
+
+                            default:
+                                throw;
+                        }
+                    }
 
                     if (product.Synchronize == Framework.SynchronizeType.Deleted || product.NotWebAvailable)
                     {
@@ -102,10 +120,17 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                         {
                             if (category.WebId.HasValue && !category.IsDeleted && category.Synchronize != Framework.SynchronizeType.Deleted)
                             {
-                                var psCategory = prestaShopClient.CategoryFactory.Get(category.WebId.Value);
-                                if (psCategory != null)
+                                try
                                 {
-                                    psProduct.associations.categories.Add(new Bukimedia.PrestaSharp.Entities.AuxEntities.category(psCategory.id.Value));
+                                    var psCategory = prestaShopClient.CategoryFactory.Get(category.WebId.Value);
+                                    if (psCategory != null)
+                                    {
+                                        psProduct.associations.categories.Add(new Bukimedia.PrestaSharp.Entities.AuxEntities.category(psCategory.id.Value));
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    logger.LogError(ex.ToString());
                                 }
                             }
                         }
@@ -142,11 +167,11 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                         SynchronizeImage(product, psProduct, image);
                     }
 
-                    if(psProduct.associations.images.Count != product.Images.Count)
+                    if (psProduct.associations.images.Count != product.Images.Count)
                     {
-                        foreach(var psImage in psProduct.associations.images)
+                        foreach (var psImage in psProduct.associations.images)
                         {
-                            if(!product.Images.Any(x =>x.WebId.HasValue && x.WebId == psImage.id))
+                            if (!product.Images.Any(x => x.WebId.HasValue && x.WebId == psImage.id))
                             {
                                 prestaShopClient.ImageFactory.DeleteProductImage(psProduct.id.Value, psImage.id);
                             }
@@ -165,7 +190,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     uow.Commit();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError($"Synchronize product Id: {product.Id} error.{Environment.NewLine}{ex}");
             }
@@ -177,7 +202,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
             if (localImage.WebId.HasValue)
             {
-                if((localImage.IsDeleted || localImage.Synchronize == Framework.SynchronizeType.Deleted) && psProduct.associations.images.Any(x=>x.id == localImage.WebId))
+                if ((localImage.IsDeleted || localImage.Synchronize == Framework.SynchronizeType.Deleted) && psProduct.associations.images.Any(x => x.id == localImage.WebId))
                 {
                     prestaShopClient.ImageFactory.DeleteProductImage(psProduct.id.Value, localImage.WebId.Value);
                     localImage.Synchronize = Framework.SynchronizeType.Synchronized;
@@ -197,7 +222,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             {
                 var psTax = prestaShopClient.GetTaxRuleGroupByRate(tax.Rate);
 
-                if(psTax != null)
+                if (psTax != null)
                 {
                     tax.WebId = (int)psTax.id.Value;
                     taxRepository.SaveOrUpdate(tax);
