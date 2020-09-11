@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
+using AbakTools.Core.Domain;
 
 namespace AbakTools.Core.Infrastructure.PrestaShop
 {
@@ -46,7 +47,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     synchronizeStamp = SynchronizeStampFactory.Create(SynchronizeCodes.Category, SynchronizeDirectionType.Export);
                 }
 
-                synchronizeStamp.DateTimeStamp = categories.Max(x => x.ModificationDate);
+                synchronizeStamp.DateTimeStamp = stampTo;
 
                 using (var uow = unitOfWorkProvider.Create())
                 {
@@ -65,6 +66,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                 using (var uow = unitOfWorkProvider.Create())
                 {
                     category = categoryRepository.Get(category.Id);
+                    category.DisableUpdateModificationDate = true;
 
                     category psCategory = category.Parent == null
                         ? prestaShopClient.GetRootCategory()
@@ -84,42 +86,45 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
                     if (psCategory == null)
                     {
-                        psCategory = new category();
-                        psCategory.id_parent = (long)category.Parent.WebId.Value;
-                    }
-
-                    if (psCategory.is_root_category == 0)
-                    {
-                        prestaShopClient.SetLangValue(psCategory, x => x.name, Functions.GetPrestaShopName(category.Name));
-                        prestaShopClient.SetLangValue(psCategory, x => x.link_rewrite, Functions.GetLinkRewrite(category.Name));
-
-
-                        psCategory.active = (category.Active ?? false && !category.IsDeleted) ? 1 : 0;
-
-                        if (psCategory.id.HasValue && psCategory.id.Value > 0)
+                        if (!category.IsArchived)
                         {
-                            logger.LogInformation($"Update category id: {category.Id}, name: {category.Name}");
-                            prestaShopClient.CategoryFactory.Update(psCategory);
+                            psCategory = InsertCategory(category);
+                        }
+                    }
+                    else
+                    {
+                        if (category.IsArchived)
+                        {
+                            DeleteCategory(category, psCategory);
                         }
                         else
                         {
-                            logger.LogInformation($"Add new category id: {category.Id}, name: {category.Name}");
-                            psCategory = prestaShopClient.CategoryFactory.Add(psCategory);
+                            UpdateCategory(category, psCategory);
                         }
+                    }
+
+                    if (psCategory != null)
+                    {
+                        psCategory = SaveOrUpdateCategory(category, psCategory);
                     }
 
                     if (!category.WebId.HasValue)
                     {
-                        category.WebId = (int)psCategory.id;
-
-                        categoryRepository.SaveOrUpdate(category);
-                        uow.Commit();
+                        category.WebId = (int?)psCategory?.id;
                     }
+
+                    category.Synchronize = Framework.SynchronizeType.Synchronized;
+                    categoryRepository.SaveOrUpdate(category);
+                    uow.Commit();
                 }
             }
             catch (Exception ex)
             {
                 logger.LogError($"Synchronize category Id:{category.Id} error.{Environment.NewLine}{ex}");
+            }
+            finally
+            {
+                category.DisableUpdateModificationDate = false;
             }
         }
 
@@ -143,6 +148,50 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             }
 
             return null;
+        }
+
+        private category InsertCategory(CategoryEntity category)
+        {
+            var psCategory = new category();
+            psCategory.id_parent = (long)category.Parent.WebId.Value;
+            UpdateCategory(category, psCategory);
+
+            return psCategory;
+        }
+
+        private void UpdateCategory(CategoryEntity category, category psCategory)
+        {
+            if (psCategory.is_root_category == 0)
+            {
+                prestaShopClient.SetLangValue(psCategory, x => x.name, Functions.GetPrestaShopName(category.Name));
+                prestaShopClient.SetLangValue(psCategory, x => x.link_rewrite, Functions.GetLinkRewrite(category.Name));
+                psCategory.active = (category.Active ?? false && !category.IsDeleted) ? 1 : 0;
+            }
+        }
+
+        private void DeleteCategory(CategoryEntity category, category psCategory)
+        {
+            if (psCategory.is_root_category == 0)
+            {
+                psCategory.active = 0;
+                category.IsDeleted = true;
+            }
+        }
+
+        private category SaveOrUpdateCategory(CategoryEntity category, category psCategory)
+        {
+            if (psCategory.id.HasValue && psCategory.id.Value > 0)
+            {
+                logger.LogInformation($"Update category id: {category.Id}, name: {category.Name}");
+                prestaShopClient.CategoryFactory.Update(psCategory);
+            }
+            else
+            {
+                logger.LogInformation($"Add new category id: {category.Id}, name: {category.Name}");
+                psCategory = prestaShopClient.CategoryFactory.Add(psCategory);
+            }
+
+            return psCategory;
         }
     }
 }

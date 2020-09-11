@@ -9,7 +9,7 @@ namespace AbakTools.Core.DataAccess.Interceptors
     {
         public override bool OnFlushDirty(object entity, object id, object[] currentState, object[] previousState, string[] propertyNames, IType[] types)
         {
-            if (entity is IBusinessEntity entityWithModificationDate)
+            if (entity is IBusinessEntity entityWithModificationDate && !entityWithModificationDate.DisableUpdateModificationDate)
             {
                 var now = DateTime.Now;
 

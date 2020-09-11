@@ -26,6 +26,7 @@ namespace AbakTools.Core.DataAccess.Mappings.Category
             Map(x => x.DisplayOrder, "display_order");
             Map(x => x.EnovaFeature, "enova_feature");
             Map(x => x.WebId, "id_category");
+            Map(x => x.DateTimeStamp, "stamp");
 
             References(x => x.Parent, "id_local_parent")
                 .Cascade.None()

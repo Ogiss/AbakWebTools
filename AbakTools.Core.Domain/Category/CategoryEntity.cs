@@ -7,7 +7,6 @@ namespace AbakTools.Core.Domain.Category
 {
     public class CategoryEntity : BusinessEntity
     {
-
         public virtual CategoryEntity Parent { get; set; }
         public virtual byte? LevelDepth { get; set; }
         public virtual bool? Active { get; set; }
@@ -21,5 +20,8 @@ namespace AbakTools.Core.Domain.Category
         public virtual int DisplayOrder { get; set; }
         public virtual bool EnovaFeature { get; set; }
         public virtual int? WebId { get; set; }
+        public virtual DateTime DateTimeStamp { get; set; }
+
+        public virtual bool IsArchived => Synchronize == SynchronizeType.Deleted || IsDeleted;
     }
 }

@@ -29,7 +29,7 @@ namespace AbakTools.Core.DataAccess.Repository
 
         public IReadOnlyCollection<CategoryEntity> GetAllModified(DateTime from, DateTime? to)
         {
-            var qry = GetQueryBase().Where(x => x.EnovaFeature == false && x.ModificationDate > from);
+            var qry = GetQueryBase().Where(x => x.EnovaFeature == false && x.DateTimeStamp > from ); // TODO: change x.DateTimeStamp to x.ModyficationDate
 
             if (to.HasValue)
             {

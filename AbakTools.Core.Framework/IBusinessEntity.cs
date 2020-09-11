@@ -9,5 +9,6 @@ namespace AbakTools.Core.Framework
         bool IsDeleted { get; set; }
         DateTime CreationDate { get; set; }
         DateTime ModificationDate { get; set; }
+        bool DisableUpdateModificationDate { get; }
     }
 }
