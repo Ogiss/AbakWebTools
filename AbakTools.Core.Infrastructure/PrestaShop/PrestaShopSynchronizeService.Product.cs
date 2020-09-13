@@ -133,35 +133,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                         }
                     }
 
-                    try
-                    {
-
-                        if (psProduct != null)
-                        {
-                            foreach (var image in product.Images)
-                            {
-                                SynchronizeImage(product, psProduct, image);
-                            }
-
-                            if (psProduct.associations.images.Count != product.Images.Count)
-                            {
-                                foreach (var psImage in psProduct.associations.images)
-                                {
-                                    if (!product.Images.Any(x => x.WebId.HasValue && x.WebId == psImage.id))
-                                    {
-                                        prestaShopClient.ImageFactory.DeleteProductImage(psProduct.id.Value, psImage.id);
-                                    }
-                                }
-                            }
-
-                            SaveOrUpdatePsProduct(psProduct, product);
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError($"Synchronize product Id: {product.Id} error.{Environment.NewLine}{ex}");
-                    }
+                    SynchronizeProductImages(product, psProduct);
 
                     if (product.Synchronize == Framework.SynchronizeType.Deleted)
                     {
@@ -203,26 +175,6 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             }
 
             return null;
-        }
-
-        private void SynchronizeImage(ProductEntity localProduct, Bukimedia.PrestaSharp.Entities.product psProduct, ImageEntity localImage)
-        {
-            Bukimedia.PrestaSharp.Entities.image psImage = null;
-
-            if (localImage.WebId.HasValue)
-            {
-                if ((localImage.IsDeleted || localImage.Synchronize == Framework.SynchronizeType.Deleted) && psProduct.associations.images.Any(x => x.id == localImage.WebId))
-                {
-                    prestaShopClient.ImageFactory.DeleteProductImage(psProduct.id.Value, localImage.WebId.Value);
-                    localImage.Synchronize = Framework.SynchronizeType.Synchronized;
-                    localImage.IsDeleted = true;
-                }
-            }
-            else if (localImage.ImageBytes != null && localImage.ImageBytes.Length > 0
-                && localImage.IsDeleted == false && localImage.Synchronize != Framework.SynchronizeType.Deleted)
-            {
-                localImage.WebId = (int)prestaShopClient.ImageFactory.AddProductImage((long)psProduct.id, localImage.ImageBytes);
-            }
         }
 
         private long? GetTaxRuleGroupId(TaxEntity tax)
