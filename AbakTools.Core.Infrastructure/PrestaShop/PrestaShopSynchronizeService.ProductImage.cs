@@ -1,10 +1,7 @@
 ﻿using AbakTools.Core.Domain.Product;
-using AbakTools.Core.Framework.Cryptography;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using PsProductEntity = Bukimedia.PrestaSharp.Entities.product;
 
 namespace AbakTools.Core.Infrastructure.PrestaShop
