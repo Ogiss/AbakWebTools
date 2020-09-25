@@ -87,6 +87,31 @@ CREATE UNIQUE NONCLUSTERED INDEX [IDX_UNIQUE_Customer_IsDefaultDelivery] ON [dbo
 WHERE ([Usuniety]=(0) AND [Synchronizacja]<>(4) AND [DomyslnyAdresWysylki]=(1));
 GO
 
+delete from category_product where id in (
+select cp.id from category_product cp left join category c on c.id = cp.id_local_category where c.id is null
+)
+
+delete from category_product where  id in (
+select cp.id from category_product cp left join product p on p.id=cp.id_local_product where p.id is null
+)
+
+go
+
+ALTER TABLE [dbo].[category_product]  WITH CHECK ADD  CONSTRAINT [FK_category_product_category] FOREIGN KEY([id_local_category])
+REFERENCES [dbo].[category] ([id])
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[category_product] CHECK CONSTRAINT [FK_category_product_category]
+GO
+
+ALTER TABLE [dbo].[category_product]  WITH CHECK ADD  CONSTRAINT [FK_category_product_product] FOREIGN KEY([id_local_product])
+REFERENCES [dbo].[product] ([id])
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[category_product] CHECK CONSTRAINT [FK_category_product_product]
+GO
 
 
 
