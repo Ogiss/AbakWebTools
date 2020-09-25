@@ -6,11 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AbakTools.Core.Framework\AbakTools.Core.Framework.csproj" />
+    <Compile Remove="Common\**" />
+    <EmbeddedResource Remove="Common\**" />
+    <None Remove="Common\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
+    <ProjectReference Include="..\AbakTools.Core.Framework\AbakTools.Core.Framework.csproj" />
   </ItemGroup>
 
 </Project>

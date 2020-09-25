@@ -29,6 +29,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private TaxRuleFactory taxRuleFactory;
         private TaxFactory taxFactory;
         private CustomerFactory customerFactory;
+        private AddressFactory addressFactory;
         
 
         public Bukimedia.PrestaSharp.Entities.language DefaultLanguage
@@ -184,6 +185,19 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                 }
 
                 return customerFactory;
+            }
+        }
+
+        public AddressFactory AddressFactory
+        {
+            get
+            {
+                if(addressFactory == null)
+                {
+                    addressFactory = new AddressFactory(baseUrl, key, password);
+                }
+
+                return addressFactory;
             }
         }
 

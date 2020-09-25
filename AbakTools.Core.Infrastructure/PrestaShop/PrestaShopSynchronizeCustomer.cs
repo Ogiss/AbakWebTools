@@ -3,16 +3,18 @@ using AbakTools.Core.Domain.Product;
 using AbakTools.Core.Domain.Synchronize;
 using AbakTools.Core.Framework.UnitOfWork;
 using Bukimedia.PrestaSharp.Entities;
+using Bukimedia.PrestaSharp.Lib;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using PsCustomer = Bukimedia.PrestaSharp.Entities.customer;
 
 namespace AbakTools.Core.Infrastructure.PrestaShop
 {
-    class PrestaShopSynchronizeCustomer : IPrestaShopSynchronizeCustomer
+    internal partial class PrestaShopSynchronizeCustomer : IPrestaShopSynchronizeCustomer
     {
         private const string DefaultCustomerPassword = "cgY563_Cf#90a";
 
@@ -77,6 +79,19 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     };
 
                     Parallel.ForEach(customerIds, parallelOptions, x => ProcessCustomerId(x, stampTo));
+
+                    if (synchronizeStamp == null)
+                    {
+                        synchronizeStamp = SynchronizeStampFactory.Create(SynchronizeCodes.Customer, SynchronizeDirectionType.Export);
+                    }
+
+                    synchronizeStamp.DateTimeStamp = stampTo;
+
+                    using (var uow = unitOfWorkProvider.Create())
+                    {
+                        synchronizeStampRepository.SaveOrUpdate(synchronizeStamp);
+                        uow.Commit();
+                    }
                 }
             }
             catch (Exception ex)
@@ -87,49 +102,94 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
         private void ProcessCustomerId(int id, DateTime stampTo)
         {
-            using (var uow = unitOfWorkProvider.Create())
+            try
             {
-                var customer = customerRepository.Get(id);
-
-                if (customer.ModificationDate <= stampTo)
+                using (var uow = unitOfWorkProvider.Create())
                 {
-                    Bukimedia.PrestaSharp.Entities.customer psCustomer = customer.WebId.HasValue ?
-                        prestaShopClient.CustomerFactory.Get(customer.WebId.Value) : null;
+                    var customer = customerRepository.Get(id);
 
-                    if (customer.IsDeleting || customer.IsDeleted)
+                    if (customer.ModificationDate <= stampTo)
                     {
-                        DeleteCustomer(customer, psCustomer);
-                    }
-                    else if (psCustomer != null)
-                    {
-                        UpdateCustomer(customer, psCustomer);
-                    }
-                    else if (psCustomer == null)
-                    {
-                        psCustomer = CreateCustomer(customer);
-                    }
+                        var psCustomer = GetPsCustomer(customer.WebId);
 
-                    if (psCustomer != null)
-                    {
-                        if (psCustomer.id.HasValue && psCustomer.id.Value > 0)
+                        if (psCustomer == null && customer.WebId.HasValue)
                         {
-                            logger.LogInformation($"Update customer id: {customer.Id}, name: {customer.Code}-{customer.Name}");
-                            prestaShopClient.CustomerFactory.Update(psCustomer);
+                            customer.WebId = null;
+                        }
+
+                        if (psCustomer == null)
+                        {
+                            if (!customer.IsArchived)
+                            {
+                                psCustomer = InsertCustomer(customer);
+                            }
                         }
                         else
                         {
-                            logger.LogInformation($"Add new customer id: {customer.Id}, name: {customer.Code}-{customer.Name}");
-                            psCustomer = prestaShopClient.CustomerFactory.Add(psCustomer);
+                            if (customer.IsArchived)
+                            {
+                                DeleteCustomer(customer, psCustomer);
+                            }
+                            else
+                            {
+                                UpdateCustomer(customer, psCustomer);
+                            }
                         }
 
-                        customer.WebId = (int)psCustomer.id;
-                    }
+                        if (psCustomer != null)
+                        {
+                            psCustomer = SaveOrUpdateCustomer(customer, psCustomer);
+                            SynchronizeAddresses(customer, psCustomer);
+                        }
 
-                    customer.Synchronize = Framework.SynchronizeType.Synchronized;
-                    customerRepository.SaveOrUpdate(customer);
-                    uow.Commit();
+                        if (!customer.WebId.HasValue)
+                        {
+                            customer.WebId = (int?)psCustomer?.id;
+                        }
+
+                        customer.Synchronize = Framework.SynchronizeType.Synchronized;
+                        customerRepository.SaveOrUpdate(customer);
+                        uow.Commit();
+                    }
                 }
             }
+            catch(Exception ex)
+            {
+                logger.LogError($"Sunchronize customerr error Id: {id}.{Environment.NewLine}{ex.ToString()}");
+            }
+        }
+
+        private PsCustomer InsertCustomer(CustomerEntity customer)
+        {
+            var psCustomer = new customer();
+
+            psCustomer.passwd = DefaultCustomerPassword;
+
+            UpdateCustomer(customer, psCustomer);
+
+            return psCustomer;
+        }
+
+        private PsCustomer GetPsCustomer(int? id)
+        {
+            if (id.HasValue)
+            {
+                try
+                {
+                    return prestaShopClient.CustomerFactory.Get(id.Value);
+                }
+                catch (Bukimedia.PrestaSharp.PrestaSharpException ex)
+                {
+                    if (ex.ResponseHttpStatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        return null;
+                    }
+
+                    throw;
+                }
+            }
+
+            return null;
         }
 
         private void DeleteCustomer(CustomerEntity customer, customer psCustomer)
@@ -145,27 +205,28 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private void UpdateCustomer(CustomerEntity customer, customer psCustomer)
         {
             psCustomer.company = customer.Name;
-            psCustomer.email = customer.WebAccountLogin;
+            psCustomer.email = customer.WebAccountLogin.Trim();
             psCustomer.active = 1;
-            psCustomer.lastname = customer.Code;
+            //psCustomer.lastname = Functions.GetPrestaShopLastname(customer.Code);
+            psCustomer.lastname = " ";
             psCustomer.firstname = " ";
 
         }
 
-        private customer CreateCustomer(CustomerEntity customer)
+        private PsCustomer SaveOrUpdateCustomer(CustomerEntity customer, PsCustomer psCustomer)
         {
-            if (!string.IsNullOrEmpty(customer.WebAccountLogin))
+            if (psCustomer.id.HasValue && psCustomer.id.Value > 0)
             {
-                var psCustomer = new customer();
-
-                psCustomer.passwd = DefaultCustomerPassword;
-
-                UpdateCustomer(customer, psCustomer);
-
-                return psCustomer;
+                logger.LogInformation($"Update customer id: {customer.Id}, name: {customer.Code}-{customer.Name}");
+                prestaShopClient.CustomerFactory.Update(psCustomer);
+            }
+            else
+            {
+                logger.LogInformation($"Add new customer id: {customer.Id}, name: {customer.Code}-{customer.Name}");
+                psCustomer = prestaShopClient.CustomerFactory.Add(psCustomer);
             }
 
-            return null;
+            return psCustomer;
         }
-    }
+   }
 }

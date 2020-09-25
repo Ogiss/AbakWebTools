@@ -20,5 +20,10 @@ namespace AbakTools.Core.Domain.Address
         public virtual SynchronizeType Synchronize { get; set; }
         public virtual bool IsDefaultInvoiceAddress { get; set; }
         public virtual bool IsDefaultDeliveryAddress { get; set; }
+        public virtual bool IsArchived => IsDeleted || Synchronize == SynchronizeType.Deleted;
+
+        public virtual bool IsValid =>
+            !string.IsNullOrEmpty(AddressLine1) &&
+            !string.IsNullOrEmpty(City);
     }
 }
