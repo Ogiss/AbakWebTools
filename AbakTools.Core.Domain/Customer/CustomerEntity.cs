@@ -18,12 +18,13 @@ namespace AbakTools.Core.Domain.Customer
         public virtual SynchronizeType Synchronize { get; set; }
         public virtual string WebAccountLogin { get; set; }
         public virtual string WebAccountPassword { get; set; }
-
         public virtual ISet<AddressEntity> Addresses { get; set; } = new HashSet<AddressEntity>();
+
+        public virtual bool IsArchived => IsDeleted || Synchronize == SynchronizeType.Deleted;
 
         public virtual AddressEntity GetMainAddress()
         {
-            var address = Addresses.Where(x => x.IsDefaultInvoiceAddress).SingleOrDefault();
+            var address = Addresses.Where(x => !x.IsArchived && x.IsDefaultInvoiceAddress).SingleOrDefault();
 
             if (address == null)
             {
