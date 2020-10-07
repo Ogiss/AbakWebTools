@@ -8,5 +8,6 @@ namespace AbakTools.Core.Domain.Customer
     {
         IReadOnlyCollection<int> GetModifiedCustomersIds(DateTime stampFrom, DateTime? stampTo);
         IReadOnlyCollection<int> GetModifiedCustomersIdsWithWebAccount(DateTime stampFrom, DateTime? stampTo);
+        CustomerEntity GetByWebId(int webId);
     }
 }

@@ -1,7 +1,5 @@
 ﻿using AbakTools.Core.Framework;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AbakTools.Core.Domain
 {

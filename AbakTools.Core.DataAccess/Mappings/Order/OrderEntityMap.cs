@@ -1,7 +1,5 @@
 ﻿using AbakTools.Core.Domain.Order;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using AbakTools.Core.Framework;
 
 namespace AbakTools.Core.DataAccess.Mappings.Order
 {
@@ -9,6 +7,8 @@ namespace AbakTools.Core.DataAccess.Mappings.Order
     {
         protected override string CreationDateColumnName => "DataDodania";
         protected override string ModificationDateColumnName => "DataAtualizacji";
+        protected override string IsDeletedColumnName => "IsDeleted";
+
         public override void CreateMapping()
         {
             base.CreateMapping();
@@ -27,14 +27,14 @@ namespace AbakTools.Core.DataAccess.Mappings.Order
             Map(x => x.Term, "Termin");
             Map(x => x.InvoiceGuid, "FakturaGuid");
             Map(x => x.InvoiceNumber, "FakturaNumer");
-            Map(x => x.Synchronize, "Synchronizacja");
+            Map(x => x.Synchronize, "Synchronizacja").CustomType<SynchronizeType>();
             Map(x => x.UrgentOrder, "Pilne");
 
             References(x => x.Customer, "Kontrahent");
             References(x => x.DeliveryAddress, "AdresWysylki");
             References(x => x.InvoiceAddress, "AdresFaktury");
 
-            References(x => x.Status, "OstatniStatusID");
+            References(x => x.State, "OstatniStatusID");
             //Map(x => x.OstatniStatusOpID);
             //Map(x => x.OstatniaHistoriaID);
 
@@ -43,7 +43,7 @@ namespace AbakTools.Core.DataAccess.Mappings.Order
                 .KeyColumn("Zamowienie")
                 .Cascade.AllDeleteOrphan();
 
-            HasMany(x => x.Items)
+            HasMany(x => x.Rows)
                 .Inverse()
                 .KeyColumn("Zamowienie")
                 .Cascade.AllDeleteOrphan();

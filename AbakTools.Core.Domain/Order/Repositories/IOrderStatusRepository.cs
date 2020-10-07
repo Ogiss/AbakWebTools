@@ -1,6 +1,9 @@
 ﻿namespace AbakTools.Core.Domain.Order.Repositories
 {
-    public interface IOrderStatusRepository : IGenericGuidedEntityRepository<OrderStatusEntity>
+    public interface IOrderStatusRepository : IGenericEntityRepository<OrderStateEntity>
     {
+        OrderStateEntity GetByWebId(int webId);
+
+        OrderStateEntity GetDefault();
     }
 }

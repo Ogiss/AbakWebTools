@@ -9,9 +9,12 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Enova.API\Enova.API.Service\Enova.API\Enova.API.csproj" />
+    <ProjectReference Include="..\..\..\EnovaApiService\Enova.Api\Enova.Api.csproj" />
     <ProjectReference Include="..\..\..\PrestaShop\PrestaSharp\PrestaSharp\PrestaSharp.csproj" />
     <ProjectReference Include="..\AbakTools.Core.Domain\AbakTools.Core.Domain.csproj" />
   </ItemGroup>

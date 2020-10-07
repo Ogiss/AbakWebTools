@@ -1,8 +1,9 @@
 ﻿using AbakTools.Core.Domain.Order;
+using AbakTools.Core.Framework;
 
 namespace AbakTools.Core.DataAccess.Mappings.Order
 {
-    class OrderItemEntityMap : EntityMap<OrderItemEntity>
+    class OrderRowEntityMap : EntityMap<OrderRowEntity>
     {
         public override void CreateMapping()
         {
@@ -18,7 +19,7 @@ namespace AbakTools.Core.DataAccess.Mappings.Order
             Map(x => x.TaxName, "StawkaVatSymbol");
             Map(x => x.TaxValue, "StawkaVatValue");
             Map(x => x.Description, "Opis");
-            Map(x => x.Synchronize, "Synchronizacja");
+            Map(x => x.Synchronize, "Synchronizacja").CustomType<SynchronizeType>();
             Map(x => x.Rebate, "Rabat");
             Map(x => x.RebateModified, "ZmienionoRabat");
 

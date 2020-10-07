@@ -17,6 +17,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         ImageFactory ImageFactory { get; }
         CustomerFactory CustomerFactory { get; }
         AddressFactory AddressFactory { get; }
+        OrderFactory OrderFactory { get; }
 
         category GetRootCategory(int? shopId = null);
         void SetLangValue<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> expression, string value)

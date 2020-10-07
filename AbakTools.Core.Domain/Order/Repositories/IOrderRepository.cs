@@ -2,5 +2,6 @@
 {
     public interface IOrderRepository : IGenericGuidedEntityRepository<OrderEntity>
     {
+        OrderEntity GetByWebId(int webId);
     }
 }

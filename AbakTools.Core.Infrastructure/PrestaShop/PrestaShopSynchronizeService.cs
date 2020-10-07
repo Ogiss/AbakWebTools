@@ -18,12 +18,13 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private readonly ILogger logger;
         private readonly IUnitOfWorkProvider unitOfWorkProvider;
         private readonly ISynchronizeStampRepository synchronizeStampRepository;
-        private readonly  IPrestaShopClient prestaShopClient;
+        private readonly IPrestaShopClient prestaShopClient;
         private readonly ISupplierRepository supplierRepository;
         private readonly ICategoryRepository categoryRepository;
         private readonly IProductRepository productRepository;
         private readonly ITaxRepository taxRepository;
         private readonly IPrestaShopSynchronizeCustomer prestaShopSynchronizeCustomer;
+        private readonly IPrestaShopSynchronizeOrder prestaShopSynchronizeOrder;
 
         private bool CustomerSynchronizeDisabled = false;
 
@@ -38,7 +39,8 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             ICategoryRepository _categoryRepository,
             IProductRepository _productRepository,
             ITaxRepository _taxRepository,
-            IPrestaShopSynchronizeCustomer _prestaShopSynchronizeCustomer)
+            IPrestaShopSynchronizeCustomer _prestaShopSynchronizeCustomer,
+            IPrestaShopSynchronizeOrder _prestaShopSynchronizeOrder)
         {
             configuration = _configuration;
             logger = _logger;
@@ -50,16 +52,27 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             productRepository = _productRepository;
             taxRepository = _taxRepository;
             prestaShopSynchronizeCustomer = _prestaShopSynchronizeCustomer;
+            prestaShopSynchronizeOrder = _prestaShopSynchronizeOrder;
 
             CustomerSynchronizeDisabled = bool.TryParse(configuration["PrestaShop:Synchronization:Customers:Disabled"], out bool b) ? b : false;
         }
 
         public async Task DoWork(CancellationToken stoppingToken)
         {
-            if (!CustomerSynchronizeDisabled)
+            _ = Task.Run(async () =>
             {
-                _ = Task.Run(() => prestaShopSynchronizeCustomer.DoWork(stoppingToken));
-            }
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    if (!CustomerSynchronizeDisabled)
+                    {
+                        await prestaShopSynchronizeCustomer.DoWork(stoppingToken);
+                    }
+
+                    await prestaShopSynchronizeOrder.DoWork(stoppingToken);
+
+                    await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+                }
+            });
 
             while (!stoppingToken.IsCancellationRequested)
             {

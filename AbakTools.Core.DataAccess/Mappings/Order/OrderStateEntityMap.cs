@@ -2,7 +2,7 @@
 
 namespace AbakTools.Core.DataAccess.Mappings.Order
 {
-    class OrderStatusEntityMap : BusinessEntityMap<OrderStatusEntity>
+    class OrderStateEntityMap : EntityMap<OrderStateEntity>
     {
         public override void CreateMapping()
         {
@@ -12,7 +12,8 @@ namespace AbakTools.Core.DataAccess.Mappings.Order
 
             Map(x => x.WebId, "PSID");
             Map(x => x.Name, "Nazwa").Not.Nullable();
-            Map(x => x.Synchronize, "Synchronizacja");
+            Map(x => x.NewOrder, "NoweZamowienie");
+            //Map(x => x.Synchronize, "Synchronizacja");
         }
     }
 }

@@ -13,7 +13,7 @@ namespace AbakTools.Core.DataAccess.Mappings.Order
             Map(x => x.Date, "DataDodania");
 
             References(x => x.Order, "Zamowienie").Not.Nullable(); ;
-            References(x => x.Status, "Status").Not.Nullable();
+            References(x => x.State, "Status").Not.Nullable();
         }
     }
 }
