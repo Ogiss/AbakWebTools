@@ -94,6 +94,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
                             psProduct.id_tax_rules_group = GetTaxRuleGroupId(product.Tax);
                             psProduct.price = product.Price;
+                            psProduct.show_price = 1;
 
                             var name = Functions.GetPrestaShopName(product.Name);
 
