@@ -1,9 +1,8 @@
 ﻿using AbakTools.Core.Domain.Customer;
-using AbakTools.Core.Domain.Product;
 using AbakTools.Core.Domain.Synchronize;
 using AbakTools.Core.Framework.UnitOfWork;
+using AbakTools.Core.Infrastructure.PrestaShop.Repositories;
 using Bukimedia.PrestaSharp.Entities;
-using Bukimedia.PrestaSharp.Lib;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -23,32 +22,31 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private readonly ISynchronizeStampRepository synchronizeStampRepository;
         private readonly ICustomerRepository customerRepository;
         private readonly IPrestaShopClient prestaShopClient;
+        private readonly IPsCustomerRepository psCustomerRepository;
 
         public PrestaShopSynchronizeCustomer(
             ILogger<PrestaShopSynchronizeCustomer> _logger,
             IUnitOfWorkProvider _unitOfWorkProvider,
             ISynchronizeStampRepository _synchronizeStampRepository,
             ICustomerRepository _customerRepository,
-            IPrestaShopClient _prestaShopClient)
+            IPrestaShopClient _prestaShopClient,
+            IPsCustomerRepository _psCustomerRepository)
         {
             logger = _logger;
             unitOfWorkProvider = _unitOfWorkProvider;
             synchronizeStampRepository = _synchronizeStampRepository;
             customerRepository = _customerRepository;
             prestaShopClient = _prestaShopClient;
+            psCustomerRepository = _psCustomerRepository;
         }
 
         public async Task DoWork(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                Synchronize();
-
-                await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
-            }
+            //ImportCustomers();
+            ExportCustomers();
         }
 
-        private void Synchronize()
+        private void ExportCustomers()
         {
             try
             {
@@ -117,6 +115,11 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                             customer.WebId = null;
                         }
 
+                        if(psCustomer == null)
+                        {
+                            psCustomer = psCustomerRepository.GetByEmail(customer.WebAccountLogin);
+                        }
+
                         if (psCustomer == null)
                         {
                             if (!customer.IsArchived)
@@ -172,24 +175,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
         private PsCustomer GetPsCustomer(int? id)
         {
-            if (id.HasValue)
-            {
-                try
-                {
-                    return prestaShopClient.CustomerFactory.Get(id.Value);
-                }
-                catch (Bukimedia.PrestaSharp.PrestaSharpException ex)
-                {
-                    if (ex.ResponseHttpStatusCode == System.Net.HttpStatusCode.NotFound)
-                    {
-                        return null;
-                    }
-
-                    throw;
-                }
-            }
-
-            return null;
+            return id.HasValue ? psCustomerRepository.Get(id.Value) : null;
         }
 
         private void DeleteCustomer(CustomerEntity customer, customer psCustomer)

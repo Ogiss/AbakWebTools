@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AbakTools.Core.Infrastructure.PrestaShop
 {
@@ -13,6 +11,19 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         public PrestaShopSynchronizeException(string message)
             : base(message)
         {
+        }
+
+        public static void TrowIf(bool condition, string message)
+        {
+            if (condition)
+            {
+                throw new PrestaShopSynchronizeException(message);
+            }
+        }
+
+        public static void TrowIfNull(object obj, string message)
+        {
+            TrowIf(obj == null, message);
         }
     }
 }

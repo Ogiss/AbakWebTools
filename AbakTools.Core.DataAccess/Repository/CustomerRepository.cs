@@ -11,6 +11,11 @@ namespace AbakTools.Core.DataAccess.Repository
         {
         }
 
+        public CustomerEntity GetByWebId(int webId)
+        {
+            return GetQueryBase().SingleOrDefault(x => x.WebId == webId);
+        }
+
         public IReadOnlyCollection<int> GetModifiedCustomersIds(DateTime stampFrom, DateTime? stampTo)
         {
             var query = GetQueryBase().Where(x => x.ModificationDate > stampFrom);

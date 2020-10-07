@@ -10,6 +10,7 @@ namespace AbakTools.Core.Framework
 
         public static T Resolve<T>()
         {
+            
             return (T)ServiceProvider.GetService(typeof(T));
         }
     }
