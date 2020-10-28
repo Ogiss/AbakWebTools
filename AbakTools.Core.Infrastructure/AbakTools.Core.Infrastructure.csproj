@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Enova.API\Enova.API.Service\Enova.API\Enova.API.csproj" />
     <ProjectReference Include="..\..\..\EnovaApiService\Enova.Api\Enova.Api.csproj" />
     <ProjectReference Include="..\..\..\PrestaShop\PrestaSharp\PrestaSharp\PrestaSharp.csproj" />
     <ProjectReference Include="..\AbakTools.Core.Domain\AbakTools.Core.Domain.csproj" />

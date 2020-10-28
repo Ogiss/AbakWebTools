@@ -17,6 +17,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private string password;
         private long RootCategoryId = 2;
         private string defaultCountryIsoCode = "PL";
+        private long defaultShopId = 1;
         private language defaultLanguage;
         private country defaultCountry;
         private CountryFactory countryFactory;
@@ -32,7 +33,8 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private AddressFactory addressFactory;
         private OrderStateFactory orderStateFactory;
         private OrderFactory orderFactory;
-        
+        private StockAvailableFactory stockAvailableFactory;
+
 
         public Bukimedia.PrestaSharp.Entities.language DefaultLanguage
         {
@@ -216,12 +218,28 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             }
         }
 
+        public StockAvailableFactory StockAvailableFactory
+        {
+            get
+            {
+                if(stockAvailableFactory == null)
+                {
+                    stockAvailableFactory = new StockAvailableFactory(baseUrl, key, password);
+                }
+
+                return stockAvailableFactory;
+            }
+        }
+
+        public long DefaultShopId => defaultShopId;
+
         public PrestaShopClient(IConfiguration _configuration)
         {
             configuration = _configuration;
             baseUrl = configuration["PrestaShop:BaseUrl"];
             key = configuration["PrestaShop:Key"];
             password = configuration["PrestaShop:Password"];
+            defaultShopId = long.TryParse(configuration["PrestaShop:ShopId"], out long shopId) ? shopId : defaultShopId;
         }
 
         public void SetLangValue<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> expression, string value)
@@ -276,5 +294,14 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             return LanguageFactory.GetByFilter(dtn, null, null).Single();
         }
 
+        public stock_available GetStockForProduct(int id, int attributeid)
+        {
+            Dictionary<string, string> filter = new Dictionary<string, string>();
+            filter.Add("id_product", id.ToString());
+            filter.Add("id_product_attribute", attributeid.ToString());
+            filter.Add("id_shop", defaultShopId.ToString());
+
+            return StockAvailableFactory.GetByFilter(filter, null, null).FirstOrDefault();
+        }
     }
 }

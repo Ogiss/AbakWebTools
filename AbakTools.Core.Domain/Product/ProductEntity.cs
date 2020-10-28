@@ -39,6 +39,8 @@ namespace AbakTools.Core.Domain.Product
         public virtual bool NotWebAvailable { get; set; }
         public virtual int MinimumOrderQuantity { get; set; }
 
+        public virtual bool IsArchived => IsDeleted || Synchronize == SynchronizeType.Deleted;
+
         public virtual ISet<CategoryEntity> Categories { get; set; } = new HashSet<CategoryEntity>();
         public virtual ISet<ImageEntity> Images { get; set; } = new HashSet<ImageEntity>();
 

@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PsProduct = Bukimedia.PrestaSharp.Entities.product;
+
 
 namespace AbakTools.Core.Infrastructure.PrestaShop
 {
@@ -131,6 +133,11 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                                 x.Synchronize != Framework.SynchronizeType.Deleted).Max(x => x.WebId);
 
                             psProduct = SaveOrUpdatePsProduct(psProduct, product);
+
+                            if (!product.IsArchived)
+                            {
+                                UpdateProductAvailability(product, psProduct);
+                            }
                         }
                     }
 
@@ -152,6 +159,26 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             {
                 logger.LogError($"Synchronize product Id: {product.Id} error.{Environment.NewLine}{ex}");
             }
+        }
+
+        private void UpdateProductAvailability(ProductEntity product, PsProduct psProduct)
+        {
+            var quantity = product.IsAvailable ? 1_000_000 : 0;
+            var stock = prestaShopClient.GetStockForProduct((int)psProduct.id, 0);
+            if(stock != null)
+            {
+                stock.quantity = quantity;
+            }
+            else
+            {
+                stock = new Bukimedia.PrestaSharp.Entities.stock_available();
+                stock.id_product = psProduct.id;
+                stock.id_product_attribute = 0;
+                stock.id_shop = prestaShopClient.DefaultShopId;
+                stock.quantity = quantity;
+            }
+
+            SaveOrUpdateStockAvailable(stock);
         }
 
         private Bukimedia.PrestaSharp.Entities.product GetPsProduct(int? id)
@@ -212,6 +239,20 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             product.WebId = (int)psProduct.id;
 
             return psProduct;
+        }
+
+        private Bukimedia.PrestaSharp.Entities.stock_available SaveOrUpdateStockAvailable(Bukimedia.PrestaSharp.Entities.stock_available stock)
+        {
+            if(stock.id.HasValue && stock.id > 0)
+            {
+                prestaShopClient.StockAvailableFactory.Update(stock);
+            }
+            else
+            {
+                stock = prestaShopClient.StockAvailableFactory.Add(stock);
+            }
+
+            return stock;
         }
     }
 }

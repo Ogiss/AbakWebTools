@@ -9,6 +9,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 {
     public interface IPrestaShopClient
     {
+        long DefaultShopId { get; }
         language DefaultLanguage { get; }
         country DefaultCountry { get; }
         SupplierFactory SupplierFactory { get; }
@@ -18,6 +19,8 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         CustomerFactory CustomerFactory { get; }
         AddressFactory AddressFactory { get; }
         OrderFactory OrderFactory { get; }
+        StockAvailableFactory StockAvailableFactory { get; }
+
 
         category GetRootCategory(int? shopId = null);
         void SetLangValue<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> expression, string value)
@@ -25,5 +28,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             where TProperty : List<Bukimedia.PrestaSharp.Entities.AuxEntities.language>;
 
         tax_rule_group GetTaxRuleGroupByRate(decimal rate);
+
+        stock_available GetStockForProduct(int id, int attributeid);
     }
 }
