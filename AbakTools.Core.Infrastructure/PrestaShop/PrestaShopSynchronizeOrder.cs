@@ -205,7 +205,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
         private void SynchronizeOrderRow(OrderEntity order, PsOrder psOrder, OrderRowEntity row)
         {
-            if(psOrder.associations.order_rows.All(x=>x.id != row.Id))
+            if (psOrder.associations.order_rows.All(x => x.id != row.Id))
             {
                 order.RemoveRow(row);
             }
@@ -213,15 +213,34 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
         private OrderRowEntity AddNewRow(OrderEntity order, PsOrderRow psRow)
         {
-            var product = productRepository.GetByWebId((int)psRow.product_id);
-            PrestaShopSynchronizeException.TrowIfNull(product, $"Product not found (WebId:{psRow.product_id})");
+            return AddNewRow(order, (int)psRow.product_id, psRow.product_quantity);
+        }
 
-            return order.AddRow(product, psRow.product_quantity, pricePolicy);
+        private OrderRowEntity AddNewRow(OrderEntity order, int productId, int quantity)
+        {
+            var product = productRepository.GetByWebId(productId);
+
+            if (product == null)
+            {
+                var psProduct = prestaShopClient.ProductFactory.Get(productId);
+
+                if (psProduct.associations.product_bundle.Count == 1)
+                {
+                    var pack = psProduct.associations.product_bundle.First();
+                    return AddNewRow(order, (int)pack.id, quantity * pack.quantity);
+                }
+            }
+
+            PrestaShopSynchronizeException.TrowIfNull(product, $"Product not found (WebId:{productId})");
+
+            return order.AddRow(product, quantity, pricePolicy);
         }
 
         private void UpdateRow(OrderRowEntity row, PsOrderRow psRow)
         {
             row.ChangeQuantity(psRow.product_quantity);
         }
+
+
     }
 }
