@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrestaSharp", "..\..\Presta
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{AB4A9800-23C4-412F-950E-4DE131F8A03D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enova.Api", "..\..\EnovaApiService\Enova.Api\Enova.Api.csproj", "{7253E90F-8EF0-413C-A1E6-5BF502C45A4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnovaApi", "..\..\EnovaApiService\EnovaApi\EnovaApi.csproj", "{27485FE6-ED6C-4682-8FB6-097C79A72A4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,20 +105,20 @@ Global
 		{31D800FB-E619-4AF2-8ED1-47869EA1EFE3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{31D800FB-E619-4AF2-8ED1-47869EA1EFE3}.Release|x64.ActiveCfg = Release|x64
 		{31D800FB-E619-4AF2-8ED1-47869EA1EFE3}.Release|x64.Build.0 = Release|x64
-		{7253E90F-8EF0-413C-A1E6-5BF502C45A4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7253E90F-8EF0-413C-A1E6-5BF502C45A4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7253E90F-8EF0-413C-A1E6-5BF502C45A4E}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7253E90F-8EF0-413C-A1E6-5BF502C45A4E}.Debug|x64.Build.0 = Debug|Any CPU
-		{7253E90F-8EF0-413C-A1E6-5BF502C45A4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7253E90F-8EF0-413C-A1E6-5BF502C45A4E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7253E90F-8EF0-413C-A1E6-5BF502C45A4E}.Release|x64.ActiveCfg = Release|Any CPU
-		{7253E90F-8EF0-413C-A1E6-5BF502C45A4E}.Release|x64.Build.0 = Release|Any CPU
+		{27485FE6-ED6C-4682-8FB6-097C79A72A4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27485FE6-ED6C-4682-8FB6-097C79A72A4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27485FE6-ED6C-4682-8FB6-097C79A72A4E}.Debug|x64.ActiveCfg = Debug|x64
+		{27485FE6-ED6C-4682-8FB6-097C79A72A4E}.Debug|x64.Build.0 = Debug|x64
+		{27485FE6-ED6C-4682-8FB6-097C79A72A4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27485FE6-ED6C-4682-8FB6-097C79A72A4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27485FE6-ED6C-4682-8FB6-097C79A72A4E}.Release|x64.ActiveCfg = Release|x64
+		{27485FE6-ED6C-4682-8FB6-097C79A72A4E}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7253E90F-8EF0-413C-A1E6-5BF502C45A4E} = {AB4A9800-23C4-412F-950E-4DE131F8A03D}
+		{27485FE6-ED6C-4682-8FB6-097C79A72A4E} = {AB4A9800-23C4-412F-950E-4DE131F8A03D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BAABD27-2EF5-4833-A128-198E670B309E}

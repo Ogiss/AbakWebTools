@@ -1,7 +1,7 @@
 ﻿using AbakTools.Core.Domain.Common;
 using AbakTools.Core.Domain.Enova.Product;
 using Enova.Api;
-using EnovaApiProduct = Enova.Api.Models.Product;
+using EnovaApiProduct = EnovaApi.Models.Product;
 using System;
 
 namespace AbakTools.Core.Infrastructure.Enova.Api
