@@ -105,24 +105,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                             prestaShopClient.SetLangValue(psProduct, x => x.description_short, Functions.GetPrestaShopDescriptionShort(product.DescriptionShort));
                             prestaShopClient.SetLangValue(psProduct, x => x.description, product.Description);
 
-                            foreach (var category in product.Categories)
-                            {
-                                if (category.WebId.HasValue && !category.IsDeleted && category.Synchronize != Framework.SynchronizeType.Deleted)
-                                {
-                                    try
-                                    {
-                                        var psCategory = prestaShopClient.CategoryFactory.Get(category.WebId.Value);
-                                        if (psCategory != null)
-                                        {
-                                            psProduct.associations.categories.Add(new Bukimedia.PrestaSharp.Entities.AuxEntities.category(psCategory.id.Value));
-                                        }
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        logger.LogError(ex.ToString());
-                                    }
-                                }
-                            }
+                            UpdateProductCategories(product, psProduct);
 
                             psProduct.active = (product.Active && !product.IsDeleted) ? 1 : 0;
                             psProduct.state = 1;
@@ -161,11 +144,35 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             }
         }
 
+        private void UpdateProductCategories(ProductEntity product, PsProduct psProduct)
+        {
+            psProduct.associations.categories.Clear();
+
+            foreach (var category in product.Categories)
+            {
+                if (category.IsWebPublished)
+                {
+                    try
+                    {
+                        var psCategory = prestaShopClient.CategoryFactory.Get(category.WebId.Value);
+                        if (psCategory != null)
+                        {
+                            psProduct.associations.categories.Add(new Bukimedia.PrestaSharp.Entities.AuxEntities.category(psCategory.id.Value));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex.ToString());
+                    }
+                }
+            }
+        }
+
         private void UpdateProductAvailability(ProductEntity product, PsProduct psProduct)
         {
             var quantity = product.IsAvailable ? 1_000_000 : 0;
             var stock = prestaShopClient.GetStockForProduct((int)psProduct.id, 0);
-            if(stock != null)
+            if (stock != null)
             {
                 stock.quantity = quantity;
             }
@@ -243,7 +250,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
         private Bukimedia.PrestaSharp.Entities.stock_available SaveOrUpdateStockAvailable(Bukimedia.PrestaSharp.Entities.stock_available stock)
         {
-            if(stock.id.HasValue && stock.id > 0)
+            if (stock.id.HasValue && stock.id > 0)
             {
                 prestaShopClient.StockAvailableFactory.Update(stock);
             }

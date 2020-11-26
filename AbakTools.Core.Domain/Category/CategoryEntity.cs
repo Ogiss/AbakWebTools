@@ -23,5 +23,6 @@ namespace AbakTools.Core.Domain.Category
         public virtual DateTime DateTimeStamp { get; set; }
 
         public virtual bool IsArchived => Synchronize == SynchronizeType.Deleted || IsDeleted;
+        public virtual bool IsWebPublished => !IsArchived && WebId.HasValue;
     }
 }

@@ -68,7 +68,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                         await prestaShopSynchronizeCustomer.DoWork(stoppingToken);
                     }
 
-                    await prestaShopSynchronizeOrder.DoWork(stoppingToken);
+                    //await prestaShopSynchronizeOrder.DoWork(stoppingToken);
 
                     await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
                 }

@@ -46,9 +46,9 @@ namespace AbakTools.Core.DataAccess.Mappings.Product
             References(x => x.Supplier, "Dostawca");
 
             HasManyToMany(x => x.Categories)
-                .Table("category_product")
-                .ParentKeyColumn("id_local_product")
-                .ChildKeyColumn("id_local_category");
+                .Table("CategoryProductView")
+                .ParentKeyColumn("ProductId")
+                .ChildKeyColumn("CategoryId");
 
             HasMany(x => x.Images)
                 .Inverse()
