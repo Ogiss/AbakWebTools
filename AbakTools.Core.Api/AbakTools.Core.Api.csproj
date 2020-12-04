@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
+    <UserSecretsId>8a36adf3-991e-4c66-87d8-27d4aafd2736</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +23,10 @@
     <ProjectReference Include="..\AbakTools.Core.Framework\AbakTools.Core.Framework.csproj" />
     <ProjectReference Include="..\AbakTools.Core.Infrastructure\AbakTools.Core.Infrastructure.csproj" />
     <ProjectReference Include="..\AbakTools.Core.Service\AbakTools.Core.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Logs\" />
   </ItemGroup>
 
 
