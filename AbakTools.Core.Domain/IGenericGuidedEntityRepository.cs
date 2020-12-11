@@ -1,7 +1,6 @@
 ﻿using AbakTools.Core.Framework;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace AbakTools.Core.Domain
 {
@@ -9,5 +8,6 @@ namespace AbakTools.Core.Domain
         where TEntity: IGuidedEntity
     {
         TEntity Get(Guid guid);
+        Task<TEntity> GetAsync(Guid guid);
     }
 }

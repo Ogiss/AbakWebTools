@@ -23,7 +23,7 @@ namespace AbakTools.Core.Infrastructure.Enova.Api
             _baseUrl = configuration["Enova:BaseUrl"];
         }
 
-        public async Task <T> GetValueAsync<T>(string resourceName, Guid? objectGuid, string associationName, Guid? associationGuid)
+        public async Task <T> GetValueAsync<T>(string resourceName, Guid? objectGuid = null, string associationName = null, Guid? associationGuid = null)
         {
             var uri = CreateUri(resourceName, objectGuid, associationName, associationGuid);
             var str = await _client.GetStringAsync(uri);

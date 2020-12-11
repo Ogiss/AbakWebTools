@@ -23,7 +23,7 @@ namespace AbakTools.Core.Domain.Order
         public virtual TransportType Transport { get; set; }
         public virtual DateTime? DeliveryDate { get; set; }
         public virtual string DeliveryTimeOfDay { get; set; }
-        public virtual int Term { get; set; }
+        public virtual int? Term { get; set; }
         public virtual Guid? InvoiceGuid { get; set; }
         public virtual string InvoiceNumber { get; set; }
         public virtual OrderStateEntity State { get; protected set; }

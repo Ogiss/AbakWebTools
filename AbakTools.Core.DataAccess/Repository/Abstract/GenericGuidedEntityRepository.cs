@@ -1,9 +1,9 @@
 ﻿using AbakTools.Core.Domain;
 using AbakTools.Core.Framework;
+using NHibernate.Linq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace AbakTools.Core.DataAccess.Repository
 {
@@ -17,6 +17,11 @@ namespace AbakTools.Core.DataAccess.Repository
         public TEntity Get(Guid guid)
         {
             return GetQueryBase().SingleOrDefault(x => x.Guid == guid);
+        }
+
+        public async Task<TEntity> GetAsync(Guid guid)
+        {
+            return await GetQueryBase().SingleOrDefaultAsync(x => x.Guid == guid);
         }
     }
 }

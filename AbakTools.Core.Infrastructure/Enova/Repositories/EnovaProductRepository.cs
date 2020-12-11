@@ -3,8 +3,9 @@ using AbakTools.Core.Domain.Enova.Product;
 using Enova.Api;
 using EnovaApiProduct = EnovaApi.Models.Product;
 using System;
+using AbakTools.Core.Infrastructure.Enova.Api;
 
-namespace AbakTools.Core.Infrastructure.Enova.Api
+namespace AbakTools.Core.Infrastructure.Enova.Repositories
 {
     class EnovaProductRepository : EnovaGenericEntityRepository<EnovaProduct>, IEnovaProductRepository
     {

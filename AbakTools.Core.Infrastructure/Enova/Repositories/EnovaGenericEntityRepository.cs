@@ -1,9 +1,10 @@
 ﻿using AbakTools.Core.Domain;
 using AbakTools.Core.Framework;
+using AbakTools.Core.Infrastructure.Enova.Api;
 using System;
 using System.Collections.Generic;
 
-namespace AbakTools.Core.Infrastructure.Enova.Api
+namespace AbakTools.Core.Infrastructure.Enova.Repositories
 {
     internal abstract class EnovaGenericEntityRepository<TEntity> : IGenericEntityRepository<TEntity>
         where TEntity : IEntity

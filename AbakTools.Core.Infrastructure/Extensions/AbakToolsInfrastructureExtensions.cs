@@ -1,8 +1,10 @@
-﻿using AbakTools.Core.Domain.Enova.Product;
+﻿using AbakTools.Core.Domain.Enova.Customer;
+using AbakTools.Core.Domain.Enova.Product;
 using AbakTools.Core.Domain.Policies;
 using AbakTools.Core.Framework.Cryptography;
 using AbakTools.Core.Infrastructure.Cryptography;
 using AbakTools.Core.Infrastructure.Enova.Api;
+using AbakTools.Core.Infrastructure.Enova.Repositories;
 using AbakTools.Core.Infrastructure.Policies;
 using AbakTools.Core.Infrastructure.PrestaShop;
 using AbakTools.Core.Infrastructure.PrestaShop.Repositories;
@@ -25,6 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             service.AddSingleton<IEnovaAPiClient, EnovaApiClient>();
             service.AddTransient<IEnovaProductRepository, EnovaProductRepository>();
+            service.AddTransient<IEnovaCustomerRepository, EnovaCustomerRepository>();
         }
 
         private static void RegisterPrestaShopComponent(IServiceCollection service)
