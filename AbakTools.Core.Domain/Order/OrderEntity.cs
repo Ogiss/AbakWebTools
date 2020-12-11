@@ -28,6 +28,7 @@ namespace AbakTools.Core.Domain.Order
         public virtual string InvoiceNumber { get; set; }
         public virtual OrderStateEntity State { get; protected set; }
         public virtual bool? UrgentOrder { get; set; }
+        public virtual OrderSourceType? OrderSource { get; protected set; }
         public virtual SynchronizeType Synchronize { get; set; }
 
         public virtual ISet<OrderRowEntity> Rows { get; set; } = new HashSet<OrderRowEntity>();
@@ -35,13 +36,14 @@ namespace AbakTools.Core.Domain.Order
 
         protected OrderEntity() { }
 
-        public static OrderEntity Create(CustomerEntity customer)
+        public static OrderEntity Create(CustomerEntity customer, OrderSourceType orderSource)
         {
             Guard.NotNull(customer, nameof(customer));
 
             return new OrderEntity
             {
-                Customer = customer
+                Customer = customer,
+                OrderSource = orderSource
             };
         }
 

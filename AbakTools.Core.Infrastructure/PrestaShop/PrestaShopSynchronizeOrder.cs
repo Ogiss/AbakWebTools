@@ -155,7 +155,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             var customer = customerRepository.GetByWebId((int)psOrder.id_customer);
             PrestaShopSynchronizeException.TrowIfNull(customer, $"Customer not found (WebId: {psOrder.id_customer})");
 
-            var order = OrderEntity.Create(customer);
+            var order = OrderEntity.Create(customer, OrderSourceType.WWW);
 
             order.InvoiceAddress = customer.GetMainAddress();
             order.DeliveryAddress = customer.GetDefaultDeliveryAddress();

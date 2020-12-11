@@ -29,6 +29,7 @@ namespace AbakTools.Core.DataAccess.Mappings.Order
             Map(x => x.InvoiceNumber, "FakturaNumer");
             Map(x => x.Synchronize, "Synchronizacja").CustomType<SynchronizeType>();
             Map(x => x.UrgentOrder, "Pilne");
+            Map(x => x.OrderSource, "ZrodloKod");
 
             References(x => x.Customer, "Kontrahent");
             References(x => x.DeliveryAddress, "AdresWysylki");
