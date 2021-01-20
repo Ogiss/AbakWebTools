@@ -1,0 +1,6 @@
+@import "mixins";
+
+$bg-color: #fdfdfd;
+$font-color: #72767b;
+
+@include coloredSidebar($bg-color, $font-color);

@@ -1,0 +1,41 @@
+/* tree view */
+.jstree-default {
+  .jstree-node, .jstree-icon {
+    background-image: url("../images/32px.png");
+  }
+
+  .jstree-node {
+    background-position: -292px -4px;
+    background-repeat: repeat-y;
+  }
+
+  > .jstree-container-ul .jstree-loading > .jstree-ocl {
+    background: url("../images/throbber.gif") center center no-repeat;
+  }
+}
+
+.custom-tree {
+  &.jstree-default .jstree-checkbox {
+    background-image: none;
+    font-style: normal;
+
+    &:before {
+      font-family: FontAwesome;
+      font-size: 18px;
+      content: '\f096';
+    }
+
+    &.jstree-undetermined:before {
+      content: '\f0c8';
+      color: #ccc;
+    }
+  }
+
+  &.jstree-default.jstree-checkbox-selection .jstree-clicked > .jstree-checkbox,
+  &.jstree-default .jstree-checked > .jstree-checkbox {
+    &:before {
+      content: '\f14a';
+      color: $success;
+    }
+  }
+}

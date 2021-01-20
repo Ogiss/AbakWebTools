@@ -1,0 +1,118 @@
+/************************
+ * APP: PROJECT LIST
+ ************************/
+
+ .project-item {
+  .card-body {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .card-title {
+    a {
+      color: $card-cap-color;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .badge-pending {
+    background-color: #e9edf1;
+    border: 1px solid #ced7df;
+    color: #8b97a6;
+  }
+
+  .info {
+    margin-bottom: 25px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .title,
+    .value {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .title {
+      color: $text-muted;
+      font-size: 12px;
+    }
+
+    .value {
+      font-size: 13px;
+    }
+
+    .leader-picture {
+      border-radius: 50%;
+      width: 30px;
+      margin-right: 8px;
+      margin-top: 2px;
+    }
+  }
+
+  .progress-chart {
+    margin-bottom: 3px;
+
+    .percent {
+      font-size: 18px;
+      line-height: 110px;
+      color: $text-muted;
+    }
+  }
+  
+  .task {
+    text-align: center;
+
+    .task-progress {
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: $text-muted;
+    }
+  }
+
+  .card-footer {
+    background-color: #fff;
+    border-top: 0;
+
+    .controls {
+      a {
+        margin-right: 15px;
+        font-size: 13px;
+        color: $text-muted;
+  
+        &:hover,
+        &:focus {
+          text-decoration: underline;
+  
+          i {
+            text-decoration: none;
+          }
+        }
+  
+        i {
+          margin-right: 5px;
+          font-size: 14px;
+          color: $primary;
+        }
+      }
+    }
+  }
+
+  @include max-screen($break-xsmall) {
+    .controls {
+      a {
+        display: block;
+        margin-bottom: 10px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+ }

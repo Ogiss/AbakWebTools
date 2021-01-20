@@ -1,0 +1,44 @@
+.map {
+  .zoomButton {
+    position: absolute;
+    left: 10px;
+    background: #fff;
+    width: 20px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    text-align: center;
+    line-height: 20px;
+
+    &:hover {
+      background: darken(#fff, 3%);
+    }
+  }
+
+  .zoomIn {
+    top: 90px;
+  }
+
+  .zoomReset {
+    top: 113px;
+  }
+
+  .zoomOut {
+    top: 135px;
+  }
+}
+
+.mapTooltip {
+  position: absolute;
+  padding: 10px;
+  z-index: 1000;
+  max-width: 200px;
+  display: none;
+  background-color : #f3f3f3;
+  border: 1px solid #fff;
+  color: #555;
+  opacity: .9;
+
+  span {
+    font-weight: 700;
+  }
+}

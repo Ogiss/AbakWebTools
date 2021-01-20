@@ -1,0 +1,27 @@
+﻿<div id="sidebar-nav" class="sidebar">
+    <nav>
+        <ul class="nav" id="sidebar-nav-menu">
+            <li><a href="/dashboard" class=""><i class="ti-dashboard"></i> <span class="title">Dashboard</span></a></li>
+            <li class="panel">
+                <a href="" @onclick="ToggleFilesMenu" @onclick:preventDefault>
+                    <i class="ti-files"></i> <span class="title">Kartoteki</span> <i class="icon-submenu ti-angle-left"></i>
+                </a>
+                <div class="collapse @filesShowClass">
+                    <ul class="submenu">
+                        <li><a href="/categorymanagement" class="">Kategorie</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+        <button type="button" class="btn-toggle-minified" title="Toggle Minified Menu"><i class="ti-arrows-horizontal"></i></button>
+    </nav>
+</div>
+
+@code{
+    private string filesShowClass = "";
+
+    private void ToggleFilesMenu()
+    {
+        filesShowClass = filesShowClass == "" ? "show" : "";
+    }
+}

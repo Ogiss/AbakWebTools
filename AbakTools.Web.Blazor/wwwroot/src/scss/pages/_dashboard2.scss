@@ -1,0 +1,165 @@
+/********************
+ * PAGE: DASHBOARD 2
+ ********************/
+
+ // insight list
+.list-insights {
+  > li {
+    padding: 25px 0;
+    border-bottom: 1px solid $list-separator-color;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .media-left {
+    padding-right: 15px;
+  }
+
+  i {
+    @include border-radius(50%);
+
+    display: block;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 18px;
+    background-color: $dark;
+    color: #fff;
+  }
+
+  p {
+    margin-bottom: 0;
+    font-size: 18px;
+  }
+
+  a {
+    font-size: 14px;
+  }
+}
+
+.list-referrals {
+  > li {
+    margin-bottom: 35px;
+    font-size: 13px;
+  }
+
+  .value {
+    font-size: 20px;
+    margin-right: 10px;
+  }
+}
+
+// charts on the dashboard
+#traffic-sources-chart,
+#sales-performance-chart {
+  .legendLayer {
+    fill: transparent;
+  }
+}
+
+.list-referrals {
+  > li {
+    margin-bottom: 35px;
+    font-size: 13px;
+
+    p {
+      margin-bottom: 10px;
+    }
+  }
+
+  .value {
+    font-size: 20px;
+    margin-right: 10px;
+  }
+}
+
+// top products table
+.top-products {
+  thead {
+    display: none;
+  }
+
+  tbody {
+    font-size: 18px;
+
+    > tr > td {
+      padding-top: 30px;
+      padding-bottom: 30px;
+      vertical-align: middle;
+    }
+
+    > tr:first-child > td {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    > tr:last-child > td {
+      padding-bottom: 0;
+    }
+  }
+
+  .product-logo {
+    float: left;
+  }
+
+  .product-name {
+    padding-left: 65px;
+    margin: 0;
+  }
+
+  .product-version {
+    display: block;
+    font-size: 13px;
+    color: $text-muted;
+  }
+
+  .icon {
+    margin-right: 10px;
+    color: $text-muted;
+  }
+}
+
+// project list
+.project-list {
+  .progress {
+    margin-bottom: 0;
+  }
+
+  .progress-bar {
+    font-size: 10px;
+  }
+
+  > tbody > tr > td {
+    padding: 12px 8px;
+
+    .avatar {
+      width: 22px;
+      border: 1px solid #CCC;
+    }
+
+    &.leader {
+      a {
+        font-size: 13px;
+        color: $body-color;
+
+        &:hover,
+        &:focus {
+          span {
+            text-decoration: underline;
+          }
+
+          img {
+            text-decoration: none;
+          }
+        }
+      }
+      
+      img:hover + a {
+        text-decoration: underline;
+      }
+    }
+  }
+}

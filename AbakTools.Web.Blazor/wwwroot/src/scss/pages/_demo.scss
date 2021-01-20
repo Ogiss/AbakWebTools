@@ -1,0 +1,91 @@
+/* buttons demo */
+.demo-button {
+  .btn,
+  button {
+    margin-bottom: 5px;
+  }
+}
+
+/* social buttons demo */
+.social-button-class {
+  > li {
+    padding: 11px 0;
+
+    .social-hex {
+      float: right;
+    }
+  }
+}
+
+/* icons demo */
+.demo-icons {
+  li {
+    margin-bottom: 50px;
+    text-align: center;
+  }
+
+  [class^="ti"], 
+  .fa {
+    font-size: 28px;
+  }
+
+  .cssclass {
+    display: block;
+    margin-top: 5px;
+    margin-left: 5px;
+  }
+}
+
+/* layout demo */
+.demo-layout {
+  .layout-item {
+    text-align: center;
+    margin-bottom: 30px;
+
+    > a {
+      display: block;
+      position: relative;
+    }
+  }
+
+  .layout-active {
+    width: 50px;
+    height: 50px;
+    line-height: 58px;
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    margin-top: -25px;
+    margin-right: -25px;
+    background-color: $success;
+    border-radius: 50%;
+
+    i {
+      font-size: 28px;
+      color: #fff;
+    }
+  }
+}
+
+/* grid demo */
+.show-grid {
+  margin: 15px 0;
+
+  [class^=col] {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #eee;
+    background-color: rgba(208,208,208,.15);
+    border: 1px solid #ddd;
+    border: 1px solid rgba(130,130,130,.2);
+  }
+}
+
+.flex-vertical-demo {
+  height: 10rem;
+  background-color: #fafafa;
+
+  .row {
+    height: 100%;
+  }
+}

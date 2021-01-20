@@ -1,0 +1,10 @@
+﻿@model AbakTools.Web.Models.Shared.PageContentHeaderModel
+<div class="content-heading">
+    <div class="heading-left">
+        <h1 class="page-title">@Model.PageTitle</h1>
+        @if (!string.IsNullOrEmpty(Model.PageSubtitle))
+        {
+<p class="page-subtitle">@Model.PageSubtitle</p>}
+    </div>
+    <breadcrumbs />
+</div>

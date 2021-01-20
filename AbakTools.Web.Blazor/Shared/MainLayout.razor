@@ -1,0 +1,243 @@
+﻿@inherits LayoutComponentBase
+
+<div id="wrapper">
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand fixed-top">
+        <div class="navbar-brand d-none d-lg-block">
+            <a href="index.html"><img src="assets/images/logo-white.png" alt="Klorofil Pro Logo" class="img-fluid logo"></a>
+        </div>
+        <div class="container-fluid p-0">
+            <button id="tour-fullwidth" type="button" class="btn btn-default btn-toggle-fullwidth"><i class="ti-menu"></i></button>
+            <form class="form-inline search-form mr-auto d-none d-sm-block">
+                <div class="input-group">
+                    <input type="text" value="" class="form-control" placeholder="Search dashboard...">
+                    <div class="input-group-append">
+                        <button type="button" class="btn"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+            <div id="navbar-menu">
+                <ul class="nav navbar-nav align-items-center">
+                    <li class="nav-item">
+                        <a href="#" class="dropdown-toggle btn-toggle-rightsidebar">
+                            <i class="ti-layout-sidebar-right"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="dropdown-toggle icon-menu" data-toggle="dropdown">
+                            <i class="ti-bell"></i>
+                            <span class="badge bg-danger">5</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right notifications">
+                            <li class="dropdown-item">You have 5 new notifications</li>
+                            <li class="dropdown-item">
+                                <a href="#" class="notification-item">
+                                    <i class="fa fa-hdd-o custom-bg-red"></i>
+                                    <p><span class="text">System space is almost full</span> <span class="timestamp">11 minutes ago</span></p>
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a href="#" class="notification-item">
+                                    <i class="fa fa-tasks custom-bg-yellow"></i>
+                                    <p><span class="text">You have 9 unfinished tasks</span> <span class="timestamp">20 minutes ago</span></p>
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a href="#" class="notification-item">
+                                    <i class="fa fa-book custom-bg-green2"></i>
+                                    <p><span class="text">Monthly report is available</span> <span class="timestamp">1 hour ago</span></p>
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a href="#" class="notification-item">
+                                    <i class="fa fa-bullhorn custom-bg-purple"></i>
+                                    <p><span class="text">Weekly meeting in 1 hour</span> <span class="timestamp">2 hours ago</span></p>
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a href="#" class="notification-item">
+                                    <i class="fa fa-check custom-bg-green"></i>
+                                    <p><span class="text">Your request has been approved</span> <span class="timestamp">3 days ago</span></p>
+                                </a>
+                            </li>
+                            <li class="dropdown-item"><a href="#" class="more">See all notifications</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" id="tour-help" class="dropdown-toggle" data-toggle="dropdown"><i class="ti-help"></i> <span class="sr-only">Help</span></a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="#"><i class="ti-direction"></i> Basic Use</a></li>
+                            <li><a href="#"><i class="ti-server"></i> Working With Data</a></li>
+                            <li><a href="#"><i class="ti-lock"></i> Security</a></li>
+                            <li><a href="#"><i class="ti-light-bulb"></i> Troubleshooting</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="https://i.imgur.com/M701HZb.jpg" class="user-picture" alt="Avatar"> <span>Samuel</span></a>
+                        <ul class="dropdown-menu dropdown-menu-right logged-user-menu">
+                            <li><a href="#"><i class="ti-user"></i> <span>My Profile</span></a></li>
+                            <li><a href="appviews-inbox.html"><i class="ti-email"></i> <span>Message</span></a></li>
+                            <li><a href="#"><i class="ti-settings"></i> <span>Settings</span></a></li>
+                            <li><a href="page-lockscreen.html"><i class="ti-power-off"></i> <span>Logout</span></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- END NAVBAR -->
+    <!-- LEFT SIDEBAR -->
+    <NavMenu></NavMenu>
+    <!-- END LEFT SIDEBAR -->
+    <!-- MAIN -->
+    <div class="main">
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+
+            <div class="content-heading">
+                <div class="heading-left">
+                    <h1 class="page-title">Blank Page</h1>
+                    <p class="page-subtitle">Create your new page based on this starter page.</p>
+                </div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Parent</a></li>
+                        <li class="breadcrumb-item active">Current</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="container-fluid">
+                @Body
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+        <!-- RIGHT SIDEBAR -->
+        <div id="sidebar-right" class="right-sidebar">
+            <div class="sidebar-widget">
+                <h4 class="widget-heading"><i class="fa fa-calendar"></i> TODAY</h4>
+                <p class="date">Wednesday, 22 December</p>
+
+                <div class="row mt-4">
+                    <div class="col-4">
+                        <a href="#">
+                            <div class="icon-transparent-area custom-color-blue first">
+                                <i class="fa fa-tasks"></i> <span>Tasks</span>
+                                <span class="badge">5</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-4">
+                        <a href="#">
+                            <div class="icon-transparent-area custom-color-green">
+                                <i class="fa fa-envelope"></i> <span>Mail</span>
+                                <span class="badge">12</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-4">
+                        <a href="#">
+                            <div class="icon-transparent-area custom-color-orange last">
+                                <i class="fa fa-user-plus"></i> <span>Users</span>
+                                <span class="badge">24</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-widget">
+                <div class="widget-header">
+                    <h4 class="widget-heading">YOUR APPS</h4>
+                    <a href="#" class="show-all">Show all</a>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <a href="#" class="icon-app" title="Dropbox" data-toggle="tooltip" data-placement="top">
+                            <i class="fa fa-dropbox dropbox-color"></i>
+                        </a>
+                    </div>
+                    <div class="col-3">
+                        <a href="#" class="icon-app" title="WordPress" data-toggle="tooltip" data-placement="top">
+                            <i class="fa fa-wordpress wordpress-color"></i>
+                        </a>
+                    </div>
+                    <div class="col-3">
+                        <a href="#" class="icon-app" title="Drupal" data-toggle="tooltip" data-placement="top">
+                            <i class="fa fa-drupal drupal-color"></i>
+                        </a>
+                    </div>
+                    <div class="col-3">
+                        <a href="#" class="icon-app" title="Github" data-toggle="tooltip" data-placement="top">
+                            <i class="fa fa-github github-color"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-widget">
+                <div class="widget-header">
+                    <h4 class="widget-heading">MY PROJECTS</h4>
+                    <a href="#" class="show-all">Show all</a>
+                </div>
+                <ul class="list-unstyled list-project-progress">
+                    <li>
+                        <a href="#" class="project-name">Project XY</a>
+                        <div class="progress progress-transparent custom-color-orange">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100" style="width:67%;"></div>
+                        </div>
+                        <span class="percentage">67%</span>
+                    </li>
+                    <li>
+                        <a href="#" class="project-name">Growth Campaign</a>
+                        <div class="progress progress-transparent custom-color-blue">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="23" aria-valuemin="0" aria-valuemax="100" style="width:23%"></div>
+                        </div>
+                        <span class="percentage">23%</span>
+                    </li>
+                    <li>
+                        <a href="#" class="project-name">Website Redesign</a>
+                        <div class="progress progress-transparent custom-color-green">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="87" aria-valuemin="0" aria-valuemax="100" style="width:87%"></div>
+                        </div>
+                        <span class="percentage">87%</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-widget">
+                <div class="widget-header">
+                    <h4 class="widget-heading">MY FILES</h4>
+                    <a href="#" class="show-all">Show all</a>
+                </div>
+                <ul class="list-unstyled list-justify list-file-simple">
+                    <li><a href="#"><i class="fa fa-file-word-o"></i>Proposal_draft.docx</a> <span>4 MB</span></li>
+                    <li><a href="#"><i class="fa fa-file-pdf-o"></i>Manual_Guide.pdf</a> <span>20 MB</span></li>
+                    <li><a href="#"><i class="fa fa-file-zip-o"></i>all-project-files.zip</a> <span>315 MB</span></li>
+                    <li><a href="#"><i class="fa fa-file-excel-o"></i>budget_estimate.xls</a> <span>1 MB</span></li>
+                </ul>
+            </div>
+
+            <p class="text-center"><a href="#" class="btn btn-primary btn-sm">More Widgets</a></p>
+        </div>
+        <!-- END RIGHT SIDEBAR -->
+
+    </div>
+    <!-- END MAIN -->
+
+    <div class="clearfix"></div>
+
+    <!-- footer -->
+    @*
+        <footer>
+            <div class="container-fluid">
+                <p class="copyright">&copy; 2020 <a href="https://www.themeineed.com" target="_blank">Theme I Need</a>. All Rights Reserved.</p>
+            </div>
+        </footer>
+    *@
+    <!-- end footer -->
+
+</div>

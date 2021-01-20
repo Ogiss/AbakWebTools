@@ -1,0 +1,19 @@
+.breadcrumb {
+	i {
+		font-size: 15px;
+		margin-right: 3px;
+		color: $text-muted;
+
+		&:hover,
+		&:focus {
+			color: $link-color;
+		}
+  }
+  
+  > li > a {
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+}

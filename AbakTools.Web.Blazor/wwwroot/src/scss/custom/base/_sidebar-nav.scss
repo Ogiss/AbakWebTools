@@ -1,0 +1,331 @@
+/********************
+ * SIDEBAR NAVIGATION
+ ********************/
+
+.sidebar {
+  margin-top: 13px;
+  z-index: 9;
+  border-right: 1px solid #e6e6e6;
+
+  .nav li > a {
+    display: block;
+    font-size: 14px;
+    color: $sidebar-nav-color;
+
+    i:first-child {
+      margin-right: 10px;
+      font-size: 17px;
+    }
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+
+  .nav {
+    margin-bottom: 5px;
+    
+    > li.menu-group {
+      padding: 10px 15px;
+      margin-top: 20px;
+      color: $text-muted;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    > li {
+      display: block;
+      width: 100%;
+      position: relative;
+    }
+
+    > li > a {
+      padding: 12px 20px;
+      border-left: 5px solid transparent;
+      background-color: transparent;
+
+      &:hover,
+      &.active {
+        background-color: darken($sidebar-bg-color, 2%);
+
+        i.icon-submenu {
+          color: $text-muted;
+        }
+      }
+
+      &[aria-expanded="true"],
+      &.active {
+        border-left-color: $primary;
+        background-color: transparent;
+        color: $primary;
+      }
+
+      &.active:hover {
+        background-color: darken($sidebar-bg-color, 2%);
+      }
+    
+      &:focus {
+        background-color: transparent;
+      }
+    }
+
+    li > a {
+      &[data-toggle] {
+        
+        .icon-submenu {
+          font-size: 10px;
+          color: $text-muted;
+          display: inline-block;
+          float: right;
+          position: relative;
+          top: 5px;
+          line-height: 1.1;
+          transition: all .2s ease-out;
+
+          -moz-transform: rotate(0deg);
+          -ms-transform: rotate(0deg);
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+      }
+
+      &[aria-expanded=true] .icon-submenu {
+        -moz-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+        -webkit-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+        
+      }
+    }
+
+    /* override all styles, need this class as menu hook only */
+    li.panel {
+      margin: 0;
+      border: none;
+      background: none;
+    }
+  }
+
+  .nav {
+    span {
+      @include transition(all .3s ease-in-out);
+
+      position: relative;
+      top: -2px;
+    }
+
+    .label,
+    .badge {
+      top: 0;
+      float: right;
+      display: block;
+      padding: 5px 7px;
+    }
+
+    /* submenu */
+    .nav {
+      > li > a {
+        padding-left: 62px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+        &:focus,
+        &.active {
+          font-weight: 700;
+          border-left-color: transparent;
+          color: #72767b;
+        }
+
+        &.active a {
+          color: #fff;
+        }
+      }
+
+      // submenu level 2
+      .nav {
+        margin-bottom: 10px;
+        
+        > li > a {
+          padding-left: 80px;
+        }
+      }
+    }
+  }
+
+  .submenu {
+    padding-left: 0;
+
+    > li {
+      list-style-type: none;
+
+      > a {
+        display: block;
+        padding: 10px 10px 10px 55px;
+
+        &:hover,
+        &:focus {
+          background-color:darken($sidebar-bg-color, 2%);
+        }
+
+        &.active {
+          color: $primary;
+        }
+      }
+    }
+
+    .submenu {
+      > li > a {
+        padding-left: 65px;
+      }
+    }
+  }
+
+}
+
+.sidebar-minified {
+  .sidebar {
+    > .nav {
+      i:first-child {
+        vertical-align: middle;
+      }
+    }
+
+    .nav {
+      > .menu-group {
+        display: none;
+      }
+
+      li > a {
+        padding-left: 20px;
+        padding-right: 20px;
+
+        &[data-toggle] {
+          .icon-submenu {
+            -moz-transform: rotate(180deg);
+            -ms-transform: rotate(180deg);
+            -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+          }
+        }
+      }
+
+      > li > a > span,
+      > li > a > .icon-submenu {
+        display: none;
+      }
+
+      > li > a > span {
+        position: absolute;
+        min-width: 200px;
+        top: 0;
+        left: $minified-sidebar-width - 2px;
+        padding-left: 20px;
+        padding-top: 16px;
+        padding-bottom: 16px;
+        border-left: none;
+        box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, .1);
+      }
+
+      > li > a > .badge {
+        display: inline;
+        top: 3px;
+        left: 27px;
+        min-width: auto;
+        padding: 3px 5px;
+      }
+
+      li:hover {
+        > a,
+        > a > .title {
+          color: $primary;
+          background-color: darken($sidebar-bg-color, 1%);
+        }
+
+        > a > .title {
+          display: block;
+          padding: 12px 20px;
+          top: 1px;
+        }
+
+        > .collapse {
+          display: block;
+
+          li:hover {
+            > a {
+              background-color: darken($sidebar-bg-color, 3%);
+              color: $sidebar-nav-color;
+
+              &.active {
+                color: $primary;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .submenu {
+      > li > a {
+        padding-left: 30px;
+      }
+    }
+
+    .collapse {
+      position: absolute;
+      left: $minified-sidebar-width - 1px;
+      min-width: 200px;
+      height: auto !important;
+      background-color: $sidebar-bg-color;
+      border: 1px solid #eaeaea;
+      border-top: none;
+      border-left: none;
+      box-shadow: 2px 2px 2px -1px rgba(0, 0, 0, .1);
+
+      &.show {
+        display: none;
+      }
+
+      /* submenu */
+      .collapse {
+        position: absolute;
+        top: 0;
+        left: 199px;
+        background: $sidebar-bg-color;
+
+        .submenu > li > a {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+      }
+    }
+  }
+}
+
+.btn-toggle-minified {
+  display: block;
+  margin: 20px auto 30px auto;
+  background: darken($sidebar-bg-color, 3%);
+  text-align: center;
+  font-size: 16px;
+  color: $sidebar-nav-color;
+  outline: none;
+  border: 1px solid darken($sidebar-bg-color, 5%);
+  padding: 4px 12px;
+  border-radius: 10px;
+
+  &:hover,
+  &:focus {
+    background: darken($sidebar-bg-color, 4%);
+    box-shadow: none;
+    outline: 0;
+  }
+  
+  i {
+    position: relative;
+    top: 2px;
+  }
+
+}

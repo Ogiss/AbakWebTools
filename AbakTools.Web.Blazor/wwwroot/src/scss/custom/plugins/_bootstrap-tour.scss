@@ -1,0 +1,23 @@
+/* adjustment styles needed for Bootstrap Tour */
+.popover.tour {
+  &.fade.in {
+    opacity: 1 !important;
+  }
+
+  .arrow {
+    width: 11px;
+  }
+
+  &.right > .arrow {
+    left: -16px;
+  }
+
+  &.left > .arrow {
+    right: -16px;
+  }
+}
+
+/* fix collapse set by this plugin */
+.collapse {
+  display: block;
+}

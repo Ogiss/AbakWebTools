@@ -1,0 +1,92 @@
+/* tabs */
+.nav-tabs {
+  > li > a {
+    color: $text-muted;
+    
+    &:hover {
+      background-color: rgba($text-muted, .1);
+    }
+  }
+}
+
+.tab-content {
+  padding: 18px;
+  background-color: #fff;
+}
+
+.nav-pills + .tab-content {
+  margin-top: 5px;
+}
+
+.card-tab {
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    border-bottom: 0;
+
+    .card-title {
+      padding-left: 20px;
+    }
+
+    .nav-link {
+      border-radius: 0;
+    }
+  }
+
+  .card-body {
+    padding: 0;
+  }
+}
+
+.custom-tabs-line {
+  border-bottom: 1px solid $list-separator-color;
+
+  ul {
+    > li {
+      a {
+        color: $body-color;
+        font-weight: normal;
+        border-bottom: 1px solid transparent;
+
+        &:hover, &:focus {
+          color: $body-color;
+          background-color: transparent;
+        }
+
+        &:focus {
+          outline: none;
+        }
+
+        &.active {
+          color: $primary;
+          border-bottom: 2px solid $primary;
+        }
+      }
+    }
+
+    &.nav-pills a {
+      &:hover, &:focus {
+        color: #fff;
+        background-color: $primary;
+      }
+    }
+  }
+
+  &.left-aligned {
+    text-align: left;
+  }
+
+  &.right-aligned {
+    text-align: right;
+  }
+
+  .nav-justified {
+    display: table;
+
+    > li {
+      width: 50%;
+    }
+  }
+}

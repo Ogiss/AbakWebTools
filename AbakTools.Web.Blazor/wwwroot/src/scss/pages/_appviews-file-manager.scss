@@ -1,0 +1,169 @@
+/********************
+ * APP: FILE MANAGER
+ ********************/
+
+.file-tag {
+  &:before {
+    display: inline-block;
+    position: relative;
+    top: -1px;
+    margin-right: 5px;
+    content: '';
+    width: 8px;
+    height: 8px;
+    background-color: $body-color;
+    border-radius: 50%;
+  }
+}
+
+@each $color-name, $bg-color in $custom-colors {
+  .file-tag.tag-#{$color-name}:before {
+    background-color: $bg-color !important;
+  }
+}
+
+.file-item {
+  width: 100%;
+  margin: 0 15px 15px 0;
+  float: left;
+  border: 1px solid $card-border-color;
+  border-radius: 3px;
+  background-color: #fff;
+
+  .file-preview {
+    display: block;
+    height: 146px;
+    text-align: center;
+    padding: 50px 20px;
+    overflow: hidden;
+    background-color: #eaeaea;
+    color: darken(#eaeaea, 25%);
+
+    i {
+      background: darken(#eaeaea, 5%);
+      padding: 10px;
+      font-size: 24px;
+      border-radius: 10px;
+    }
+
+    .file-extension {
+      font-size: 32px;
+    }
+  }
+
+  .file-info {
+    padding: 12px 30px 15px 12px;
+    position: relative;
+    font-size: 14px;
+
+    span {
+      display: block;
+      margin: 3px 0;
+    }
+
+    .file-name {
+      color: $primary;
+    }
+
+    .file-date {
+      font-size: 13px;
+      color: $text-muted;
+    }
+
+    .toggle-dropdown {
+      padding: 0 10px;
+      color: $text-muted;
+      font-size: 20px;
+
+      i {
+        display: inline;
+      }
+    }
+
+    .dropdown {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      margin-top: -11px;
+    }
+  }
+}
+
+.file-preview {
+  &.pdf {
+    color: #fff;
+    background-color: #AB7DF6;
+
+    i {
+      background: #fff;
+      color: #AB7DF6;
+    }
+  }
+
+  &.xls {
+    color: #fff;
+    background-color: #86d227;
+
+    i {
+      background: #fff;
+      color: #86d227;
+    }
+  }
+
+  &.doc {
+    color: #fff;
+    background-color: #20B2AA;
+
+    i {
+      background: #fff;
+      color: #20B2AA;
+    }
+  }
+
+  &.audio {
+    color: #fff;
+    background-color: #7183a2;
+
+    i {
+      background: #fff;
+      color: #7183a2;
+    }
+  }
+
+  &.video {
+    color: #fff;
+    background-color: #F3BB23;
+
+    i {
+      background: #fff;
+      color: #F3BB23;
+    }
+  }
+
+  &.image {
+    padding: 0;
+  }
+}
+.storage-info {
+  margin-bottom: 30px;
+  
+  .title {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .progress {
+    margin-bottom: 5px;
+  }
+
+  .usage-text {
+    font-size: 14px;
+    color: $text-muted;
+  }
+}
+
+.list-files {
+  .file-item {
+    width: 250px;
+  }
+}

@@ -1,0 +1,36 @@
+.dropdown-menu {
+  @include box-shadow(3px 3px 3px -1px rgba(161, 172, 181, 0.3));
+  @include border-radius(2px);
+
+  margin-top: 0;
+  border-color: $border-panel-color;
+
+  a,
+  > li > a {
+    display: block;
+    padding: 5px 12px;
+    font-size: 13px;
+    color: $body-color;
+
+    &:hover,
+    &:focus {
+      &, i {
+        text-decoration: none;
+      }
+    }
+
+    i {
+      margin-right: 6px;
+      font-size: 14px;
+      color: #a0aeba;
+    }
+  }
+
+  > .disabled > a {
+    &,
+    &:focus,
+    &:hover {
+      color: $text-muted;
+    }
+  }
+}

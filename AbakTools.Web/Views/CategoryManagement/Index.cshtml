@@ -1,0 +1,36 @@
+﻿
+@section Styles
+{
+    <link href="~/dist/assets/plugins/jstree/style.min.css" rel="stylesheet" />
+}
+
+@section Scripts
+{
+    <script src="~/dist/assets/plugins/jstree/jstree.min.js" asp-append-version="true"></script>
+    <script src="~/dist/assets/js/pages/category-management.init.js" asp-append-version="true"></script>
+}
+
+<main-content page-title="Kategorie">
+    <div class="row">
+        <div class="col-md-6">
+            <!-- categories tree -->
+            <div class="card categories-tree">
+                <div class="card-body">
+                    <div id="categoriesTreeContent"></div>
+                </div>
+            </div>
+            <!-- end categories tree -->
+        </div>
+        <div class="col-md-6">
+
+        </div>
+    </div>
+</main-content>
+
+<script>
+    const AppView = {
+        actionLinks: {
+            getCategoriesTree: '@(Url.Action(nameof(Controllers.CategoryManagementController.GetCategoriesTree)))'
+        }
+    };
+</script>

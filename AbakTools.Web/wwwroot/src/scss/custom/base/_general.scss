@@ -1,0 +1,121 @@
+body {
+  ::-webkit-scrollbar {
+    position: absolute;
+    width: 12px;
+    margin-left: -10px;
+    -webkit-appearance: none;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-right: none;
+    border-left: none;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    height: 50px;
+    background-color: rgba(#A0AEBA, .2);
+    background-clip: content-box;
+    border-color: rgba(0, 0, 0, 0);
+    border-style: solid;
+    border-width: 1px 2px;
+    border-radius: 7px;
+  }
+}
+
+legend {
+  font-size: 1rem;
+  color: $body-color;
+}
+
+footer {
+  bottom: 0;
+  right: 0;
+  padding-top: 15px;
+  padding-bottom: 10px;
+  background-color: #F5F6F9;
+  color: $text-muted;
+
+  @include max-screen($break-small - 1px) {
+    position: relative;
+  }
+}
+
+.copyright {
+  margin-bottom: 0;
+  margin-right: 10px;
+  text-align: right;
+  font-size: 13px;
+
+  @include max-screen($break-small - 1px) {
+    width: 100%;
+    text-align: center;
+    position: relative !important;
+  }
+}
+
+.separator-linethrough {
+  position: relative;
+  margin: 30px 0;
+  text-align: center;
+
+  span {
+    display: inline-block;
+    padding: 0 10px;
+    position: inherit;
+    font-size: 18px;
+    background-color: #fff;
+    z-index: 9;
+  }
+
+  &:after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    content: '';
+    border-top: 1px solid #f0f0f0;
+    z-index: 0;
+  }
+}
+
+/* tag */
+.tag {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 5px 15px;
+  border: 1px solid $text-muted;
+  color: $text-muted;
+
+  &:hover,
+  &:focus {
+    color: #fff;
+    background-color: $text-muted;
+  }
+
+  @each $color-name, $color-value in $custom-colors {
+    &.tag-#{$color-name} {
+      border-color: $color-value;
+      color: $color-value;
+
+      &:hover,
+      &:focus {
+        color: #fff;
+        background-color: $color-value;
+      }
+    }
+  }
+}
+
+/* pace page progress */
+.pace {
+  .pace-progress {
+    background: rgba(#fff, .7) !important;
+    height: 4px !important;
+  }
+}
+
+.logo {
+    width: 200px;
+    margin-left: 10px;
+}

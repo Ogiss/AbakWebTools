@@ -1,0 +1,19 @@
+/* jquery vector map */
+.jqvmap-zoomin, 
+.jqvmap-zoomout {
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  line-height: 25px;
+  background: $primary;
+  border-radius: (50%);
+
+  &:hover,
+  &:focus {
+    background: darken($primary, 3%);
+  }
+}
+
+.jqvmap-zoomout {
+  top: 38px;
+}

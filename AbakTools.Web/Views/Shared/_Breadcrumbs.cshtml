@@ -1,0 +1,18 @@
+﻿@model IEnumerable<AbakTools.Web.Models.Shared.BreadcrumbsItemModel>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            @foreach(var item in Model)
+            {
+                <li class="breadcrumb-item" toggle-activity="item == Model.Last()">
+                    @if (string.IsNullOrEmpty(item.Url))
+                    {
+                        @item.Name
+                    }
+                    else
+                    {
+                        <a href="@item.Url">@item.Name</a>
+                    }
+                </li>
+            }
+        </ol>
+    </nav>

@@ -1,0 +1,322 @@
+// 
+// Custom Bootstrap Variables
+//
+
+$primary:       #00AAFF;
+$secondary:     #6b7980;
+$success:       #41B314;
+$info:          #5d7de7;
+$warning:       #f3d811;
+$danger:        #F9354C;
+$dark:          #353535;
+
+$theme-colors: ();
+$theme-colors: map-merge(
+  (
+    "primary":    $primary,
+    "secondary":  $secondary,
+    "success":    $success,
+    "info":       $info,
+    "warning":    $warning,
+    "danger":     $danger,
+    "light":      $light,
+    "dark":       $dark
+  ),
+  $theme-colors
+);
+
+$font-family-base: 'Roboto', sans-serif;
+$font-size-base: .9rem;
+$font-size-lg:                $font-size-base * 1.25;
+$font-size-sm:                $font-size-base * .875;
+
+$body-color: #5e6773;
+$text-muted: #a0aeba;
+$link-color: $primary;
+$link-hover-color: darken($link-color, 15%);
+$link-hover-decoration: none;
+$enable-shadows: true;
+
+// Commons
+$border-radius:           3px;
+$border-radius-lg:        4px;
+$border-radius-sm:        2px;
+
+// Buttons + Forms
+$input-btn-padding-y:         6px;
+$input-btn-padding-x:         22px;
+$input-btn-font-size:         $font-size-base;
+
+$input-btn-padding-y-sm:      5px;
+$input-btn-padding-x-sm:      18px;
+$input-btn-font-size-sm:      $font-size-sm;
+
+$input-btn-padding-y-lg:      10px;
+$input-btn-padding-x-lg:      28px;
+$input-btn-font-size-lg:      $font-size-lg;
+
+$btn-border-radius:           $border-radius;
+$btn-border-radius-lg:        $border-radius-lg;
+$btn-border-radius-sm:        $border-radius-sm;
+
+$input-btn-focus-box-shadow: none;
+$btn-transition:              color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+
+// Buttons
+$btn-padding-y:               $input-btn-padding-y;
+$btn-padding-x:               $input-btn-padding-x;
+$btn-font-size:               $input-btn-font-size;
+
+$btn-padding-y-sm:            $input-btn-padding-y-sm;
+$btn-padding-x-sm:            $input-btn-padding-x-sm;
+$btn-font-size-sm:            $input-btn-font-size-sm;
+
+$btn-padding-y-lg:            $input-btn-padding-y-lg;
+$btn-padding-x-lg:            $input-btn-padding-x-lg;
+
+$btn-font-size-lg:            $input-btn-font-size-lg;
+$btn-focus-box-shadow:        $input-btn-focus-box-shadow;
+$btn-active-box-shadow:       $input-btn-focus-box-shadow;
+
+// Cards
+$card-border-radius:                3px;
+$card-border-color:                 #d1d6e6;
+$card-cap-color:                    #717d84;
+$card-cap-bg:                       #f8f9fa;
+
+// Badges
+$badge-font-size: 85%;
+$badge-font-weight: 500;
+$badge-padding-y:                   .4em;
+$badge-padding-x:                   .8em;
+
+// Pagination
+$pagination-color: $link-color;
+$pagination-hover-color:            $link-hover-color;
+$pagination-active-bg: $primary;
+$pagination-active-border-color: $primary;
+$pagination-hover-bg: #f6f8f9;
+
+// Tooltips
+$tooltip-font-size: 13px;
+$tooltip-bg:                        #5a5a5a;
+$tooltip-opacity:                   1;
+$tooltip-arrow-color: $tooltip-bg;
+
+// Popovers
+$popover-body-color: $body-color;
+$popover-box-shadow: 3px 3px 3px -1px rgba(161,172,181,0.3);
+$popover-border-color: $card-border-color;
+$popover-header-bg: $card-cap-bg;
+
+// Progress bars
+$progress-border-radius: 2px;
+$progress-box-shadow: none;
+
+// Dropdowns
+$dropdown-link-color: $body-color;
+$dropdown-font-size: $font-size-sm * 1.1;
+$dropdown-link-active-color:        inherit;
+$dropdown-link-active-bg:           #f8f9fa;
+$dropdown-link-disabled-color:      $text-muted;
+$dropdown-item-padding-x:           .5rem;
+$dropdown-link-hover-bg:            #f5f5f5;
+
+// Navs
+$nav-tabs-border-color:          #e9eef2;
+
+// Navbar
+$navbar-light-color: $body-color;
+
+// Forms
+$input-font-size:                       $input-btn-font-size;
+$input-font-size-sm:                    $input-btn-font-size-sm;
+
+$input-box-shadow:                      none;
+$input-border-radius:                   $border-radius;
+$input-border-radius-lg:                $border-radius-lg;
+$input-border-radius-sm:                $border-radius-sm;
+$input-border-color:                    #e1e3ea;
+$input-bg:                              darken(#fff, 1%);
+$input-focus-box-shadow:                none;
+$input-focus-border-color:              darken($input-border-color, 8%);
+$input-focus-bg: #fff;
+
+$input-group-addon-bg:                  #f6f6f9;
+$input-group-addon-border-color:        $input-border-color;
+
+$custom-file-focus-border-color:    $input-focus-border-color;
+$custom-file-focus-box-shadow:      $input-focus-box-shadow;
+
+$custom-range-track-bg:             lighten($custom-control-indicator-border-color, 20%);
+$custom-range-track-border-radius:  3px;
+$custom-range-track-box-shadow:     none;
+$custom-range-thumb-bg:                      $custom-control-indicator-border-color;
+$custom-range-thumb-border-radius:           50%;
+$custom-range-thumb-box-shadow:              none;
+$custom-range-thumb-focus-box-shadow:        none;
+$custom-range-thumb-focus-box-shadow-width:  0;
+$custom-range-thumb-active-bg:               $custom-range-track-bg;
+$custom-range-thumb-disabled-bg:             $gray-500 !default;
+$custom-range-thumb-focus-box-shadow: $input-focus-box-shadow;
+$custom-range-thumb-active-bg: none;
+
+$custom-control-indicator-focus-box-shadow:     $input-focus-box-shadow;
+$custom-control-indicator-focus-border-color:   $input-focus-border-color;
+
+$custom-range-track-box-shadow: none;
+$custom-select-box-shadow:          none;
+$custom-select-focus-box-shadow:    none;
+$custom-file-box-shadow:            none;
+
+// Breadcrumbs
+$breadcrumb-divider-color: #a0aeba;
+
+// Tables
+$table-head-bg:               #f2f4f7;
+$table-head-color:            #a1a7af;
+$table-border-color: #e9eef2;
+$table-hover-bg: #f5f8fc;
+$table-accent-bg: #fafbfc;
+$table-active-bg: darken($table-accent-bg, 5%);
+$table-dark-bg: $dark;
+$table-dark-border-color: lighten($dark, 5%);
+$table-color: $body-color;
+
+
+// 
+// Theme Specific Variables
+//
+
+// path
+$assets_dir: "../../assets/";
+
+// custom colors
+$custom-colors: (
+  "blue": #0E9BE2,
+  "blue2": #4A90E2,
+  "blue3": #45AEEF,
+  "blue4": #85B5EA,
+  "green": #7CAC25,
+  "green2": #1DBB8E,
+  "green3": #5BD37E,
+  "orange": #FF4402,
+  "orange2": #F89B03,
+  "purple": #AB7DF6,
+  "yellow": #F3BB23,
+  "lightseagreen": #20B2AA,
+  "red": #ff4402
+);
+
+$color-indicator-green: #53c265;
+$color-indicator-yellow: #F3BB23;
+$color-indicator-red: #ff4402;
+
+$border-panel-color: #d1d6e6;
+$list-separator-color: #e9eef2;
+
+$sidebar-bg-color: #383838;
+$sidebar-nav-color: #929598;
+$sidebar-width: 240px;
+$minified-sidebar-width: 60px;
+
+// breakpoints
+$break-xsmall: 640px;
+$break-small: 768px;
+$break-medium: 992px;
+$break-1024: 1024px;
+$break-large: 1200px;
+$break-1280: 1280px;
+$break-xlarge: 1440px;
+
+// Social media brand colors
+$social-colors : (
+	z500px: #0099e5,
+	about-me: #00405d,
+	airbnb: #fd5c63,
+	alphabet: #ed1c24,
+	amazon: #ff9900,
+	american-express: #002663,
+	aol: #ff0b00,
+	behance: #1769ff,
+	bing: #ffb900,
+	bitbucket: #205081,
+	bitly: #ee6123,
+	blogger: #f57d00,
+	booking-com: #003580,
+	buffer: #168eea,
+	code-school: #616f67,
+	codecademy: #f65a5b,
+	creative-market: #8ba753,
+	delicious: #3399ff,
+	deviantart: #05cc47,
+	digg: #005be2,
+	disqus: #2e9fff,
+	django: #092e20,
+	dribbble: #ea4c89,
+	dropbox: #007ee5,
+	drupal: #0077c0,
+	elance: #0d69af,
+	envato: #82b541,
+	etsy: #d5641c,
+	facebook: #3b5998,
+	feedly: #2bb24c,
+	flattr: #f67c1a,
+	flickr: #0063dc,
+	flipboard: #e12828,
+	flixster: #2971b2,
+	foursquare: #0732a2,
+	github: #333333,
+	google: #4285f4,
+	google-plus: #dc4e41,
+	instagram: #3f729b,
+	kickstarter: #2bde73,
+	kik: #82bc23,
+	lastfm: #d51007,
+	line: #00c300,
+	linkedin: #0077b5,
+	mail-ru: #168de2,
+	mailchimp: #2c9ab7,
+	myspace: #000000,
+	netflix: #e50914,
+	ning: #75af42,
+	path: #ee3423,
+	patreon: #e6461a,
+	paypal: #003087,
+	photobucket: #0ea0db,
+	pinterest: #bd081c,
+	product-hunt: #da552f,
+	quora: #a82400,
+	rdio: #007dc3,
+	reddit: #ff4500,
+	rss: #f26522,
+	salesforce: #1798c1,
+	scribd: #1a7bba,
+	shopify: #96bf48,
+	skype: #00aff0,
+	slack: #6ecadc,
+	slideshare: #0077b5,
+	soundcloud: #ff8800,
+	spotify: #2ebd59,
+	squarespace: #222222,
+	stackoverflow: #fe7a15,
+	stripe: #00afe1,
+	stumbleupon: #eb4924,
+	telegram: #0088cc,
+	tumblr: #35465c,
+	twitch-tv: #6441a5,
+	twitter: #55acee,
+	vimeo: #162221,
+	vine: #00b488,
+	wechat: #7bb32e,
+	whatsapp: #43d854,
+	wordpress: #21759b,
+	yahoo: #410093,
+	youtube: #cd201f,
+	firefox: #e66000,
+	chrome: #fbbc05,
+	edge: #00aaff,
+	safari: #4165c8,
+	opera: #cc0f16
+);
+

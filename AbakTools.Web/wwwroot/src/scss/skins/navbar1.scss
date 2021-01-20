@@ -1,0 +1,8 @@
+@import "mixins";
+
+$color-from: #187fff;
+$color-to: #6badff;
+$control-color: #4c9bff;
+
+@include gradientNavbar($color-from, $color-to, $control-color);
+

@@ -1,0 +1,299 @@
+/********************
+ * PAGE: DASHBOARD 1
+ ********************/
+
+.square-legend {
+  ul > li {
+    margin-right: 5px;
+    font-size: 13px;
+
+    span {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 3px;
+      background-color: #ccc;
+    }
+  }
+}
+
+#age-chart {
+  margin-top: -32px;
+}
+
+/* online visitors */
+.online-visitors {
+  .count {
+    margin-bottom: 35px;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .number {
+    display: block;
+    margin: 0 auto;
+    font-size: 72px;
+    font-weight: 300;
+    line-height: 1;
+    color: #00AAFF;
+  }
+
+  .traffic-sources {
+    height: 26px;
+    margin-bottom: 0;
+
+    .progress-bar {
+      line-height: 26px;
+
+      &:first-child {
+        @include border-left-radius(3px);
+      }
+
+      &:last-child {
+        @include border-right-radius(3px);
+      }
+    }
+  }
+
+  .source {
+    color: #fff;
+    font-size: 12px;
+  }
+
+  .referral {
+    background-color: #14B1D0;
+  }
+
+  .organic {
+    background-color: #F8A00E;
+  }
+
+  .direct {
+    background-color: #396ECF;
+  }
+
+  .email {
+    background-color: #F14646;
+  }
+}
+
+#online-visitors-dashboard {
+  padding: 17% 0;
+}
+
+.square-legend {
+  ul > li {
+    margin-right: 5px;
+    font-size: 13px;
+
+    span {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 3px;
+      background-color: #ccc;
+    }
+  }
+}
+
+/* table chat support */
+.table-chat-support {
+  .popover-profile {
+    &:hover {
+      cursor: pointer;
+    }
+
+    i {
+      margin-right: 5px;
+    }
+  }
+
+  > tbody > tr > td {
+    font-size: 14px;
+
+    .fa-mobile {
+      font-size: 21px;
+    }
+
+    .tooltip-inner {
+      max-width: none;
+    }
+  }
+}
+
+.dataTables_scrollBody .table-chat-support {
+  td {
+    white-space: nowrap;
+  }
+}
+
+.online-visitor-data {
+  padding: 5px 15px;
+
+  .left {
+    float: left;
+    text-align: center;
+  }
+
+  .picture {
+    display: block;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 8px;
+  }
+
+  .guest-avatar {
+    border-radius:50%;
+    display: block;
+    line-height: 47px;
+    text-align: center;
+    font-size: 24px;
+    background-color: #eff4fa;
+  }
+
+  .right {
+    padding-left: 70px;
+  }
+
+  .data {
+    margin: 5px 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  .label-data {
+    display: block;
+    font-size: 13px;
+    color: $text-muted;
+  }
+}
+
+/* metric data for chart and chart controls */
+.chart-metric {
+  .title {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+
+    .data-legend  {
+      display: inline-block;
+      content: "";
+      width: 10px;
+      height: 10px;
+      margin-right: 3px;
+      border-radius: 50%;
+    }
+  }
+
+  .value {
+    margin-right: 5px;
+    font-weight: 300;
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  .change {
+    padding: 3px 10px;
+    position: relative;
+    top: -4px;
+    font-size: 14px;
+    border-radius: 3px;
+
+    i {
+      font-size: 12px;
+    }
+
+    &.up {
+      color: #178517;
+      background-color: rgba(#15CD15, .5);
+    }
+
+    &.down {
+      color: #C43E3A;
+      background-color: rgba(#FFBFBD, .5);
+    }
+  }
+}
+
+// customer review
+.customer-review {
+  .review-text {
+    margin-bottom: 30px;
+  }
+
+  .footer-info {
+    margin-bottom: 50px;
+
+    .title {
+      margin-bottom: 8px;
+      color: $text-muted;
+      font-size: 13px;
+    }
+
+    .picture {
+      width: 35px;
+      float: left;
+    }
+
+    .right {
+      padding-left: 40px;
+    }
+
+    span {
+      display: block;
+    }
+
+    .primary-info {
+      font-size: 14px;
+    }
+
+    .secondary-info {
+      font-size: 12px;
+      color: $text-muted;
+    }
+  }
+
+  .controls {
+    span {
+      margin-right: 15px;
+    }
+
+    i {
+      color: $primary;
+      margin-right: 3px;
+    }
+
+    a {
+      color: $body-color;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// last campaign
+#last-campaign-metric {
+  .widget-metric_2 {
+    margin: 41px 0;
+  }
+}
+
+/* gauge chart */
+.activity-gauge {
+  > div {
+    width: 230px;
+    height: 115px;
+    text-align: center;
+  }
+
+  tspan {
+    font-weight: 300;
+  }
+}
+
+

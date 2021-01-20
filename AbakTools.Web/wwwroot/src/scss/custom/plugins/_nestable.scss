@@ -1,0 +1,76 @@
+/* nestable */
+.dd-handle {
+  height: auto;
+  padding: 10px;
+  cursor: move;
+  background: #fff;
+  color: $body-color;
+  border-color: #e1e3ea;
+
+  &:hover {
+    color: $body-color;
+    background: #f5f8fa;
+  }
+}
+
+.dd-item {
+  > button {
+    margin: 11px 0;
+    color: #a0aeba;
+  }
+
+  .custom-handle {
+    @include border-right-radius(0);
+
+    position: absolute;
+    margin: 0;
+    left: 0;
+    top: 0;
+    cursor: move;
+
+    i {
+      font-size: 13px;
+      vertical-align: middle;
+      color: #a0aeba;
+    }
+  }
+
+  .custom-content {
+    @extend .dd-handle;
+
+    display: block;
+    margin: 5px 0;
+    padding-left: 40px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 3px;
+    box-sizing: border-box;
+    border: 1px solid #e1e3ea;
+    cursor: auto;
+
+    &:hover {
+      background: #fff;
+    }
+  }
+
+  &.custom-item > button {
+    margin-left: 35px;
+  }
+}
+
+
+.dd-dragel {
+  .custom-handle {
+    box-shadow: none;
+  }
+
+  .custom-content {
+    box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
+  }
+}
+
+.dd-empty,
+.dd-placeholder {
+  background-color: #f3f3f3;
+  border-color: #cecece;
+}

@@ -1,0 +1,9 @@
+﻿@model AbakTools.Web.Models.Shared.NavigationMenuModel
+<div id="sidebar-nav" class="sidebar">
+    <nav>
+        <ul class="nav" id="sidebar-nav-menu">
+            @Html.DisplayFor(x => x.MenuItems)
+        </ul>
+        <button type="button" class="btn-toggle-minified" title="Toggle Minified Menu"><i class="ti-arrows-horizontal"></i></button>
+    </nav>
+</div>

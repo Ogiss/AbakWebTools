@@ -1,0 +1,32 @@
+/* slick carousel */
+.slick-prev,
+.slick-next {
+  z-index: 9;
+
+  &:before {
+    font-family: "themify";
+    color: $text-muted;
+  }
+}
+
+.slick-prev {
+  left: 25px;
+
+  &:before {
+    content: "\e64a";
+  }
+}
+
+.slick-next {
+  right: 25px;
+
+  &:before {
+    content: "\e649";
+  }
+}
+
+.slick-slide {
+  &:focus {
+    outline: none;
+  }
+}

@@ -1,0 +1,17 @@
+/* datatables */
+div.dataTables_wrapper {
+  div.dataTables_filter {
+    float: right;
+  }
+
+  .thead-light {
+    .custom-range {
+      padding-bottom: .3rem;
+      
+      &::-webkit-slider-runnable-track {
+        background-color: #fff;
+      }
+    }
+  }
+}
+

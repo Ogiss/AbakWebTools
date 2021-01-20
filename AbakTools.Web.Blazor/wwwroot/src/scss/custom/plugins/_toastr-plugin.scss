@@ -1,0 +1,28 @@
+#toast-container > div {
+  box-shadow: $toast-box-shadow;
+  opacity: 1;
+
+  &:hover {
+    box-shadow: $toast-box-shadow;
+  }
+}
+
+.toastr-plugin {
+  background-color: #030303;
+}
+
+.toast-success {
+  background-color: $success;
+}
+
+.toast-error {
+  background-color: $danger;
+}
+
+.toast-info {
+  background-color: $info;
+}
+
+.toast-warning {
+  background-color: map-get($custom-colors, "orange2");
+}

@@ -1,0 +1,52 @@
+/* dropzone file upload */
+.dropzone {
+  padding: 20px 40px;
+  border: 1px solid #eaeff2;
+
+  .dz-message {
+    font-size: 18px;
+    text-align: center;
+    color: $text-muted;
+
+    &:before {
+      font-family: FontAwesome;
+      content: '\f0ee';
+      display: block;
+      font-size: 3em;
+      line-height: 1;
+    }
+  }
+
+  &.dz-started .dz-message {
+    display: none;
+  }
+
+  .dz-message {
+    display: block;
+  }
+
+  .dz-default.dz-message {
+    background: none;
+    height: auto;
+
+    span {
+      display: block;
+    }
+  }
+
+  .dz-fallback {
+    text-align: center;
+
+    input[type="file"] {
+      margin: 0 auto;
+      margin-bottom: 10px;
+    }
+  }
+
+  .dz-preview .dz-details {
+    width: 100px;
+    height: auto;
+    padding: 5px 0;
+    background: transparent;
+  }
+}

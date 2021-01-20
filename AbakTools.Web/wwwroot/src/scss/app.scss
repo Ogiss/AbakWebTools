@@ -1,0 +1,69 @@
+/*
+Template Name: Klorofil Pro - Bootstrap 4 Admin Dashboard Template
+Author: The Develovers
+Version: 2.0.0
+Website: https://themeineed.com/
+Contact: support@themeineed.com
+
+Main App Styles
+*/
+
+// Core files
+@import "./node_modules/bootstrap/scss/functions";
+@import "./node_modules/bootstrap/scss/variables";
+@import "variables";
+@import "./node_modules/bootstrap/scss/mixins.scss";
+@import "./mixins/responsive";
+@import "./mixins/elements-color-custom";
+@import "./mixins/css3";
+
+// Generals
+@import "./custom/base/general";
+@import "./custom/base/custom-colors";
+
+// Layout
+@import "./custom/base/layout";
+@import "./custom/base/navbar";
+@import "./custom/base/sidebar-nav";
+@import "./custom/base/sidebar-right";
+@import "./custom/base/typography";
+
+// Components
+@import "./custom/components/dropdown";
+@import "./custom/components/buttons";
+@import "./custom/components/card";
+@import "./custom/components/tab";
+@import "./custom/components/progress";
+@import "./custom/components/widgets";
+@import "./custom/components/forms";
+@import "./custom/components/breadcrumb";
+@import "./custom/components/icons";
+@import "./custom/components/tables";
+@import "./custom/components/navigation";
+
+// Font Icons
+@import "./icons/font-awesome";
+@import "./icons/themify-icons";
+
+// Vendor
+@import "./vendor/animate";
+@import "./vendor/pace-theme-minimal";
+
+// Plugins
+@import "./custom/plugins/jstree";
+@import "./custom/plugins/wizard";
+@import "./custom/plugins/jquery-ui";
+@import "./custom/plugins/nestable";
+@import "./custom/plugins/dropzone";
+@import "./custom/plugins/password";
+@import "./custom/plugins/datatables";
+@import "./custom/plugins/charts";
+@import "./custom/plugins/toastr-plugin";
+@import "./custom/plugins/jqvmap";
+@import "./custom/plugins/mapael";
+@import "./custom/plugins/slick-carousel";
+@import "./custom/plugins/bootstrap-tour";
+
+// Pages
+@import "./pages/category-management";
+

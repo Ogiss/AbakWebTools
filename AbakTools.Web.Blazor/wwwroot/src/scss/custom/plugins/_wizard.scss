@@ -1,0 +1,161 @@
+/* wizard */
+.wizard {
+  position: relative;
+  overflow: hidden;
+  background-color: #fff;
+
+  &:before,
+  &:after {
+    display: table;
+    line-height: 0;
+    content: "";
+  }
+
+  &:after {
+    clear: both;
+  } 
+
+  ul {
+    display: flex;
+    width: 4000px;
+    padding: 0;
+    margin: 0;
+    list-style: none outside none;
+
+    &.previous-disabled li.complete {
+      cursor: default;
+
+      &:hover {
+        color: #468847;
+        cursor: default;
+        background: #f3f4f5;
+
+        .chevron:before {
+          border-left-color: #f3f4f5;
+        }
+      }
+    }
+
+    li {
+      position: relative;
+      height: 47px;
+      padding: 0 20px 0 30px;
+      margin: 0;
+      font-size: 16px;
+      line-height: 47px;
+      color: darken(#fafafa, 30%);
+      cursor: default;
+      background: #fafafa;
+
+      &:first-child {
+        padding-left: 20px;
+      }
+
+      .chevron {
+        border: 24px solid transparent;
+        border-left: 14px solid #d4d4d4;
+        border-right: 0;
+        display: block;
+        position: absolute;
+        right: -14px;
+        top: 0;
+        z-index: 1;
+
+        &:before {
+          border: 24px solid transparent;
+          border-left: 14px solid #fafafa;
+          border-right: 0;
+          content: "";
+          display: block;
+          position: absolute;
+          right: 1px;
+          top: -24px;
+        }
+      }
+
+      &.complete {
+        color: #fff;
+        background: $success;
+
+        &:hover {
+          cursor: pointer;
+
+          .chevron:before {
+            border-left: 14px solid $success;
+          }
+        }
+
+        .chevron {
+          border-left-color: #fff;
+
+          &:before {
+            border-left: 14px solid $success;
+          }
+        }
+      }
+
+      &.active {
+        color: #fff;
+        background: $primary;
+
+        .chevron:before {
+          border-left: 14px solid $primary;
+        }
+      }
+
+      .badge {
+        position: relative;
+        top: -2px;
+        margin-right: 8px;
+        padding: 4px 7px;
+
+        &.badge-info {
+          background-color: darken($primary, 10%);
+        }
+
+        &.badge-success {
+          background-color: darken($success, 10%);
+        }
+      }
+    }
+  }
+
+  .steps-container {
+    background-color: #fafafa;
+  }
+
+  .step-content {
+    padding: 30px 20px;
+    float: left;
+    width: 100%;
+    
+    .step-pane {
+      display: none;
+    }
+
+    .active {
+      display: block;
+
+      .btn-group .active {
+        display: inline-block;
+      }
+    }
+  }
+
+  .actions {
+    float: left;
+    padding: 20px;
+  }
+
+  .parsley-errors-list li {
+    float: none;
+    padding: 0;
+    color: #F9354C;
+    font-size: 14px;
+    background: none;
+
+    &:first-child {
+      padding-left: 0;
+    }
+  }
+}

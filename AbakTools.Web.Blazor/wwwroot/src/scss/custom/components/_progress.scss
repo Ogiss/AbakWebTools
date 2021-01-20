@@ -1,0 +1,60 @@
+/* progress */
+@each $color-name, $color-value in $custom-colors {
+  @include progress-transparent-variant($color-name, $color-value);
+}
+
+/* semi circle progress */
+.progress-semicircle {
+  position: relative;
+  width: 100%;
+  text-align: center;
+
+  .bar-overflow {
+    position: relative;
+    overflow: hidden;
+    width: 280px; 
+    height: 140px;
+    margin-bottom: -80px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .bar {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border: 8px solid #EFF3F6;
+    border-bottom-color: #00AAFF;
+    border-right-color: #00AAFF;
+    
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+  .content {
+    .icon {
+      font-size: 32px;
+      color: #00AAFF;
+    }
+
+    .value {
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      font-size: 45px;
+      font-weight: 300;
+      line-height: 1;
+    }
+
+    .heading {
+      margin-top: 0;
+      margin-bottom: 5px;
+    }
+
+    .btn {
+      margin-top: 20px;
+    }
+  }
+}

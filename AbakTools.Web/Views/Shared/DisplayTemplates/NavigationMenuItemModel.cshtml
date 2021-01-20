@@ -1,0 +1,41 @@
+﻿@model AbakTools.Web.Models.Shared.NavigationMenuItemModel
+
+@{
+    var id = Guid.NewGuid().ToString();
+    var childrenShowClass = Model.IsActive && Model.HasChildren ? "show" : "";
+    var expanded = Model.IsActive ? "true" : "false";
+}
+
+@if (Model.HasChildren)
+{
+    <li class="panel">
+        <a href="#@id" data-toggle="collapse" data-parent="#sidebar-nav-menu" aria-expanded="false" aria-controls="@id" role="button" class="">
+            @if (Model.HasIcon)
+            {
+                <i class="@Model.IconClass"></i>
+            }
+            <span class="title">@Model.Name</span>
+            <i class="icon-submenu ti-angle-left"></i>
+        </a>
+        <div id="@id" class="collapse">
+            <ul class="submenu">
+                @foreach (var item in Model.ChildItems)
+                {
+                    <li><a asp-action="@item.Action" asp-controller="@item.Controller">@item.Name</a></li>
+                }
+            </ul>
+        </div>
+    </li>
+}
+else
+{
+    <li>
+        <a asp-action="@Model.Action" asp-controller="@Model.Controller" toggle-activity="Model.IsActive">
+            @if (Model.HasIcon)
+            {
+                <i class="@Model.IconClass"></i>
+            }
+            <span class="title">@Model.Name</span>
+        </a>
+    </li>
+}
