@@ -90,6 +90,10 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                         {
                             psCategory = InsertCategory(category);
                         }
+                        else
+                        {
+                            category.IsDeleted = true;
+                        }
                     }
                     else
                     {
