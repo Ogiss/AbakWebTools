@@ -13,6 +13,11 @@ namespace AbakTools.Core.DataAccess.Repository
         {
         }
 
+        public IReadOnlyCollection<ProductEntity> GetAllByEnovaGuid(Guid guid)
+        {
+            return GetQueryBase().Where(x => x.EnovaGuid == guid).ToArray();
+        }
+
         public IReadOnlyCollection<ProductEntity> GetAllReady()
         {
             return GetQueryBase().Where(x => x.IsReady == true).ToList();

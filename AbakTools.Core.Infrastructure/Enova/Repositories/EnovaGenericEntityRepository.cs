@@ -3,6 +3,7 @@ using AbakTools.Core.Framework;
 using AbakTools.Core.Infrastructure.Enova.Api;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AbakTools.Core.Infrastructure.Enova.Repositories
 {
@@ -38,12 +39,17 @@ namespace AbakTools.Core.Infrastructure.Enova.Repositories
             throw new NotImplementedException();
         }
 
-        public long GetDbts()
+        public async Task<long> GetDbtsAsync()
+        {
+            return await Api.GetDbtsAsync();
+        }
+
+        public void SaveOrUpdate(TEntity entity)
         {
             throw new NotImplementedException();
         }
 
-        public void SaveOrUpdate(TEntity entity)
+        public Task SaveOrUpdateAsync(TEntity entity)
         {
             throw new NotImplementedException();
         }

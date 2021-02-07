@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AbakTools.Core.DataAccess.Repository
 {
@@ -38,6 +39,11 @@ namespace AbakTools.Core.DataAccess.Repository
         public virtual void SaveOrUpdate(TEntity entity)
         {
             CurrentSession.SaveOrUpdate(entity);
+        }
+
+        public async Task SaveOrUpdateAsync(TEntity entity)
+        {
+            await CurrentSession.SaveOrUpdateAsync(entity);
         }
     }
 }

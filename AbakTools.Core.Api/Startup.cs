@@ -34,6 +34,7 @@ namespace AbakTools.Core.Api
             services.AddDataAccsessComponent();
             services.AddServiceComponent();
             services.AddInfrastructureComponent();
+            services.AddDomainComponent();
 
             services.AddControllers().AddJsonOptions(conf=> {
                 conf.JsonSerializerOptions.PropertyNameCaseInsensitive = true;

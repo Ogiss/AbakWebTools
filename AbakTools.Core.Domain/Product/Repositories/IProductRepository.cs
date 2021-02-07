@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AbakTools.Core.Domain.Product.Repositories
 {
@@ -6,5 +7,6 @@ namespace AbakTools.Core.Domain.Product.Repositories
     {
         IReadOnlyCollection<ProductEntity> GetAllReady();
         ProductEntity GetByWebId(int webId);
+        IReadOnlyCollection<ProductEntity> GetAllByEnovaGuid(Guid guid);
     }
 }

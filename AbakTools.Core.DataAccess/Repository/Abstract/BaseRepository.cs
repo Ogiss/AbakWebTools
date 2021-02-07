@@ -1,7 +1,9 @@
 ﻿using NHibernate;
+using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AbakTools.Core.DataAccess.Repository
 {
@@ -16,16 +18,16 @@ namespace AbakTools.Core.DataAccess.Repository
             _sessionManager = sessionManager;
         }
 
-        public long GetDbts()
-        {
-            return CurrentSession
-                .CreateSQLQuery("SELECT CONVERT(BIGINT, @@DBTS) DBTS")
-                .UniqueResult<long>();
-        }
-
         public void Flush()
         {
             CurrentSession?.Flush();
+        }
+
+        public async Task<long> GetDbtsAsync()
+        {
+            return await CurrentSession
+                .CreateSQLQuery("SELECT CONVERT(BIGINT, @@DBTS) DBTS")
+                .UniqueResultAsync<long>();
         }
     }
 }

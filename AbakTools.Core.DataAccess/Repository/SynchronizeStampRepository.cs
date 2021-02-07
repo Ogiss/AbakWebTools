@@ -1,8 +1,11 @@
 ﻿using AbakTools.Core.Domain.Synchronize;
 using System;
 using System.Collections.Generic;
+using NHibernate.Linq;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AbakTools.Core.DataAccess.Repository
 {
@@ -14,7 +17,12 @@ namespace AbakTools.Core.DataAccess.Repository
 
         public SynchronizeStampEntity Get(string code, SynchronizeDirectionType type)
         {
-            return GetQueryBase().SingleOrDefault(x => x.Code == code && x.Type == type);
+            return GetAsync(code, type).Result;
+        }
+
+        public async Task<SynchronizeStampEntity> GetAsync(string code, SynchronizeDirectionType type, CancellationToken cancellationToken = default)
+        {
+            return await GetQueryBase().SingleOrDefaultAsync(x => x.Code == code && x.Type == type);
         }
     }
 }

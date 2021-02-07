@@ -13,7 +13,7 @@ namespace AbakTools.Core.Domain.Product
     {
         public virtual int? WebId { get; set; }
         public virtual TaxEntity Tax { get; set; }
-        public virtual decimal Price { get; set; }
+        public virtual decimal Price { get; protected set; }
         public virtual string Code { get; set; }
         public virtual string SupplierCode { get; set; }
         public virtual bool Active { get; set; }
@@ -47,6 +47,11 @@ namespace AbakTools.Core.Domain.Product
         public virtual IEnumerable<ImageEntity> GetUndeletedImages()
         {
             return Images.Where(x => x.IsDeleted == false && x.Synchronize != SynchronizeType.Deleted);
+        }
+
+        public virtual void SetPrice(decimal price)
+        {
+            Price = price;
         }
     }
 }

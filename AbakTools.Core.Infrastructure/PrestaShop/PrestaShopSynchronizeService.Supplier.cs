@@ -19,7 +19,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             using (var uow = unitOfWorkProvider.CreateReadOnly())
             {
                 synchronizeStamp = synchronizeStampRepository.Get(SynchronizeCodes.Supplier, SynchronizeDirectionType.Export);
-                stampTo = supplierRepository.GetDbts();
+                stampTo = supplierRepository.GetDbtsAsync().Result;
             }
 
             stampFrom = synchronizeStamp?.Stamp ?? 0;

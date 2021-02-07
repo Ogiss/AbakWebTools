@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -25,10 +26,23 @@ namespace AbakTools.Core.Infrastructure.Enova.Api
 
         public async Task <T> GetValueAsync<T>(string resourceName, Guid? objectGuid = null, string associationName = null, Guid? associationGuid = null)
         {
-            var uri = CreateUri(resourceName, objectGuid, associationName, associationGuid);
-            var str = await _client.GetStringAsync(uri);
+            return await GetValueAsync<T>(CreateUri(resourceName, objectGuid, associationName, associationGuid));
+        }
 
+        public async Task<T> GetValueAsync<T>(string resource, string query)
+        {
+            return await GetValueAsync<T>(CreateUri(resource, query));
+        }
+
+        public async Task<T> GetValueAsync<T>(Uri uri)
+        {
+            var str = await _client.GetStringAsync(uri);
             return JsonConvert.DeserializeObject<T>(str);
+        }
+
+        public async Task<long> GetDbtsAsync()
+        {
+            return await GetValueAsync<long>("system", "getdbts");
         }
 
         public void Dispose()
@@ -69,5 +83,15 @@ namespace AbakTools.Core.Infrastructure.Enova.Api
             return new Uri(sb.ToString());
         }
 
+        private Uri CreateUri(string resource, string query)
+        {
+            Guard.NotEmpty(resource, nameof(resource));
+
+            var builder = new UriBuilder(_baseUrl);
+
+            builder.Path = Path.Combine("api", resource, query);
+
+            return builder.Uri;
+        }
     }
 }

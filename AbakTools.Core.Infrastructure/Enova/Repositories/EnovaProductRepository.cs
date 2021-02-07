@@ -4,6 +4,8 @@ using Enova.Api;
 using EnovaApiProduct = EnovaApi.Models.Product;
 using System;
 using AbakTools.Core.Infrastructure.Enova.Api;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AbakTools.Core.Infrastructure.Enova.Repositories
 {
@@ -20,6 +22,12 @@ namespace AbakTools.Core.Infrastructure.Enova.Repositories
                 productGuid,
                 EnovaApiProduct.ProductAssociationsNames.CustomerPrices,
                 customerGuid).Result;
+        }
+
+        public async Task<IEnumerable<EnovaApiProduct.Price>> GetModifiedPricesAsync(Guid definitionGuid, long stampFrom, long stampTo)
+        {
+            return await Api.GetValueAsync<IEnumerable<EnovaApiProduct.Price>>(
+                ResourcesNames.ProductsModifiedPrices, $"{definitionGuid}/{stampFrom}/{stampTo}");
         }
     }
 }

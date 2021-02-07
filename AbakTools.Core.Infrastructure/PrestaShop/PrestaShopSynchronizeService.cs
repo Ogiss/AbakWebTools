@@ -26,6 +26,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private readonly IPrestaShopSynchronizeCustomer prestaShopSynchronizeCustomer;
         private readonly IPrestaShopSynchronizeOrder prestaShopSynchronizeOrder;
 
+        private bool SynchronizationDisabled = false;
         private bool CustomerSynchronizeDisabled = false;
 
 
@@ -54,7 +55,9 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             prestaShopSynchronizeCustomer = _prestaShopSynchronizeCustomer;
             prestaShopSynchronizeOrder = _prestaShopSynchronizeOrder;
 
-            CustomerSynchronizeDisabled = bool.TryParse(configuration["PrestaShop:Synchronization:Customers:Disabled"], out bool b) ? b : false;
+            bool b;
+            SynchronizationDisabled = bool.TryParse(configuration["PrestaShop:Synchronization:Disabled"], out b) ? b : false;
+            CustomerSynchronizeDisabled = bool.TryParse(configuration["PrestaShop:Synchronization:Customers:Disabled"], out b) ? b : false;
         }
 
         public async Task DoWork(CancellationToken stoppingToken)
@@ -63,12 +66,15 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             {
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    if (!CustomerSynchronizeDisabled)
+                    if (!SynchronizationDisabled)
                     {
-                        await prestaShopSynchronizeCustomer.DoWork(stoppingToken);
-                    }
+                        if (!CustomerSynchronizeDisabled)
+                        {
+                            await prestaShopSynchronizeCustomer.DoWork(stoppingToken);
+                        }
 
-                    await prestaShopSynchronizeOrder.DoWork(stoppingToken);
+                        await prestaShopSynchronizeOrder.DoWork(stoppingToken);
+                    }
 
                     await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
                 }
@@ -76,10 +82,13 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                logger.LogDebug("Synchronize suppliers, categories andproducts");
-                SynchronizeSuppliers();
-                SynchronizeCategories();
-                SynchronizeProduct();
+                if (!SynchronizationDisabled)
+                {
+                    logger.LogDebug("Synchronize suppliers, categories and products");
+                    SynchronizeSuppliers();
+                    SynchronizeCategories();
+                    SynchronizeProduct();
+                }
 
                 await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
             }

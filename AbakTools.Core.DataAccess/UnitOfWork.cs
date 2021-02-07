@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace AbakTools.Core.DataAccess
 {
@@ -79,6 +80,19 @@ namespace AbakTools.Core.DataAccess
             if (transaction.IsActive)
             {
                 transaction.Commit();
+            }
+        }
+
+        public async Task CommitAsync()
+        {
+            if (readOnly)
+            {
+                throw new InvalidOperationException("Cannot commit a read-only unit of work.");
+            }
+
+            if (transaction.IsActive)
+            {
+                await transaction.CommitAsync();
             }
         }
 

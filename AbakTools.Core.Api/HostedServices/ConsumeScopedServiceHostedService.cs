@@ -1,4 +1,5 @@
-﻿using AbakTools.Core.Infrastructure.PrestaShop;
+﻿using AbakTools.Core.Infrastructure.Enova.Services;
+using AbakTools.Core.Infrastructure.PrestaShop;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -36,8 +37,12 @@ namespace AbakTools.Core.Api.HostedServices
             _logger.LogInformation(
                 "Consume Scoped Service Hosted Service is working.");
 
+            // TO DO: Add possibylity dynamicaly adding new servides by DI
             using (var scope = Services.CreateScope())
             {
+                var enovaSynchronizeService = scope.ServiceProvider.GetRequiredService<IEnovaSynchronizeService>();
+                await enovaSynchronizeService.DoWork(scope, stoppingToken);
+
                 var scopedProcessingService =
                     scope.ServiceProvider
                         .GetRequiredService<IPrestaShopSynchronizeService>();

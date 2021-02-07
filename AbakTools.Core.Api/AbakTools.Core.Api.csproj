@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
     <UserSecretsId>8a36adf3-991e-4c66-87d8-27d4aafd2736</UserSecretsId>
+    <Configurations>Debug;Release;Production</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,5 +30,11 @@
     <Folder Include="Logs\" />
   </ItemGroup>
 
+	<ItemGroup Condition="'$(Configuration)' == 'Production'">
+		<Content Update="appsettings.Development.json">
+			<CopyToOutputDirectory>false</CopyToOutputDirectory>
+			<CopyToPublishDirectory>false</CopyToPublishDirectory>
+		</Content>
+    </ItemGroup>
 
 </Project>

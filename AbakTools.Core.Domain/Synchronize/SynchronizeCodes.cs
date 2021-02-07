@@ -7,5 +7,6 @@
         public const string Product = "PRODUCT";
         public const string Customer = "CUSTOMER";
         public const string Order = "ORDER";
+        public const string Price = "PRICE";
     }
 }
