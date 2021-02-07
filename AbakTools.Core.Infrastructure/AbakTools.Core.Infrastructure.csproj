@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -15,9 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\EnovaApiService\EnovaApi\EnovaApi.csproj" />
-    <ProjectReference Include="..\..\..\PrestaShop\PrestaSharp\PrestaSharp\PrestaSharp.csproj" />
+    <ProjectReference Include="..\..\EnovaApiService\EnovaApi\EnovaApi.csproj" />
     <ProjectReference Include="..\AbakTools.Core.Domain\AbakTools.Core.Domain.csproj" />
+    <ProjectReference Include="..\PrestaSharp\PrestaSharp.csproj" />
   </ItemGroup>
 
   <ItemGroup>
