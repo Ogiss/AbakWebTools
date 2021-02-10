@@ -1,5 +1,4 @@
-﻿using AbakTools.Core.Domain.Enova.Customer;
-using AutoMapper;
+﻿using AutoMapper;
 using EnovaApi.Models.Customer;
 
 namespace AbakTools.Core.Infrastructure
@@ -8,7 +7,6 @@ namespace AbakTools.Core.Infrastructure
     {
         public AutoMapperProfile()
         {
-            CreateMap<Customer, EnovaCustomer>();
         }
     }
 }

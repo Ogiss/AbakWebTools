@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace AbakTools.Core.Infrastructure.Enova.Repositories
 {
-    internal abstract class EnovaGenericEntityRepository<TEntity> : IGenericEntityRepository<TEntity>
-        where TEntity : IEntity
+    internal abstract class EnovaGenericEntityRepository<TEntity>
+        where TEntity : EnovaApi.Models.Common.Entity
     {
         protected IEnovaAPiClient Api { get; private set; }
 

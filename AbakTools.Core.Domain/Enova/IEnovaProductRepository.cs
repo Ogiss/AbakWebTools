@@ -6,7 +6,7 @@ using ProductPriceInfo = AbakTools.Core.Domain.Common.ProductPriceInfo;
 
 namespace AbakTools.Core.Domain.Enova.Product
 {
-    public interface IEnovaProductRepository : IGenericEntityRepository<EnovaProduct>
+    public interface IEnovaProductRepository
     {
         ProductPriceInfo GetPriceForCustomer(Guid productGuid, Guid customerGuid);
         Task<IEnumerable<Price>> GetModifiedPricesAsync(Guid definitionGuid, long stampFrom, long stampTo);

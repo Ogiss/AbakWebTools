@@ -1,12 +1,13 @@
 ﻿using AbakTools.Core.Domain;
+using AbakTools.Core.Domain.Enova;
 using AbakTools.Core.Infrastructure.Enova.Api;
 using System;
 using System.Threading.Tasks;
 
 namespace AbakTools.Core.Infrastructure.Enova.Repositories
 {
-    internal abstract class EnovaGenericGuidedEntityRepository<TEntity> : EnovaGenericEntityRepository<TEntity>, IGenericGuidedEntityRepository<TEntity>
-        where TEntity : GuidedEntity
+    internal abstract class EnovaGenericGuidedEntityRepository<TEntity> : EnovaGenericEntityRepository<TEntity>, IEnovaGenericRepository<TEntity>
+        where TEntity : EnovaApi.Models.Common.GuidedEntity
     {
         protected EnovaGenericGuidedEntityRepository(IEnovaAPiClient enovaAPiClient) : base(enovaAPiClient)
         {

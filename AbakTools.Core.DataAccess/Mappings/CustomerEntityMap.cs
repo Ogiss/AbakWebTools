@@ -16,8 +16,8 @@ namespace AbakTools.Core.DataAccess.Mappings
             Table("Kontrahenci");
 
             Map(x => x.WebId, "PSID");
-            Map(x => x.Code, "Kod");
-            Map(x => x.Name, "Nazwa");
+            Map(x => x.Code, "Kod").Not.Nullable();
+            Map(x => x.Name, "Nazwa").Not.Nullable();
             Map(x => x.Nip, "Nip");
             Map(x => x.Email, "Email");
             Map(x => x.Active, "Aktywny");

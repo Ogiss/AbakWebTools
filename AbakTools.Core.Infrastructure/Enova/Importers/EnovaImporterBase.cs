@@ -18,6 +18,8 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
         private long _stamp;
         private long _dbts;
 
+        protected long StampFrom => _stamp;
+        protected long StampTo => _dbts;
         protected virtual string SynchronizeCode => GetType().Name;
         protected virtual SynchronizeDirectionType SynchronizeDirection => SynchronizeDirectionType.Unknown;
 
@@ -41,6 +43,7 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
 
                 if (entries.Any())
                 {
+
                     Parallel.ForEach(entries, GetParrallelOptions(), ProcessEntryCore);
                 }
 

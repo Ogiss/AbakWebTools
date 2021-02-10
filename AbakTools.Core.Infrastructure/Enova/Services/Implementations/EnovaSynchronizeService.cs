@@ -22,6 +22,7 @@ namespace AbakTools.Core.Infrastructure.Enova.Services.Implementations
                     _logger.LogDebug("Staring synctonize Enova");
 
                     await serviceScope.ServiceProvider.GetRequiredService<EnovaPricesImporter>().RunImport(serviceScope);
+                    await serviceScope.ServiceProvider.GetRequiredService<EnovaCustomersImporter>().RunImport(serviceScope);
 
                     await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
                 }

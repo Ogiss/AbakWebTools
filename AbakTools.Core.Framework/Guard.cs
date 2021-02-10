@@ -21,5 +21,13 @@ namespace AbakTools.Core.Framework
                 throw new ArgumentException($"Argumet {name} cann't be null or empty");
             }
         }
+
+        public static void NotEmpty(Guid value, string name)
+        {
+            if(value == Guid.Empty)
+            {
+                throw new ArgumentException($"Argumet {name} cann't be empty");
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using AbakTools.Core.Domain.Enova.Customer;
+﻿using AbakTools.Core.Domain.Enova;
 using AbakTools.Core.Domain.Enova.Product;
 using AbakTools.Core.Domain.Policies;
 using AbakTools.Core.Framework.Cryptography;
@@ -34,6 +34,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             service.AddScoped<IEnovaSynchronizeService, EnovaSynchronizeService>();
             service.AddScoped<EnovaPricesImporter>();
+            service.AddScoped<EnovaCustomersImporter>();
         }
 
         private static void RegisterPrestaShopComponent(IServiceCollection service)

@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace AbakTools.Core.Infrastructure.Enova.Repositories
 {
-    class EnovaProductRepository : EnovaGenericEntityRepository<EnovaProduct>, IEnovaProductRepository
+    class EnovaProductRepository : IEnovaProductRepository
     {
-        protected override string Resource => ResourcesNames.Products;
+        private readonly IEnovaAPiClient _api;
+        protected string Resource => ResourcesNames.Products;
 
-        public EnovaProductRepository(IEnovaAPiClient enovaAPiClient) : base(enovaAPiClient) { }
+        public EnovaProductRepository(IEnovaAPiClient api) => _api = api;
 
         public ProductPriceInfo GetPriceForCustomer(Guid productGuid, Guid customerGuid)
         {
-            return Api.GetValueAsync<ProductPriceInfo>(
+            return _api.GetValueAsync<ProductPriceInfo>(
                 Resource,
                 productGuid,
                 EnovaApiProduct.ProductAssociationsNames.CustomerPrices,
@@ -26,7 +27,7 @@ namespace AbakTools.Core.Infrastructure.Enova.Repositories
 
         public async Task<IEnumerable<EnovaApiProduct.Price>> GetModifiedPricesAsync(Guid definitionGuid, long stampFrom, long stampTo)
         {
-            return await Api.GetValueAsync<IEnumerable<EnovaApiProduct.Price>>(
+            return await _api.GetValueAsync<IEnumerable<EnovaApiProduct.Price>>(
                 ResourcesNames.ProductsModifiedPrices, $"{definitionGuid}/{stampFrom}/{stampTo}");
         }
     }
