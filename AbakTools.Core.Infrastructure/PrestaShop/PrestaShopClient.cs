@@ -18,6 +18,8 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private long RootCategoryId = 2;
         private string defaultCountryIsoCode = "PL";
         private long defaultShopId = 1;
+        private long defaultGroupId = 3;
+        private long[] allGroupsIds = new long[] { 1, 2, 3 };
         private language defaultLanguage;
         private country defaultCountry;
         private CountryFactory countryFactory;
@@ -35,6 +37,8 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private OrderFactory orderFactory;
         private StockAvailableFactory stockAvailableFactory;
 
+        public long DefaultGroupId => defaultGroupId;
+        public long[] AllGroupsIds => allGroupsIds;
 
         public Bukimedia.PrestaSharp.Entities.language DefaultLanguage
         {

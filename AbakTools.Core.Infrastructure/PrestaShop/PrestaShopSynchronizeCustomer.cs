@@ -115,7 +115,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                             customer.WebId = null;
                         }
 
-                        if(psCustomer == null)
+                        if (psCustomer == null)
                         {
                             psCustomer = psCustomerRepository.GetByEmail(customer.WebAccountLogin);
                         }
@@ -141,6 +141,17 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
                         if (psCustomer != null)
                         {
+                            if (psCustomer.associations.groups.Count == 0)
+                            {
+                                psCustomer.associations.groups.AddRange(prestaShopClient.AllGroupsIds.Select(x =>
+                                    new Bukimedia.PrestaSharp.Entities.AuxEntities.group { id = x }));
+                            }
+
+                            if (psCustomer.id_default_group == 0)
+                            {
+                                psCustomer.id_default_group = prestaShopClient.DefaultGroupId;
+                            }
+
                             psCustomer = SaveOrUpdateCustomer(customer, psCustomer);
                             SynchronizeAddresses(customer, psCustomer);
                         }
@@ -156,7 +167,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError($"Sunchronize customerr error Id: {id}.{Environment.NewLine}{ex.ToString()}");
             }
@@ -214,5 +225,5 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
             return psCustomer;
         }
-   }
+    }
 }

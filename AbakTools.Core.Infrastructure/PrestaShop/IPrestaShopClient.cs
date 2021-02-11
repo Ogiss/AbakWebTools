@@ -10,6 +10,9 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
     public interface IPrestaShopClient
     {
         long DefaultShopId { get; }
+        long DefaultGroupId { get; }
+        long[] AllGroupsIds { get; }
+
         language DefaultLanguage { get; }
         country DefaultCountry { get; }
         SupplierFactory SupplierFactory { get; }

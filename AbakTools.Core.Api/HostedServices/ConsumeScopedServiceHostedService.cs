@@ -41,13 +41,15 @@ namespace AbakTools.Core.Api.HostedServices
             using (var scope = Services.CreateScope())
             {
                 var enovaSynchronizeService = scope.ServiceProvider.GetRequiredService<IEnovaSynchronizeService>();
-                await enovaSynchronizeService.DoWork(scope, stoppingToken);
+                var t1 = enovaSynchronizeService.DoWork(scope, stoppingToken);
 
                 var scopedProcessingService =
                     scope.ServiceProvider
                         .GetRequiredService<IPrestaShopSynchronizeService>();
 
-                await scopedProcessingService.DoWork(stoppingToken);
+                var t2 = scopedProcessingService.DoWork(stoppingToken);
+
+                Task.WaitAll(t1, t2);
             }
         }
 
