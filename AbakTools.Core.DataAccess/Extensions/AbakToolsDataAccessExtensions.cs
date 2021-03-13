@@ -2,6 +2,7 @@
 using AbakTools.Core.DataAccess.Repository;
 using AbakTools.Core.Domain.Category;
 using AbakTools.Core.Domain.Customer;
+using AbakTools.Core.Domain.DiscountGroup;
 using AbakTools.Core.Domain.Order.Repositories;
 using AbakTools.Core.Domain.Product.Repositories;
 using AbakTools.Core.Domain.Supplier;
@@ -24,6 +25,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<IOrderStatusRepository, OrderStatusRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IDiscountGroupRepository, DiscountGroupRepository>();
         }
     }
 }
