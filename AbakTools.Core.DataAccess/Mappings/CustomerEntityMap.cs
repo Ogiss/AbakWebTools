@@ -29,6 +29,11 @@ namespace AbakTools.Core.DataAccess.Mappings
                 .Inverse()
                 .KeyColumn("Kontrahent")
                 .Cascade.AllDeleteOrphan();
+
+            HasMany(x => x.Discounts)
+                .Inverse()
+                .KeyColumn("Kontrahent")
+                .Cascade.AllDeleteOrphan();
         }
     }
 }

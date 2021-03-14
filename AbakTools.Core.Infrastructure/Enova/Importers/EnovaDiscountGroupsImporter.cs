@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace AbakTools.Core.Infrastructure.Enova.Importers
 {
-    class EnovaDiscountGroupImporter : EnovaImporterBase<DiscountGroup>
+    class EnovaDiscountGroupsImporter : EnovaImporterBase<DiscountGroup>
     {
         private readonly IConfiguration _configuration;
         private readonly IEnovaDiscountGroupRepository _enovaDiscountGroupRepository;
         private readonly IDiscountGroupRepository _discountGroupRepository;
 
-        public EnovaDiscountGroupImporter(
+        public EnovaDiscountGroupsImporter(
             IConfiguration configuration,
             IEnovaDiscountGroupRepository enovaDiscountGroupRepository,
             IDiscountGroupRepository discountGroupRepository)

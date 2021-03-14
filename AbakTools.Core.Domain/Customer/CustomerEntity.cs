@@ -1,4 +1,6 @@
 ﻿using AbakTools.Core.Domain.Address;
+using AbakTools.Core.Domain.Common;
+using AbakTools.Core.Domain.DiscountGroup;
 using AbakTools.Core.Framework;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,7 @@ namespace AbakTools.Core.Domain.Customer
         public virtual string WebAccountLogin { get; protected set; }
         public virtual string WebAccountPassword { get; set; }
         public virtual ISet<AddressEntity> Addresses { get; set; } = new HashSet<AddressEntity>();
+        public virtual ISet<CustomerDiscountEntity> Discounts { get; set; } = new HashSet<CustomerDiscountEntity>();
 
         public virtual bool IsArchived => IsDeleted || Synchronize == SynchronizeType.Deleted;
 
@@ -40,7 +43,7 @@ namespace AbakTools.Core.Domain.Customer
         public virtual void SetName(string name)
         {
             Guard.NotEmpty(name, nameof(name));
-            
+
             Name = name;
         }
 
@@ -77,7 +80,7 @@ namespace AbakTools.Core.Domain.Customer
                 }
             }
 
-            if(address == null)
+            if (address == null)
             {
                 address = new AddressEntity();
                 address.IsDefaultInvoiceAddress = true;
@@ -91,6 +94,22 @@ namespace AbakTools.Core.Domain.Customer
         public virtual AddressEntity GetDefaultDeliveryAddress()
         {
             return Addresses.Where(x => x.IsDefaultDeliveryAddress == true).SingleOrDefault() ?? GetMainAddress();
+        }
+
+        public virtual void SetGroupDiscount(DiscountGroupEntity discountGroup, Discount discount, bool active = true)
+        {
+            var customerDiscount = Discounts.SingleOrDefault(x => x.DiscountGroup.Id == discountGroup.Id);
+
+            if (customerDiscount == null)
+            {
+                customerDiscount = new CustomerDiscountEntity(this, discountGroup, discount, active);
+                Discounts.Add(customerDiscount);
+            }
+            else
+            {
+                customerDiscount.SetDiscount(discount);
+                customerDiscount.ToggleActive(active);
+            }
         }
     }
 }

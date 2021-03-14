@@ -32,11 +32,13 @@ namespace Microsoft.Extensions.DependencyInjection
             service.AddTransient<IEnovaProductRepository, EnovaProductRepository>();
             service.AddTransient<IEnovaCustomerRepository, EnovaCustomerRepository>();
             service.AddTransient<IEnovaDiscountGroupRepository, EnovaDiscountGroupRepository>();
+            service.AddTransient<IEnovaCustomerDiscountRepository, EnovaCustomerDiscountRepository>();
 
             service.AddScoped<IEnovaSynchronizeService, EnovaSynchronizeService>();
             service.AddScoped<EnovaPricesImporter>();
             service.AddScoped<EnovaCustomersImporter>();
-            service.AddScoped<EnovaDiscountGroupImporter>();
+            service.AddScoped<EnovaDiscountGroupsImporter>();
+            service.AddScoped<EnovaCustomerDiscountsImporter>();
         }
 
         private static void RegisterPrestaShopComponent(IServiceCollection service)
