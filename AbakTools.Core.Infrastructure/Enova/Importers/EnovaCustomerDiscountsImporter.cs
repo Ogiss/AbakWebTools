@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AbakTools.Core.Infrastructure.Enova.Importers
 {
-    class EnovaCustomerDiscountsImporter : EnovaImporterBase<CustomerDiscountGroup>
+    class EnovaCustomerDiscountsImporter : EnovaImporterWithLongStampBase<CustomerDiscountGroup>
     {
         private readonly IConfiguration _configuration;
         private readonly IEnovaCustomerDiscountRepository _enovaCustomerDiscountRepository;

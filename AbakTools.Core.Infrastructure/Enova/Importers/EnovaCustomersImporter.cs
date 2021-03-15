@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AbakTools.Core.Infrastructure.Enova.Importers
 {
-    class EnovaCustomersImporter : EnovaImporterBase<Guid>
+    class EnovaCustomersImporter : EnovaImporterWithLongStampBase<Guid>
     {
         private readonly ILogger _logger;
         private readonly IEnovaCustomerRepository _enovaCustomerRepository;

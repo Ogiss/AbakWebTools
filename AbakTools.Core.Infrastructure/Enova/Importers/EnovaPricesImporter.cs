@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AbakTools.Core.Infrastructure.Enova.Importers
 {
-    internal class EnovaPricesImporter : EnovaImporterBase<Price>
+    internal class EnovaPricesImporter : EnovaImporterWithLongStampBase<Price>
     {
         private readonly ILogger _logger;
         private readonly IConfiguration _configuration;
