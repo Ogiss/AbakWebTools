@@ -14,6 +14,8 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
         private readonly IEnovaCustomerRepository _enovaCustomerRepository;
         private readonly ICustomerRepository _customerRepository;
 
+        protected override ILogger Logger => _logger;
+
         public EnovaCustomersImporter(
             ILogger<EnovaCustomersImporter> logger,
             IEnovaCustomerRepository enovaCustomerRepository,

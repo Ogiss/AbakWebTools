@@ -25,6 +25,7 @@ namespace AbakTools.Core.Infrastructure.Enova.Services.Implementations
                     await serviceScope.ServiceProvider.GetRequiredService<EnovaCustomersImporter>().RunImport(serviceScope);
                     await serviceScope.ServiceProvider.GetRequiredService<EnovaDiscountGroupsImporter>().RunImport(serviceScope);
                     await serviceScope.ServiceProvider.GetRequiredService<EnovaCustomerDiscountsImporter>().RunImport(serviceScope);
+                    await serviceScope.ServiceProvider.GetRequiredService<EnovaProductImporter>().RunImport(serviceScope);
 
                     await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
                 }

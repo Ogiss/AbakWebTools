@@ -3,6 +3,7 @@ using AbakTools.Core.Domain.Synchronize;
 using AbakTools.Core.Framework.UnitOfWork;
 using AbakTools.Core.Infrastructure.Enova.Api;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,17 +23,19 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
         protected TStamp StampTo => _stampTo;
         protected virtual string SynchronizeCode => GetType().Name;
         protected virtual SynchronizeDirectionType SynchronizeDirection => SynchronizeDirectionType.Unknown;
+        protected abstract ILogger Logger { get; }
 
         public Task RunImport(IServiceScope serviceScope)
         {
             try
             {
+                Logger.LogDebug($"[{GetType().Name}]: Starting import");
+                var startDt = DateTime.Now;
+
                 _unitOfWorkProvider = serviceScope.ServiceProvider.GetRequiredService<IUnitOfWorkProvider>();
                 _synchronizeStampService = serviceScope.ServiceProvider.GetRequiredService<ISynchronizeStampService>();
                 _api = serviceScope.ServiceProvider.GetRequiredService<IEnovaAPiClient>();
 
-                //_stampFrom = _synchronizeStampService.GetLastStampAsync(SynchronizeCode, SynchronizeDirection).Result;
-                //_stampTo = _api.GetDbtsAsync().Result;
                 _stampFrom = GetLastStamp(_synchronizeStampService, SynchronizeCode, SynchronizeDirection).Result;
                 _stampTo = GetStampTo(_api, SynchronizeCode, SynchronizeDirection).Result;
 
@@ -49,8 +52,9 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
                     Parallel.ForEach(entries, GetParrallelOptions(), ProcessEntryCore);
                 }
 
-                //_synchronizeStampService.SaveImportStampAsync(SynchronizeCode, _stampTo, SynchronizeDirection).Wait();
                 SaveLastStamp(_synchronizeStampService, SynchronizeCode, _stampTo, SynchronizeDirection).Wait();
+
+                Logger.LogDebug($"[{GetType().Name}]: Import finished in {(DateTime.Now - startDt).TotalSeconds} sec.");
             }
             catch(Exception ex)
             {
@@ -74,14 +78,8 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
             }
         }
 
-        protected abstract void ProcessEntry(TEntry entry);
-
-        //protected abstract Task<IEnumerable<TEntry>> GetEntriesAsync(long stampFrom, long stampTo);
-        protected abstract Task<IEnumerable<TEntry>> GetEntriesAsync(TStamp stampFrom, TStamp stampTo);
-
         protected virtual void HandleImportExeception(Exception exception)
         {
-
         }
 
         protected virtual void HandleProcessEntryException(TEntry entry, Exception exception)
@@ -101,6 +99,8 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
             };
         }
 
+        protected abstract void ProcessEntry(TEntry entry);
+        protected abstract Task<IEnumerable<TEntry>> GetEntriesAsync(TStamp stampFrom, TStamp stampTo);
         protected abstract Task<TStamp> GetLastStamp(ISynchronizeStampService synchronizeStampService, string code, SynchronizeDirectionType synchronizeDirection);
         protected abstract Task<TStamp> GetStampTo(IEnovaAPiClient api, string code, SynchronizeDirectionType synchronizeDirection);
         protected abstract Task SaveLastStamp(ISynchronizeStampService synchronizeStampService, string code, TStamp stamp, SynchronizeDirectionType synchronizeDirection);

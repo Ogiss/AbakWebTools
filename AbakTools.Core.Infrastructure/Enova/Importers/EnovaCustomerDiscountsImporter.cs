@@ -4,6 +4,7 @@ using AbakTools.Core.Domain.DiscountGroup;
 using AbakTools.Core.Domain.Enova;
 using EnovaApi.Models.DiscountGroup;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,18 +13,22 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
 {
     class EnovaCustomerDiscountsImporter : EnovaImporterWithLongStampBase<CustomerDiscountGroup>
     {
+        private readonly ILogger _logger;
         private readonly IConfiguration _configuration;
         private readonly IEnovaCustomerDiscountRepository _enovaCustomerDiscountRepository;
         private readonly ICustomerRepository _customerRepository;
         private readonly IDiscountGroupRepository _discountGroupRepository;
 
+        protected override ILogger Logger => _logger;
+
         public EnovaCustomerDiscountsImporter(
+            ILogger<EnovaCustomerDiscountsImporter> logger,
             IConfiguration configuration,
             IEnovaCustomerDiscountRepository enovaCustomerDiscountRepository,
             ICustomerRepository customerRepository,
             IDiscountGroupRepository discountGroupRepository)
-            => (_configuration, _enovaCustomerDiscountRepository, _customerRepository, _discountGroupRepository)
-            = (configuration, enovaCustomerDiscountRepository, customerRepository, discountGroupRepository);
+            => (_logger, _configuration, _enovaCustomerDiscountRepository, _customerRepository, _discountGroupRepository)
+            = (logger, configuration, enovaCustomerDiscountRepository, customerRepository, discountGroupRepository);
 
         protected override async Task<IEnumerable<CustomerDiscountGroup>> GetEntriesAsync(long stampFrom, long stampTo)
         {

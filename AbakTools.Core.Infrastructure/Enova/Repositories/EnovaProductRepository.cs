@@ -30,5 +30,16 @@ namespace AbakTools.Core.Infrastructure.Enova.Repositories
             return await _api.GetValueAsync<IEnumerable<EnovaApiProduct.Price>>(
                 ResourcesNames.ProductsModifiedPrices, $"{definitionGuid}/{stampFrom}/{stampTo}");
         }
+
+        public async Task<IEnumerable<Guid>> GetModifiedProductsGuidsAsync(DateTime stampFrom, DateTime stampTo)
+        {
+            return await _api.GetValueAsync<IEnumerable<Guid>>(
+                ResourcesNames.ProductsModifiedGuids, $"{stampFrom}/{stampTo}");
+        }
+
+        public async Task<EnovaApiProduct.Product> Get(Guid guid)
+        {
+            return await _api.GetValueAsync<EnovaApiProduct.Product>(ResourcesNames.Products, guid.ToString());
+        }
     }
 }

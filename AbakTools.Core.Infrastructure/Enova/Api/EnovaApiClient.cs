@@ -36,8 +36,15 @@ namespace AbakTools.Core.Infrastructure.Enova.Api
 
         public async Task<T> GetValueAsync<T>(Uri uri)
         {
-            var str = await _client.GetStringAsync(uri);
-            return JsonConvert.DeserializeObject<T>(str);
+            try
+            {
+                var str = await _client.GetStringAsync(uri);
+                return JsonConvert.DeserializeObject<T>(str);
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
         }
 
         public async Task<long> GetDbtsAsync()

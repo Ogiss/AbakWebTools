@@ -54,6 +54,12 @@ namespace AbakTools.Core.DataAccess.Mappings.Product
                 .Inverse()
                 .KeyColumn("id_local_product")
                 .Cascade.SaveUpdate();
+
+            HasMany(x => x.ProductDiscountGroups)
+                .Inverse()
+                .Table("TowarGrupaRabatowa")
+                .KeyColumn("Towar")
+                .Cascade.AllDeleteOrphan();
         }
     }
 }

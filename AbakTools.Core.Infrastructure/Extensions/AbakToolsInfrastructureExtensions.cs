@@ -39,6 +39,7 @@ namespace Microsoft.Extensions.DependencyInjection
             service.AddScoped<EnovaCustomersImporter>();
             service.AddScoped<EnovaDiscountGroupsImporter>();
             service.AddScoped<EnovaCustomerDiscountsImporter>();
+            service.AddScoped<EnovaProductImporter>();
         }
 
         private static void RegisterPrestaShopComponent(IServiceCollection service)

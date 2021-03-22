@@ -10,5 +10,7 @@ namespace AbakTools.Core.Domain.Enova.Product
     {
         ProductPriceInfo GetPriceForCustomer(Guid productGuid, Guid customerGuid);
         Task<IEnumerable<Price>> GetModifiedPricesAsync(Guid definitionGuid, long stampFrom, long stampTo);
+        Task<IEnumerable<Guid>> GetModifiedProductsGuidsAsync(DateTime stampFrom, DateTime stampTo);
+        Task<EnovaApi.Models.Product.Product> Get(Guid guid);
     }
 }

@@ -1,9 +1,7 @@
 ﻿using AbakTools.Core.Domain.Enova.Product;
 using AbakTools.Core.Domain.Product.Repositories;
-using AbakTools.Core.Domain.Services;
 using EnovaApi.Models.Product;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -17,6 +15,8 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
         private readonly IConfiguration _configuration;
         private readonly IEnovaProductRepository _enovaProductRepository;
         private readonly IProductRepository _productRepository;
+
+        protected override ILogger Logger => _logger;
 
         public EnovaPricesImporter(
             ILogger<EnovaPricesImporter> logger,

@@ -3,7 +3,8 @@ using AbakTools.Core.Domain.Product.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+using NHibernate.Linq;
+using System.Threading.Tasks;
 
 namespace AbakTools.Core.DataAccess.Repository
 {
@@ -26,6 +27,21 @@ namespace AbakTools.Core.DataAccess.Repository
         public ProductEntity GetByWebId(int webId)
         {
             return GetQueryBase().SingleOrDefault(x => x.WebId == webId);
+        }
+
+        public async Task<ProductEntity> GetEnovaProductAsync(Guid enovaGuid)
+        {
+            return await GetQueryBase().SingleOrDefaultAsync(x => x.EnovaGuid == enovaGuid && x.IsEnovaProduct);
+        }
+
+        public async Task<IList<ProductEntity>> GetEnovaProductsAsync(Guid enovaGuid)
+        {
+            return await GetQueryBase().Where(x => x.EnovaGuid == enovaGuid && x.IsEnovaProduct).ToListAsync();
+        }
+
+        public async Task<IList<ProductEntity>> GetEnovaProductsWithoutInDeletingProcessAsync(Guid enovaGuid)
+        {
+            return await GetQueryBase().Where(x => x.Synchronize != Framework.SynchronizeType.Deleted && x.EnovaGuid == enovaGuid && x.IsEnovaProduct).ToListAsync();
         }
     }
 }

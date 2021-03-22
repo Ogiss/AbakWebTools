@@ -1,12 +1,21 @@
-﻿namespace AbakTools.Core.Framework
+﻿using System;
+
+namespace AbakTools.Core.Framework
 {
     public enum SynchronizeType
     {
         Synchronized = 0,
-        Notsaved = 1, // TO REMOVE
+
+        [Obsolete("TO REMOVE")]
+        Notsaved = 1,
+
         New = 2,
+
         Edited = 3,
+
         Deleted = 4,
-        Synchronizing = 5 // TO REMOVE
+
+        [Obsolete("TO REMOVE")]
+        Synchronizing = 5
     }
 }

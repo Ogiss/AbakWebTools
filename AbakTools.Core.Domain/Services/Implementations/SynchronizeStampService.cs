@@ -42,7 +42,7 @@ namespace AbakTools.Core.Domain.Services.Implementations
         private async Task<DateTime> GetDateTimeStampCoreAsync(string code, SynchronizeDirectionType synchronizeDirection)
         {
             using var uow = _unitOfWorkProvider.CreateReadOnly();
-            return (await _synchronizeStampRepository.GetAsync(code, synchronizeDirection))?.DateTimeStamp ?? DateTime.MinValue;
+            return (await _synchronizeStampRepository.GetAsync(code, synchronizeDirection))?.DateTimeStamp ?? new DateTime(2000, 1, 1);
         }
 
         private async Task SaveImportStampCoreAsync(string code, long stamp, SynchronizeDirectionType synchronizeDirection)
