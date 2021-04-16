@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AbakTools.Core.DataAccess.Mappings.Product
 {
-    class ImageEntityMap : BusinessEntityMap<ImageEntity>
+    class ImageEntityMap : GuidedEntity<ImageEntity>
     {
         protected override string CreationDateColumnName => null;
         protected override string ModificationDateColumnName => null;

@@ -46,7 +46,7 @@ namespace AbakTools.Core.DataAccess
             if (!CurrentSessionContext.HasBind(_sessionFactory))
             {
                 var sessionBuilder = _sessionFactory.WithOptions()
-                    .Interceptor(new UpdateModificationDateInterceptor());
+                    .Interceptor(new BusinessInterceptor());
 
                 CurrentSessionContext.Bind(sessionBuilder.OpenSession());
             }

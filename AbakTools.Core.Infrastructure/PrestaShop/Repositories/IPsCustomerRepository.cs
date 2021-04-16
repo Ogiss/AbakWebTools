@@ -2,7 +2,7 @@
 
 namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories
 {
-    public interface IPsCustomerRepository : IPsRepositoryBase<PsCustomer>
+    public interface IPSCustomerRepository : IPSRepositoryBase<PsCustomer>
     {
         PsCustomer GetByEmail(string email);
     }

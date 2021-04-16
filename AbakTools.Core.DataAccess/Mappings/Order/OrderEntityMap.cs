@@ -3,7 +3,7 @@ using AbakTools.Core.Framework;
 
 namespace AbakTools.Core.DataAccess.Mappings.Order
 {
-    class OrderEntityMap : BusinessEntityMap<OrderEntity>
+    class OrderEntityMap : GuidedEntity<OrderEntity>
     {
         protected override string CreationDateColumnName => "DataDodania";
         protected override string ModificationDateColumnName => "DataAtualizacji";

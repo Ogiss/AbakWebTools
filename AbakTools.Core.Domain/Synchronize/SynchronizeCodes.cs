@@ -8,5 +8,6 @@
         public const string Customer = "CUSTOMER";
         public const string Order = "ORDER";
         public const string Price = "PRICE";
+        public const string DiscountGroup = "DISCOUNT_GROUP";
     }
 }

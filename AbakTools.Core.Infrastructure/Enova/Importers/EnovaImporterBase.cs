@@ -29,9 +29,6 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
         {
             try
             {
-                Logger.LogDebug($"[{GetType().Name}]: Starting import");
-                var startDt = DateTime.Now;
-
                 _unitOfWorkProvider = serviceScope.ServiceProvider.GetRequiredService<IUnitOfWorkProvider>();
                 _synchronizeStampService = serviceScope.ServiceProvider.GetRequiredService<ISynchronizeStampService>();
                 _api = serviceScope.ServiceProvider.GetRequiredService<IEnovaAPiClient>();
@@ -48,13 +45,15 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
 
                 if (entries.Any())
                 {
+                    var startDt = DateTime.Now;
+
+                    Logger.LogDebug($"[{GetType().Name}]: Starting import");
 
                     Parallel.ForEach(entries, GetParrallelOptions(), ProcessEntryCore);
+
+                    SaveLastStamp(_synchronizeStampService, SynchronizeCode, _stampTo, SynchronizeDirection).Wait();
+                    Logger.LogDebug($"[{GetType().Name}]: Import finished in {(DateTime.Now - startDt).TotalSeconds} sec.");
                 }
-
-                SaveLastStamp(_synchronizeStampService, SynchronizeCode, _stampTo, SynchronizeDirection).Wait();
-
-                Logger.LogDebug($"[{GetType().Name}]: Import finished in {(DateTime.Now - startDt).TotalSeconds} sec.");
             }
             catch(Exception ex)
             {

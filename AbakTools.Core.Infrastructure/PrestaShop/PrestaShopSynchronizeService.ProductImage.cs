@@ -19,7 +19,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     {
                         if (!product.Images.Any(x => x.WebId.HasValue && x.WebId == psImage.id))
                         {
-                            prestaShopClient.ImageFactory.DeleteProductImage(psProduct.id.Value, psImage.id);
+                            _prestaShopClient.ImageFactory.DeleteProductImage(psProduct.id.Value, psImage.id);
                             psProduct.associations.images.Remove(psImage);
                         }
                     }
@@ -35,7 +35,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             }
             catch (Exception ex)
             {
-                logger.LogError($"Synchronize product Id: {product.Id} error.{Environment.NewLine}{ex}");
+                _logger.LogError($"Synchronize product Id: {product.Id} error.{Environment.NewLine}{ex}");
             }
         }
 
@@ -77,7 +77,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             try
             {
-                var image = prestaShopClient.ImageFactory.GetProductImage((long)psProduct.id, localImage.WebId.Value);
+                var image = _prestaShopClient.ImageFactory.GetProductImage((long)psProduct.id, localImage.WebId.Value);
             }
             catch
             {
@@ -87,18 +87,18 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
         private int AddImage(ImageEntity localImage, PsProductEntity psProduct)
         {
-            return (int)prestaShopClient.ImageFactory.AddProductImage((long)psProduct.id, localImage.ImageBytes);
+            return (int)_prestaShopClient.ImageFactory.AddProductImage((long)psProduct.id, localImage.ImageBytes);
         }
 
         private void DeletePsImage(long psProductId, int psImageId)
         {
             try
             {
-                prestaShopClient.ImageFactory.DeleteProductImage(psProductId, psImageId);
+                _prestaShopClient.ImageFactory.DeleteProductImage(psProductId, psImageId);
             }
             catch (Exception ex)
             {
-                logger.LogWarning($"Delete PS product image error ({psProductId},{psImageId}).{Environment.NewLine}{ex}");
+                _logger.LogWarning($"Delete PS product image error ({psProductId},{psImageId}).{Environment.NewLine}{ex}");
             }
         }
 

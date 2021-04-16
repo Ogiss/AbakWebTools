@@ -16,10 +16,10 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             long stampFrom = 0;
             long stampTo = 0;
 
-            using (var uow = unitOfWorkProvider.CreateReadOnly())
+            using (var uow = _unitOfWorkProvider.CreateReadOnly())
             {
-                synchronizeStamp = synchronizeStampRepository.Get(SynchronizeCodes.Supplier, SynchronizeDirectionType.Export);
-                stampTo = supplierRepository.GetDbtsAsync().Result;
+                synchronizeStamp = _synchronizeStampRepository.Get(SynchronizeCodes.Supplier, SynchronizeDirectionType.Export);
+                stampTo = _supplierRepository.GetDbtsAsync().Result;
             }
 
             stampFrom = synchronizeStamp?.Stamp ?? 0;
@@ -28,21 +28,23 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             {
                 DateTime startDt = DateTime.Now;
 
-                logger.LogDebug("Starting synchronize suppliers");
-
                 IReadOnlyCollection<SupplierEntity> suppliers = null;
 
-                using (var uow = unitOfWorkProvider.CreateReadOnly())
+                using (var uow = _unitOfWorkProvider.CreateReadOnly())
                 {
-                    suppliers = supplierRepository.GetAllModified(stampFrom, stampTo);
+                    suppliers = _supplierRepository.GetAllModified(stampFrom, stampTo);
                 }
 
                 if (suppliers.Any())
                 {
+                    _logger.LogDebug("Starting synchronize suppliers");
+
                     foreach (var supplier in suppliers)
                     {
                         ProcessSupplier(supplier);
                     }
+
+                    _logger.LogDebug($"Synchronize suppliers finished at {(DateTime.Now - startDt).TotalSeconds} sec.");
                 }
 
                 if(synchronizeStamp == null)
@@ -52,13 +54,11 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
                 synchronizeStamp.Stamp = stampTo;
 
-                using(var uow = unitOfWorkProvider.Create())
+                using(var uow = _unitOfWorkProvider.Create())
                 {
-                    synchronizeStampRepository.SaveOrUpdate(synchronizeStamp);
+                    _synchronizeStampRepository.SaveOrUpdate(synchronizeStamp);
                     uow.Commit();
                 }
-
-                logger.LogDebug($"Synchronize suppliers finished at {(DateTime.Now - startDt).TotalSeconds} sec.");
             }
         }
 
@@ -69,19 +69,19 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                 Dictionary<string, string> dtn = new Dictionary<string, string>();
                 dtn.Add("name", supplier.Name);
 
-                var psSupplier = prestaShopClient.SupplierFactory.GetByFilter(dtn, null, null).SingleOrDefault();
+                var psSupplier = _prestaShopClient.SupplierFactory.GetByFilter(dtn, null, null).SingleOrDefault();
 
                 if (psSupplier == null)
                 {
                     psSupplier = new supplier();
                     psSupplier.active = 1;
                     psSupplier.name = supplier.Name;
-                    prestaShopClient.SupplierFactory.Add(psSupplier);
+                    _prestaShopClient.SupplierFactory.Add(psSupplier);
                 }
             }
             catch(Exception ex)
             {
-                logger.LogError($"Synchronize suplier {supplier.Name} error.{Environment.NewLine}{ex}");
+                _logger.LogError($"Synchronize suplier {supplier.Name} error.{Environment.NewLine}{ex}");
             }
         }
     }

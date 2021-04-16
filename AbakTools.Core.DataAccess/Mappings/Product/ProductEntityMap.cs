@@ -5,7 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace AbakTools.Core.DataAccess.Mappings.Product
 {
-    class ProductEntityMap : BusinessEntityMap<ProductEntity>
+    class ProductEntityMap : GuidedEntity<ProductEntity>
     {
         [Obsolete("To remove")]
         protected override string IsDeletedColumnName => "Usuniety";

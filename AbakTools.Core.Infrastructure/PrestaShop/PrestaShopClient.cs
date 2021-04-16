@@ -36,6 +36,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private OrderStateFactory orderStateFactory;
         private OrderFactory orderFactory;
         private StockAvailableFactory stockAvailableFactory;
+        private DiscountGroupFactory discountGroupFactory;
 
         public long DefaultGroupId => defaultGroupId;
         public long[] AllGroupsIds => allGroupsIds;
@@ -70,7 +71,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             get
             {
-                if(countryFactory == null)
+                if (countryFactory == null)
                 {
                     countryFactory = new CountryFactory(baseUrl, key, password);
                 }
@@ -148,7 +149,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             get
             {
-                if(taxRuleGroupFactory == null)
+                if (taxRuleGroupFactory == null)
                 {
                     taxRuleGroupFactory = new TaxRuleGroupFactory(baseUrl, key, password);
                 }
@@ -187,7 +188,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             get
             {
-                if(customerFactory == null)
+                if (customerFactory == null)
                 {
                     customerFactory = new CustomerFactory(baseUrl, key, password);
                 }
@@ -200,7 +201,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             get
             {
-                if(addressFactory == null)
+                if (addressFactory == null)
                 {
                     addressFactory = new AddressFactory(baseUrl, key, password);
                 }
@@ -213,7 +214,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             get
             {
-                if(orderFactory == null)
+                if (orderFactory == null)
                 {
                     orderFactory = new OrderFactory(baseUrl, key, password);
                 }
@@ -226,12 +227,25 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             get
             {
-                if(stockAvailableFactory == null)
+                if (stockAvailableFactory == null)
                 {
                     stockAvailableFactory = new StockAvailableFactory(baseUrl, key, password);
                 }
 
                 return stockAvailableFactory;
+            }
+        }
+
+        public DiscountGroupFactory DiscountGroupFactory
+        {
+            get
+            {
+                if (discountGroupFactory == null)
+                {
+                    discountGroupFactory = new DiscountGroupFactory(baseUrl, key, password);
+                }
+
+                return discountGroupFactory;
             }
         }
 
@@ -274,7 +288,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             var taxRules = TaxRuleFactory.GetByFilter(PsFilter.Create("id_country", DefaultCountry.id), null, null);
 
-            foreach(var taxRule in taxRules)
+            foreach (var taxRule in taxRules)
             {
                 if (taxRule.id_tax.HasValue && taxRule.id_tax_rules_group.HasValue)
                 {

@@ -10,6 +10,7 @@ using AbakTools.Core.Infrastructure.Enova.Services;
 using AbakTools.Core.Infrastructure.Enova.Services.Implementations;
 using AbakTools.Core.Infrastructure.Policies;
 using AbakTools.Core.Infrastructure.PrestaShop;
+using AbakTools.Core.Infrastructure.PrestaShop.Exporters;
 using AbakTools.Core.Infrastructure.PrestaShop.Repositories;
 using System;
 
@@ -29,17 +30,19 @@ namespace Microsoft.Extensions.DependencyInjection
         private static void RegisterEnovaApiComponent(IServiceCollection service)
         {
             service.AddSingleton<IEnovaAPiClient, EnovaApiClient>();
-            service.AddTransient<IEnovaProductRepository, EnovaProductRepository>();
-            service.AddTransient<IEnovaCustomerRepository, EnovaCustomerRepository>();
-            service.AddTransient<IEnovaDiscountGroupRepository, EnovaDiscountGroupRepository>();
-            service.AddTransient<IEnovaCustomerDiscountRepository, EnovaCustomerDiscountRepository>();
+            service.AddSingleton<IEnovaProductRepository, EnovaProductRepository>();
+            service.AddSingleton<IEnovaCustomerRepository, EnovaCustomerRepository>();
+            service.AddSingleton<IEnovaDiscountGroupRepository, EnovaDiscountGroupRepository>();
+            service.AddSingleton<IEnovaCustomerDiscountRepository, EnovaCustomerDiscountRepository>();
+            service.AddSingleton<IEnovaDictionaryItemRepository, EnovaDictionaryItemRepository>();
 
-            service.AddScoped<IEnovaSynchronizeService, EnovaSynchronizeService>();
-            service.AddScoped<EnovaPricesImporter>();
-            service.AddScoped<EnovaCustomersImporter>();
-            service.AddScoped<EnovaDiscountGroupsImporter>();
-            service.AddScoped<EnovaCustomerDiscountsImporter>();
-            service.AddScoped<EnovaProductImporter>();
+            service.AddSingleton<IEnovaSynchronizeService, EnovaSynchronizeService>();
+            service.AddSingleton<EnovaPricesImporter>();
+            service.AddSingleton<EnovaCustomersImporter>();
+            service.AddSingleton<EnovaDiscountGroupsImporter>();
+            service.AddSingleton<EnovaDeletedDiscountGroupsImporter>();
+            service.AddSingleton<EnovaCustomerDiscountsImporter>();
+            service.AddSingleton<EnovaProductImporter>();
         }
 
         private static void RegisterPrestaShopComponent(IServiceCollection service)
@@ -47,8 +50,11 @@ namespace Microsoft.Extensions.DependencyInjection
             service.AddTransient<IPrestaShopSynchronizeCustomer, PrestaShopSynchronizeCustomer>();
             service.AddTransient<IPrestaShopSynchronizeOrder, PrestaShopSynchronizeOrder>();
 
-            service.AddTransient<IPsOrderRepository, PsOrderRepository>();
-            service.AddTransient<IPsCustomerRepository, PsCustomerRepository>();
+            service.AddTransient<IPSOrderRepository, PSOrderRepository>();
+            service.AddTransient<IPSCustomerRepository, PSCustomerRepository>();
+            service.AddTransient<IPSDiscountGroupRepository, PSDiscountGroupRepository>();
+
+            service.AddTransient<IPrestaShopExporter, DiscoutGroupExporter>();
         }
 
         private static void RegisterPolicies(IServiceCollection services)

@@ -1,14 +1,28 @@
-﻿using AbakTools.Core.Framework;
+﻿using AbakTools.Core.Domain;
+using AbakTools.Core.Framework;
 using NHibernate;
 using NHibernate.Type;
 using System;
+using System.Linq;
 
 namespace AbakTools.Core.DataAccess.Interceptors
 {
-    public class UpdateModificationDateInterceptor : EmptyInterceptor
+    public class BusinessInterceptor : EmptyInterceptor
     {
+        private static string[] synchronizableEntityFields =
+            { "WebId", "Synchronize", "IsDeleted" };
+
         public override bool OnFlushDirty(object entity, object id, object[] currentState, object[] previousState, string[] propertyNames, IType[] types)
         {
+            if (entity is SynchronizableEntity synchronizableEntity)
+            {
+                if (SynchronizableEntityWasModify(currentState, previousState, propertyNames, types))
+                {
+                    synchronizableEntity.MakeEdited();
+                    UpdateState(nameof(synchronizableEntity.Synchronize), synchronizableEntity.Synchronize, ref currentState, propertyNames);
+                }
+            }
+
             if (entity is IBusinessEntity businessEntity && !businessEntity.DisableUpdateModificationDate)
             {
                 businessEntity.ModificationDate = DateTime.Now;
@@ -52,6 +66,31 @@ namespace AbakTools.Core.DataAccess.Interceptors
             {
                 state[idx] = value;
             }
+        }
+
+        private bool SynchronizableEntityWasModify(object[] currentState, object[] previousState, string[] propertyNames, IType[] types)
+        {
+            bool wasModified = false;
+
+            for (int i = 0; i < propertyNames.Length; i++)
+            {
+                if (!Equals(currentState[i], previousState[i]))
+                {
+                    var property = propertyNames[i];
+
+                    if (property == "Synchronize")
+                    {
+                        return false;
+                    }
+
+                    if (!synchronizableEntityFields.Contains(property))
+                    {
+                        wasModified = true;
+                    }
+                }
+            }
+
+            return wasModified;
         }
     }
 }

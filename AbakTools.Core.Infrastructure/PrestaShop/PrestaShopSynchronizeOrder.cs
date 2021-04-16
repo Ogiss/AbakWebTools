@@ -31,7 +31,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private readonly IPrestaShopClient prestaShopClient;
         private readonly IProductPricePolicy pricePolicy;
 
-        private readonly IPsOrderRepository psOrderRepository;
+        private readonly IPSOrderRepository psOrderRepository;
 
         public PrestaShopSynchronizeOrder(
             ILogger<PrestaShopSynchronizeOrder> _logger,
@@ -42,7 +42,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             IOrderStatusRepository _orderStatusRepository,
             IProductRepository _productRepository,
             IPrestaShopClient _prestaShopClient,
-            IPsOrderRepository _psOrderRepository,
+            IPSOrderRepository _psOrderRepository,
             IProductPricePolicy _pricePolicy)
         {
             logger = _logger;
@@ -71,8 +71,6 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
         private void SynchronizeOrder()
         {
-            logger.LogDebug("Starting synchronize orders");
-
             try
             {
                 SynchronizeStampEntity synchronizeStamp = null;

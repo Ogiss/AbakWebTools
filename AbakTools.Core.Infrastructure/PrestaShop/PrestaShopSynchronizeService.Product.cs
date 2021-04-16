@@ -22,23 +22,23 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             SynchronizeStampEntity synchronizeStamp = null;
             DateTime stampTo = DateTime.Now;
 
-            using (var uow = unitOfWorkProvider.CreateReadOnly())
+            using (var uow = _unitOfWorkProvider.CreateReadOnly())
             {
-                synchronizeStamp = synchronizeStampRepository.Get(SynchronizeCodes.Product, SynchronizeDirectionType.Export);
+                synchronizeStamp = _synchronizeStampRepository.Get(SynchronizeCodes.Product, SynchronizeDirectionType.Export);
             }
 
             DateTime stampFrom = synchronizeStamp?.DateTimeStamp ?? DateTime.MinValue;
 
             IReadOnlyCollection<ProductEntity> products = null;
 
-            using (var uow = unitOfWorkProvider.CreateReadOnly())
+            using (var uow = _unitOfWorkProvider.CreateReadOnly())
             {
-                products = productRepository.GetAllReady();
+                products = _productRepository.GetAllReady();
             }
 
             if (products.Any())
             {
-                logger.LogDebug("Starting synchronize products");
+                _logger.LogDebug("Starting synchronize products");
 
                 foreach (var product in products)
                 {
@@ -52,13 +52,13 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
                 synchronizeStamp.DateTimeStamp = products.Max(x => x.ModificationDate);
 
-                using (var uow = unitOfWorkProvider.Create())
+                using (var uow = _unitOfWorkProvider.Create())
                 {
-                    synchronizeStampRepository.SaveOrUpdate(synchronizeStamp);
+                    _synchronizeStampRepository.SaveOrUpdate(synchronizeStamp);
                     uow.Commit();
                 }
 
-                logger.LogDebug($"Synchronize products finished at {(DateTime.Now - stampTo).TotalSeconds} sec.");
+                _logger.LogDebug($"Synchronize products finished at {(DateTime.Now - stampTo).TotalSeconds} sec.");
             }
         }
 
@@ -66,9 +66,9 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             try
             {
-                using (var uow = unitOfWorkProvider.Create())
+                using (var uow = _unitOfWorkProvider.Create())
                 {
-                    product = productRepository.Get(product.Id);
+                    product = _productRepository.Get(product.Id);
                     Bukimedia.PrestaSharp.Entities.product psProduct = GetPsProduct(product.WebId);
 
                     if (psProduct == null && product.WebId.HasValue)
@@ -100,10 +100,10 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
                             var name = Functions.GetPrestaShopName(product.Name);
 
-                            prestaShopClient.SetLangValue(psProduct, x => x.name, name);
-                            prestaShopClient.SetLangValue(psProduct, x => x.link_rewrite, Functions.GetLinkRewrite(name));
-                            prestaShopClient.SetLangValue(psProduct, x => x.description_short, Functions.GetPrestaShopDescriptionShort(product.DescriptionShort));
-                            prestaShopClient.SetLangValue(psProduct, x => x.description, product.Description);
+                            _prestaShopClient.SetLangValue(psProduct, x => x.name, name);
+                            _prestaShopClient.SetLangValue(psProduct, x => x.link_rewrite, Functions.GetLinkRewrite(name));
+                            _prestaShopClient.SetLangValue(psProduct, x => x.description_short, Functions.GetPrestaShopDescriptionShort(product.DescriptionShort));
+                            _prestaShopClient.SetLangValue(psProduct, x => x.description, product.Description);
 
                             UpdateProductCategories(product, psProduct);
 
@@ -134,13 +134,13 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     product.Synchronize = Framework.SynchronizeType.Synchronized;
                     product.IsReady = false;
 
-                    productRepository.SaveOrUpdate(product);
+                    _productRepository.SaveOrUpdate(product);
                     uow.Commit();
                 }
             }
             catch (Exception ex)
             {
-                logger.LogError($"Synchronize product Id: {product.Id} error.{Environment.NewLine}{ex}");
+                _logger.LogError($"Synchronize product Id: {product.Id} error.{Environment.NewLine}{ex}");
             }
         }
 
@@ -154,7 +154,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                 {
                     try
                     {
-                        var psCategory = prestaShopClient.CategoryFactory.Get(category.WebId.Value);
+                        var psCategory = _prestaShopClient.CategoryFactory.Get(category.WebId.Value);
                         if (psCategory != null)
                         {
                             psProduct.associations.categories.Add(new Bukimedia.PrestaSharp.Entities.AuxEntities.category(psCategory.id.Value));
@@ -162,7 +162,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     }
                     catch (Exception ex)
                     {
-                        logger.LogError(ex.ToString());
+                        _logger.LogError(ex.ToString());
                     }
                 }
             }
@@ -171,7 +171,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private void UpdateProductAvailability(ProductEntity product, PsProduct psProduct)
         {
             var quantity = product.IsAvailable ? 1_000_000 : 0;
-            var stock = prestaShopClient.GetStockForProduct((int)psProduct.id, 0);
+            var stock = _prestaShopClient.GetStockForProduct((int)psProduct.id, 0);
             if (stock != null)
             {
                 stock.quantity = quantity;
@@ -181,7 +181,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                 stock = new Bukimedia.PrestaSharp.Entities.stock_available();
                 stock.id_product = psProduct.id;
                 stock.id_product_attribute = 0;
-                stock.id_shop = prestaShopClient.DefaultShopId;
+                stock.id_shop = _prestaShopClient.DefaultShopId;
                 stock.quantity = quantity;
             }
 
@@ -194,7 +194,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             {
                 try
                 {
-                    return prestaShopClient.ProductFactory.Get(id.Value);
+                    return _prestaShopClient.ProductFactory.Get(id.Value);
                 }
                 catch (Bukimedia.PrestaSharp.PrestaSharpException ex)
                 {
@@ -216,12 +216,12 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             if (!tax.WebId.HasValue)
             {
-                var psTax = prestaShopClient.GetTaxRuleGroupByRate(tax.Rate);
+                var psTax = _prestaShopClient.GetTaxRuleGroupByRate(tax.Rate);
 
                 if (psTax != null)
                 {
                     tax.WebId = (int)psTax.id.Value;
-                    taxRepository.SaveOrUpdate(tax);
+                    _taxRepository.SaveOrUpdate(tax);
                 }
 
                 return psTax?.id;
@@ -234,13 +234,13 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             if (psProduct.id.HasValue && psProduct.id.Value > 0)
             {
-                logger.LogInformation($"Update product id: {product.Id}, name: {product.Name}");
-                prestaShopClient.ProductFactory.Update(psProduct);
+                _logger.LogInformation($"Update product id: {product.Id}, name: {product.Name}");
+                _prestaShopClient.ProductFactory.Update(psProduct);
             }
             else
             {
-                logger.LogInformation($"Add new product id: {product.Id}, name: {product.Name}");
-                psProduct = prestaShopClient.ProductFactory.Add(psProduct);
+                _logger.LogInformation($"Add new product id: {product.Id}, name: {product.Name}");
+                psProduct = _prestaShopClient.ProductFactory.Add(psProduct);
             }
 
             product.WebId = (int)psProduct.id;
@@ -252,11 +252,11 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             if (stock.id.HasValue && stock.id > 0)
             {
-                prestaShopClient.StockAvailableFactory.Update(stock);
+                _prestaShopClient.StockAvailableFactory.Update(stock);
             }
             else
             {
-                stock = prestaShopClient.StockAvailableFactory.Add(stock);
+                stock = _prestaShopClient.StockAvailableFactory.Add(stock);
             }
 
             return stock;

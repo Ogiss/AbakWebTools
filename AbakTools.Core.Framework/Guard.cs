@@ -8,7 +8,7 @@ namespace AbakTools.Core.Framework
     {
         public static void NotNull(object value, string name)
         {
-            if(value == null)
+            if (value == null)
             {
                 throw new ArgumentNullException($"Argument {name} cann't be null");
             }
@@ -24,9 +24,17 @@ namespace AbakTools.Core.Framework
 
         public static void NotEmpty(Guid value, string name)
         {
-            if(value == Guid.Empty)
+            if (value == Guid.Empty)
             {
                 throw new ArgumentException($"Argumet {name} cann't be empty");
+            }
+        }
+
+        public static void GreaterThanZero(int value, string name)
+        {
+            if (value <= 0)
+            {
+                throw new ArgumentException($"Argument {name} must be greater than zero");
             }
         }
     }

@@ -2,7 +2,7 @@
 
 namespace AbakTools.Core.DataAccess.Mappings
 {
-    class DiscountGroupMap : GuidedEntityMap<DiscountGroupEntity>
+    class DiscountGroupMap : SynchronizableEntityMap<DiscountGroupEntity>
     {
         public override void CreateMapping()
         {

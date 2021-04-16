@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AbakTools.Core.DataAccess.Mappings.Category
 {
-    class CategoryEntityMap : BusinessEntityMap<CategoryEntity>
+    class CategoryEntityMap : GuidedEntity<CategoryEntity>
     {
         public override void CreateMapping()
         {

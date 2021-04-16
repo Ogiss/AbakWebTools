@@ -184,7 +184,6 @@ namespace Bukimedia.PrestaSharp.Deserializers
                             }
                             else
                             {
-                                //fallback to parse
                                 deserialisedValue = DateTimeOffset.Parse(toConvert);
                                 prop.SetValue(x, deserialisedValue, null);
                             }
@@ -193,7 +192,6 @@ namespace Bukimedia.PrestaSharp.Deserializers
                 }
                 else if (type == typeof(Decimal))
                 {
-                    //Hack for non defined price
                     if (value.Equals(""))
                     {
                         prop.SetValue(x, 0.0m, null);

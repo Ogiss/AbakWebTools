@@ -1,12 +1,9 @@
-﻿using AbakTools.Core.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AbakTools.Core.Domain;
 
 namespace AbakTools.Core.DataAccess.Mappings
 {
-    class BusinessEntityMap<TEntity> : GuidedEntityMap<TEntity>
-        where TEntity : IBusinessEntity
+    class GuidedEntity<TEntity> : GuidedEntityMap<TEntity>
+        where TEntity : BusinessEntity
     {
         protected virtual string IsDeletedColumnName => "deleted";
         protected virtual string CreationDateColumnName => "date_add";
@@ -16,7 +13,10 @@ namespace AbakTools.Core.DataAccess.Mappings
         {
             base.CreateMapping();
 
-            Map(x => x.IsDeleted, IsDeletedColumnName);
+            if (!string.IsNullOrEmpty(IsDeletedColumnName))
+            {
+                Map(x => x.IsDeleted, IsDeletedColumnName);
+            }
 
             if (!string.IsNullOrEmpty(CreationDateColumnName))
             {

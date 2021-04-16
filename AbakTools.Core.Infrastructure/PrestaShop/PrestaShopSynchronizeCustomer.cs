@@ -22,7 +22,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private readonly ISynchronizeStampRepository synchronizeStampRepository;
         private readonly ICustomerRepository customerRepository;
         private readonly IPrestaShopClient prestaShopClient;
-        private readonly IPsCustomerRepository psCustomerRepository;
+        private readonly IPSCustomerRepository psCustomerRepository;
 
         public PrestaShopSynchronizeCustomer(
             ILogger<PrestaShopSynchronizeCustomer> _logger,
@@ -30,7 +30,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             ISynchronizeStampRepository _synchronizeStampRepository,
             ICustomerRepository _customerRepository,
             IPrestaShopClient _prestaShopClient,
-            IPsCustomerRepository _psCustomerRepository)
+            IPSCustomerRepository _psCustomerRepository)
         {
             logger = _logger;
             unitOfWorkProvider = _unitOfWorkProvider;

@@ -1,10 +1,11 @@
-﻿using AbakTools.Core.Framework;
+﻿using AbakTools.Core.Domain;
+using AbakTools.Core.Framework;
 using System.Linq;
 
 namespace AbakTools.Core.DataAccess.Repository
 {
     internal class GenericBusinessEntityRepository<TEntity> : GenericGuidedEntityRepository<TEntity>
-        where TEntity : IBusinessEntity
+        where TEntity : BusinessEntity
     {
         protected GenericBusinessEntityRepository(ISessionManager sessionManager) : base(sessionManager)
         {

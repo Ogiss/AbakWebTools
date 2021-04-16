@@ -44,7 +44,7 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
             }
             else
             {
-                // TO DO: INSERT PRODUCT
+                // TODO: INSERT PRODUCT
             }
         }
 

@@ -95,7 +95,6 @@ namespace Bukimedia.PrestaSharp.Serializers
                 var name = prop.Name;
                 var rawValue = prop.GetValue(obj, null);
 
-                //Hack to serialize Bukimedia.PrestaSharp.Entities.AuxEntities.language
                 if (obj.GetType().FullName.Equals("Bukimedia.PrestaSharp.Entities.AuxEntities.language") && root.Name.LocalName.Equals("language") && name.Equals("id"))
                 {
 

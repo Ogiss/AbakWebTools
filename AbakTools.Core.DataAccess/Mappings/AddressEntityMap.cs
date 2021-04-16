@@ -3,7 +3,7 @@ using AbakTools.Core.Framework;
 
 namespace AbakTools.Core.DataAccess.Mappings
 {
-    class AddressEntityMap : BusinessEntityMap<AddressEntity>
+    class AddressEntityMap : GuidedEntity<AddressEntity>
     {
         protected override string IsDeletedColumnName => "Usuniety";
         protected override string CreationDateColumnName => "CreationDate";

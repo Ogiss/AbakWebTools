@@ -3,13 +3,11 @@ using System;
 
 namespace AbakTools.Core.Domain.DiscountGroup
 {
-    public class DiscountGroupEntity : GuidedEntity
+    public class DiscountGroupEntity : SynchronizableEntity
     {
         public virtual string Category { get; protected set; }
-
         public virtual string Name { get; protected set; }
-
-        public virtual byte[] EnovaStamp { get; protected set; }
+        public virtual byte[] EnovaStamp { get; protected set; } // TODO: To remove
 
         protected DiscountGroupEntity() { }
 

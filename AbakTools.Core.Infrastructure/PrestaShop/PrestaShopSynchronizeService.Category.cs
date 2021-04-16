@@ -19,23 +19,23 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             SynchronizeStampEntity synchronizeStamp = null;
             DateTime stampTo = DateTime.Now;
 
-            using (var uow = unitOfWorkProvider.CreateReadOnly())
+            using (var uow = _unitOfWorkProvider.CreateReadOnly())
             {
-                synchronizeStamp = synchronizeStampRepository.Get(SynchronizeCodes.Category, SynchronizeDirectionType.Export);
+                synchronizeStamp = _synchronizeStampRepository.Get(SynchronizeCodes.Category, SynchronizeDirectionType.Export);
             }
 
             DateTime stampFrom = synchronizeStamp?.DateTimeStamp ?? DateTime.MinValue;
 
             IReadOnlyCollection<CategoryEntity> categories = null;
 
-            using (var uow = unitOfWorkProvider.CreateReadOnly())
+            using (var uow = _unitOfWorkProvider.CreateReadOnly())
             {
-                categories = categoryRepository.GetAllModified(stampFrom, null);
+                categories = _categoryRepository.GetAllModified(stampFrom, null);
             }
 
             if (categories.Any())
             {
-                logger.LogDebug("Starting synchronize categories");
+                _logger.LogDebug("Starting synchronize categories");
 
                 foreach (var category in categories)
                 {
@@ -49,13 +49,13 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
                 synchronizeStamp.DateTimeStamp = stampTo;
 
-                using (var uow = unitOfWorkProvider.Create())
+                using (var uow = _unitOfWorkProvider.Create())
                 {
-                    synchronizeStampRepository.SaveOrUpdate(synchronizeStamp);
+                    _synchronizeStampRepository.SaveOrUpdate(synchronizeStamp);
                     uow.Commit();
                 }
 
-                logger.LogDebug($"Synchronize categories finished at {(DateTime.Now - stampTo).TotalSeconds} sec.");
+                _logger.LogDebug($"Synchronize categories finished at {(DateTime.Now - stampTo).TotalSeconds} sec.");
             }
         }
 
@@ -63,13 +63,13 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             try
             {
-                using (var uow = unitOfWorkProvider.Create())
+                using (var uow = _unitOfWorkProvider.Create())
                 {
-                    category = categoryRepository.Get(category.Id);
+                    category = _categoryRepository.Get(category.Id);
                     category.DisableUpdateModificationDate = true;
 
                     category psCategory = category.Parent == null
-                        ? prestaShopClient.GetRootCategory()
+                        ? _prestaShopClient.GetRootCategory()
                         : GetPsCategory(category.WebId);
 
                     if (psCategory == null && category.WebId.HasValue)
@@ -118,13 +118,13 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     }
 
                     category.Synchronize = Framework.SynchronizeType.Synchronized;
-                    categoryRepository.SaveOrUpdate(category);
+                    _categoryRepository.SaveOrUpdate(category);
                     uow.Commit();
                 }
             }
             catch (Exception ex)
             {
-                logger.LogError($"Synchronize category Id:{category.Id} error.{Environment.NewLine}{ex}");
+                _logger.LogError($"Synchronize category Id:{category.Id} error.{Environment.NewLine}{ex}");
             }
             finally
             {
@@ -138,7 +138,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             {
                 try
                 {
-                    return prestaShopClient.CategoryFactory.Get(id.Value);
+                    return _prestaShopClient.CategoryFactory.Get(id.Value);
                 }
                 catch (Bukimedia.PrestaSharp.PrestaSharpException ex)
                 {
@@ -167,8 +167,8 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             if (psCategory.is_root_category == 0)
             {
-                prestaShopClient.SetLangValue(psCategory, x => x.name, Functions.GetPrestaShopName(category.Name));
-                prestaShopClient.SetLangValue(psCategory, x => x.link_rewrite, Functions.GetLinkRewrite(category.Name));
+                _prestaShopClient.SetLangValue(psCategory, x => x.name, Functions.GetPrestaShopName(category.Name));
+                _prestaShopClient.SetLangValue(psCategory, x => x.link_rewrite, Functions.GetLinkRewrite(category.Name));
                 psCategory.active = (category.Active ?? false && !category.IsDeleted) ? 1 : 0;
             }
         }
@@ -186,13 +186,13 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             if (psCategory.id.HasValue && psCategory.id.Value > 0)
             {
-                logger.LogInformation($"Update category id: {category.Id}, name: {category.Name}");
-                prestaShopClient.CategoryFactory.Update(psCategory);
+                _logger.LogInformation($"Update category id: {category.Id}, name: {category.Name}");
+                _prestaShopClient.CategoryFactory.Update(psCategory);
             }
             else
             {
-                logger.LogInformation($"Add new category id: {category.Id}, name: {category.Name}");
-                psCategory = prestaShopClient.CategoryFactory.Add(psCategory);
+                _logger.LogInformation($"Add new category id: {category.Id}, name: {category.Name}");
+                psCategory = _prestaShopClient.CategoryFactory.Add(psCategory);
             }
 
             return psCategory;

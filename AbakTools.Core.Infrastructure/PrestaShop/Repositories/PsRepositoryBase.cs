@@ -6,14 +6,14 @@ using System.Reflection;
 
 namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories
 {
-    internal abstract class PsRepositoryBase<TEntry> : IPsRepositoryBase<TEntry>
+    internal abstract class PSRepositoryBase<TEntry> : IPSRepositoryBase<TEntry>
         where TEntry : PrestaShopEntity, IPrestaShopFactoryEntity, new()
     {
         protected IPrestaShopClient PrestaShopClient { get; private set; }
 
         protected abstract GenericFactory<TEntry> Factory { get; }
 
-        public PsRepositoryBase(IPrestaShopClient prestaShopClient)
+        public PSRepositoryBase(IPrestaShopClient prestaShopClient)
         {
             PrestaShopClient = prestaShopClient;
         }
@@ -68,6 +68,20 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories
             }
 
             return null;
+        }
+
+        public TEntry SaveOrUpdate(TEntry entry)
+        {
+            if (entry.id > 0)
+            {
+                Factory.Update(entry);
+            }
+            else
+            {
+                entry = Factory.Add(entry);
+            }
+
+            return entry;
         }
     }
 }

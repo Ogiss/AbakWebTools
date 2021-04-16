@@ -20,7 +20,6 @@ namespace AbakTools.Core.DataAccess.Repository
             return CurrentSession.Query<TEntity>();
         }
 
-
         public virtual void Delete(TEntity entity)
         {
             CurrentSession.Delete(entity);

@@ -4,9 +4,12 @@ using AbakTools.Core.Domain.Supplier;
 using AbakTools.Core.Domain.Synchronize;
 using AbakTools.Core.Domain.Tax;
 using AbakTools.Core.Framework.UnitOfWork;
+using AbakTools.Core.Infrastructure.PrestaShop.Exporters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,83 +17,94 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 {
     public partial class PrestaShopSynchronizeService : IPrestaShopSynchronizeService
     {
-        private readonly IConfiguration configuration;
-        private readonly ILogger logger;
-        private readonly IUnitOfWorkProvider unitOfWorkProvider;
-        private readonly ISynchronizeStampRepository synchronizeStampRepository;
-        private readonly IPrestaShopClient prestaShopClient;
-        private readonly ISupplierRepository supplierRepository;
-        private readonly ICategoryRepository categoryRepository;
-        private readonly IProductRepository productRepository;
-        private readonly ITaxRepository taxRepository;
-        private readonly IPrestaShopSynchronizeCustomer prestaShopSynchronizeCustomer;
-        private readonly IPrestaShopSynchronizeOrder prestaShopSynchronizeOrder;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger _logger;
+        private readonly IUnitOfWorkProvider _unitOfWorkProvider;
+        private readonly ISynchronizeStampRepository _synchronizeStampRepository;
+        private readonly IPrestaShopClient _prestaShopClient;
+        private readonly ISupplierRepository _supplierRepository;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IProductRepository _productRepository;
+        private readonly ITaxRepository _taxRepository;
+        private readonly IPrestaShopSynchronizeCustomer _prestaShopSynchronizeCustomer;
+        private readonly IPrestaShopSynchronizeOrder _prestaShopSynchronizeOrder;
+        private readonly IEnumerable<IPrestaShopExporter> _prestaShopExporters;
 
         private bool SynchronizationDisabled = false;
         private bool CustomerSynchronizeDisabled = false;
 
 
         public PrestaShopSynchronizeService(
-            IConfiguration _configuration,
-            ILogger<PrestaShopSynchronizeService> _logger,
-            IUnitOfWorkProvider _unitOfWorkProvider,
-            ISynchronizeStampRepository _synchronizeStampRepository,
-            IPrestaShopClient _prestaShopClient,
-            ISupplierRepository _supplierRepository,
-            ICategoryRepository _categoryRepository,
-            IProductRepository _productRepository,
-            ITaxRepository _taxRepository,
-            IPrestaShopSynchronizeCustomer _prestaShopSynchronizeCustomer,
-            IPrestaShopSynchronizeOrder _prestaShopSynchronizeOrder)
+            IConfiguration configuration,
+            ILogger<PrestaShopSynchronizeService> logger,
+            IUnitOfWorkProvider unitOfWorkProvider,
+            ISynchronizeStampRepository synchronizeStampRepository,
+            IPrestaShopClient prestaShopClient,
+            ISupplierRepository supplierRepository,
+            ICategoryRepository categoryRepository,
+            IProductRepository productRepository,
+            ITaxRepository taxRepository,
+            IPrestaShopSynchronizeCustomer prestaShopSynchronizeCustomer,
+            IPrestaShopSynchronizeOrder prestaShopSynchronizeOrder,
+            IEnumerable<IPrestaShopExporter> prestaShopExporters)
         {
-            configuration = _configuration;
-            logger = _logger;
-            unitOfWorkProvider = _unitOfWorkProvider;
-            prestaShopClient = _prestaShopClient;
-            synchronizeStampRepository = _synchronizeStampRepository;
-            supplierRepository = _supplierRepository;
-            categoryRepository = _categoryRepository;
-            productRepository = _productRepository;
-            taxRepository = _taxRepository;
-            prestaShopSynchronizeCustomer = _prestaShopSynchronizeCustomer;
-            prestaShopSynchronizeOrder = _prestaShopSynchronizeOrder;
+            _configuration = configuration;
+            _logger = logger;
+            _unitOfWorkProvider = unitOfWorkProvider;
+            _prestaShopClient = prestaShopClient;
+            _synchronizeStampRepository = synchronizeStampRepository;
+            _supplierRepository = supplierRepository;
+            _categoryRepository = categoryRepository;
+            _productRepository = productRepository;
+            _taxRepository = taxRepository;
+            _prestaShopSynchronizeCustomer = prestaShopSynchronizeCustomer;
+            _prestaShopSynchronizeOrder = prestaShopSynchronizeOrder;
+            _prestaShopExporters = prestaShopExporters;
 
             bool b;
-            SynchronizationDisabled = bool.TryParse(configuration["PrestaShop:Synchronization:Disabled"], out b) ? b : false;
-            CustomerSynchronizeDisabled = bool.TryParse(configuration["PrestaShop:Synchronization:Customers:Disabled"], out b) ? b : false;
+            SynchronizationDisabled = bool.TryParse(_configuration["PrestaShop:Synchronization:Disabled"], out b) ? b : false;
+            CustomerSynchronizeDisabled = bool.TryParse(_configuration["PrestaShop:Synchronization:Customers:Disabled"], out b) ? b : false;
         }
 
-        public async Task DoWork(CancellationToken stoppingToken)
+        public async Task DoWork(CancellationToken cancellationToken)
         {
             _ = Task.Run(async () =>
             {
-                while (!stoppingToken.IsCancellationRequested)
+                while (!cancellationToken.IsCancellationRequested)
                 {
                     if (!SynchronizationDisabled)
                     {
                         if (!CustomerSynchronizeDisabled)
                         {
-                            await prestaShopSynchronizeCustomer.DoWork(stoppingToken);
+                            await _prestaShopSynchronizeCustomer.DoWork(cancellationToken);
                         }
 
-                        await prestaShopSynchronizeOrder.DoWork(stoppingToken);
+                        await _prestaShopSynchronizeOrder.DoWork(cancellationToken);
                     }
 
-                    await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+                    await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
                 }
             });
 
-            while (!stoppingToken.IsCancellationRequested)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 if (!SynchronizationDisabled)
                 {
-                    logger.LogDebug("Synchronize suppliers, categories and products");
+                    //_logger.LogDebug("Synchronize suppliers, categories and products");
                     SynchronizeSuppliers();
                     SynchronizeCategories();
                     SynchronizeProduct();
+
+                    if (_prestaShopExporters?.Any() ?? false)
+                    {
+                        foreach (var exporter in _prestaShopExporters)
+                        {
+                            await exporter.StartExportAsync(cancellationToken);
+                        }
+                    }
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
             }
         }
     }

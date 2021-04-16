@@ -36,10 +36,12 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
 
             if(entity == null)
             {
+                Logger.LogDebug($"Insert discount group {entry.Name}");
                 entity = new DiscountGroupEntity(entry.Guid, entry.Category, entry.Name);
             }
             else
             {
+                Logger.LogDebug($"Update discount group {entry.Name}");
                 entity.SetName(entry.Name);
             }
 

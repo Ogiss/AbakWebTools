@@ -80,5 +80,11 @@ namespace AbakTools.Core.Domain.Services.Implementations
                 uow.Commit();
             }
         }
+
+        public async Task<long> GetDbtsAsync()
+        {
+            using var uow = _unitOfWorkProvider.CreateReadOnly();
+            return await _synchronizeStampRepository.GetDbtsAsync();
+        }
     }
 }
