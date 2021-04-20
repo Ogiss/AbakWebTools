@@ -19,6 +19,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
+        private readonly IServiceProvider _serviceProvider;
         private readonly IUnitOfWorkProvider _unitOfWorkProvider;
         private readonly ISynchronizeStampRepository _synchronizeStampRepository;
         private readonly IPrestaShopClient _prestaShopClient;
@@ -38,6 +39,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             IConfiguration configuration,
             ILogger<PrestaShopSynchronizeService> logger,
             IUnitOfWorkProvider unitOfWorkProvider,
+            IServiceProvider serviceProvider,
             ISynchronizeStampRepository synchronizeStampRepository,
             IPrestaShopClient prestaShopClient,
             ISupplierRepository supplierRepository,
@@ -51,6 +53,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             _configuration = configuration;
             _logger = logger;
             _unitOfWorkProvider = unitOfWorkProvider;
+            _serviceProvider = serviceProvider;
             _prestaShopClient = prestaShopClient;
             _synchronizeStampRepository = synchronizeStampRepository;
             _supplierRepository = supplierRepository;
@@ -99,7 +102,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     {
                         foreach (var exporter in _prestaShopExporters)
                         {
-                            await exporter.StartExportAsync(cancellationToken);
+                            exporter.StartExportAsync(cancellationToken).Wait();
                         }
                     }
                 }

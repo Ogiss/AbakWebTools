@@ -83,5 +83,10 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories
 
             return entry;
         }
+
+        public void Delete(TEntry entry)
+        {
+            Factory.Delete(entry);
+        }
     }
 }

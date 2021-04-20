@@ -43,5 +43,13 @@ namespace AbakTools.Core.DataAccess.Repository
         {
             return await GetQueryBase().Where(x => x.Synchronize != Framework.SynchronizeType.Deleted && x.EnovaGuid == enovaGuid && x.IsEnovaProduct).ToListAsync();
         }
+
+        public IEnumerable<int> GetAllWebIdsByEnovaGuid(Guid enovaGuid)
+        {
+            return GetQueryBase()
+                .Where(x => x.Synchronize != Framework.SynchronizeType.Deleted && x.WebId > 0 && x.EnovaGuid == enovaGuid)
+                .Select(x => x.WebId.Value)
+                .ToList();
+        }
     }
 }

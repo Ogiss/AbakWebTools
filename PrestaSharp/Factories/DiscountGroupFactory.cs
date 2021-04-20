@@ -1,7 +1,4 @@
 ﻿using Bukimedia.PrestaSharp.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Bukimedia.PrestaSharp.Factories
 {

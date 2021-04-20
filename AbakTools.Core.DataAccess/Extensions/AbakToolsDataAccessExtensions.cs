@@ -26,6 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<IOrderStatusRepository, OrderStatusRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IDiscountGroupRepository, DiscountGroupRepository>();
+            services.AddTransient<IProductDiscountGroupRepository, ProductDiscountGroupRepository>();
         }
     }
 }

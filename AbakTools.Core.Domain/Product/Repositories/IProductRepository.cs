@@ -8,9 +8,10 @@ namespace AbakTools.Core.Domain.Product.Repositories
     {
         IReadOnlyCollection<ProductEntity> GetAllReady();
         ProductEntity GetByWebId(int webId);
-        IReadOnlyCollection<ProductEntity> GetAllByEnovaGuid(Guid guid);
+        IReadOnlyCollection<ProductEntity> GetAllByEnovaGuid(Guid enovaGuid);
         Task<ProductEntity> GetEnovaProductAsync(Guid guid);
         Task<IList<ProductEntity>> GetEnovaProductsAsync(Guid enovaGuid);
         Task<IList<ProductEntity>> GetEnovaProductsWithoutInDeletingProcessAsync(Guid enovaGuid);
+        IEnumerable<int> GetAllWebIdsByEnovaGuid(Guid enovaGuid);
     }
 }

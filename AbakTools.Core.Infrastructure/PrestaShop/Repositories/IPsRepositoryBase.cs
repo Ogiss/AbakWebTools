@@ -11,5 +11,6 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories
         IReadOnlyCollection<TEntry> GetByFilter(object filterObj);
         IReadOnlyCollection<long> GetAllModifiedBetween(DateTime from, DateTime to);
         TEntry SaveOrUpdate(TEntry entry);
+        void Delete(TEntry entry);
     }
 }

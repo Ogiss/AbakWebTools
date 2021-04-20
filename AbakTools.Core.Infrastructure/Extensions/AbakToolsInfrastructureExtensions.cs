@@ -20,8 +20,8 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static void AddInfrastructureComponent(this IServiceCollection service)
         {
-            service.AddTransient<IPrestaShopClient, PrestaShopClient>();
-            service.AddTransient<IStringEncryptor, TripleDESStringEncryptor>();
+            service.AddScoped<IPrestaShopClient, PrestaShopClient>();
+            service.AddScoped<IStringEncryptor, TripleDESStringEncryptor>();
             RegisterPolicies(service);
             RegisterPrestaShopComponent(service);
             RegisterEnovaApiComponent(service);
@@ -29,32 +29,38 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static void RegisterEnovaApiComponent(IServiceCollection service)
         {
-            service.AddSingleton<IEnovaAPiClient, EnovaApiClient>();
-            service.AddSingleton<IEnovaProductRepository, EnovaProductRepository>();
-            service.AddSingleton<IEnovaCustomerRepository, EnovaCustomerRepository>();
-            service.AddSingleton<IEnovaDiscountGroupRepository, EnovaDiscountGroupRepository>();
-            service.AddSingleton<IEnovaCustomerDiscountRepository, EnovaCustomerDiscountRepository>();
-            service.AddSingleton<IEnovaDictionaryItemRepository, EnovaDictionaryItemRepository>();
+            service.AddScoped<IEnovaAPiClient, EnovaApiClient>();
+            service.AddScoped<IEnovaProductRepository, EnovaProductRepository>();
+            service.AddScoped<IEnovaCustomerRepository, EnovaCustomerRepository>();
+            service.AddScoped<IEnovaDiscountGroupRepository, EnovaDiscountGroupRepository>();
+            service.AddScoped<IEnovaCustomerDiscountRepository, EnovaCustomerDiscountRepository>();
+            service.AddScoped<IEnovaDictionaryItemRepository, EnovaDictionaryItemRepository>();
 
-            service.AddSingleton<IEnovaSynchronizeService, EnovaSynchronizeService>();
-            service.AddSingleton<EnovaPricesImporter>();
-            service.AddSingleton<EnovaCustomersImporter>();
-            service.AddSingleton<EnovaDiscountGroupsImporter>();
-            service.AddSingleton<EnovaDeletedDiscountGroupsImporter>();
-            service.AddSingleton<EnovaCustomerDiscountsImporter>();
-            service.AddSingleton<EnovaProductImporter>();
+            service.AddScoped<IEnovaSynchronizeService, EnovaSynchronizeService>();
+            service.AddScoped<EnovaPricesImporter>();
+            service.AddScoped<EnovaCustomersImporter>();
+            service.AddScoped<EnovaDiscountGroupsImporter>();
+            service.AddScoped<EnovaDeletedDiscountGroupsImporter>();
+            service.AddScoped<EnovaCustomerDiscountsImporter>();
+            service.AddScoped<EnovaProductImporter>();
         }
 
         private static void RegisterPrestaShopComponent(IServiceCollection service)
         {
-            service.AddTransient<IPrestaShopSynchronizeCustomer, PrestaShopSynchronizeCustomer>();
-            service.AddTransient<IPrestaShopSynchronizeOrder, PrestaShopSynchronizeOrder>();
+            service.AddScoped<IPrestaShopSynchronizeCustomer, PrestaShopSynchronizeCustomer>();
+            service.AddScoped<IPrestaShopSynchronizeOrder, PrestaShopSynchronizeOrder>();
 
-            service.AddTransient<IPSOrderRepository, PSOrderRepository>();
-            service.AddTransient<IPSCustomerRepository, PSCustomerRepository>();
-            service.AddTransient<IPSDiscountGroupRepository, PSDiscountGroupRepository>();
+            service.AddScoped<IPSOrderRepository, PSOrderRepository>();
+            service.AddScoped<IPSCustomerRepository, PSCustomerRepository>();
+            service.AddScoped<IPSDiscountGroupRepository, PSDiscountGroupRepository>();
+            service.AddScoped<IPSProductDiscountGroupRepository, PSProductDiscountGroupRepository>();
 
-            service.AddTransient<IPrestaShopExporter, DiscoutGroupExporter>();
+            service.AddScoped<IPrestaShopExporter, DiscoutGroupExporter>();
+            service.AddScoped<IPrestaShopExporter, ProductDiscountGroupExporter>();
+
+            //service.AddSingleton<DiscoutGroupExporter>();
+            //service.AddSingleton<ProductDiscountGroupExporter>();
+
         }
 
         private static void RegisterPolicies(IServiceCollection services)
