@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NHibernate.Linq;
 
 namespace AbakTools.Core.DataAccess.Repository
 {
@@ -18,6 +19,46 @@ namespace AbakTools.Core.DataAccess.Repository
         public virtual IQueryable<TEntity> GetQueryBase()
         {
             return CurrentSession.Query<TEntity>();
+        }
+
+        public IReadOnlyList<TEntity> GetList(ISpecyfication<TEntity> specification)
+        {
+            return GetQueryBase().Where(specification.ToExpression()).ToList();
+        }
+
+        public IReadOnlyList<int> GetIds(ISpecyfication<TEntity> specification)
+        {
+            return GetQueryBase().Where(specification.ToExpression()).Select(x => x.Id).ToList();
+        }
+
+        public TEntity Get(ISpecyfication<TEntity> specification)
+        {
+            return GetQueryBase().SingleOrDefault(specification.ToExpression());
+        }
+
+        public int? GetId(ISpecyfication<TEntity> specification)
+        {
+            return GetQueryBase().SingleOrDefault(specification.ToExpression())?.Id;
+        }
+
+        public async Task<IReadOnlyList<TEntity>> GetListAsync(ISpecyfication<TEntity> specification)
+        {
+            return await GetQueryBase().Where(specification.ToExpression()).ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<int>> GetIdsAsync(ISpecyfication<TEntity> specification)
+        {
+            return await GetQueryBase().Where(specification.ToExpression()).Select(x => x.Id).ToListAsync();
+        }
+
+        public async Task<TEntity> GetAsync(ISpecyfication<TEntity> specification)
+        {
+            return await GetQueryBase().SingleOrDefaultAsync(specification.ToExpression());
+        }
+
+        public async Task<int?> GetIdAsync(ISpecyfication<TEntity> specification)
+        {
+            return await GetQueryBase().Where(specification.ToExpression()).Select(x => x.Id).SingleOrDefaultAsync();
         }
 
         public virtual void Delete(TEntity entity)

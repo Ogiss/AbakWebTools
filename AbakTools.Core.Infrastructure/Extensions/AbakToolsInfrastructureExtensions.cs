@@ -54,9 +54,11 @@ namespace Microsoft.Extensions.DependencyInjection
             service.AddScoped<IPSCustomerRepository, PSCustomerRepository>();
             service.AddScoped<IPSDiscountGroupRepository, PSDiscountGroupRepository>();
             service.AddScoped<IPSProductDiscountGroupRepository, PSProductDiscountGroupRepository>();
+            service.AddScoped<IPSCustomerDiscountGroupRepository, PSCustomerDiscountGroupRepository>();
 
             service.AddScoped<IPrestaShopExporter, DiscoutGroupExporter>();
             service.AddScoped<IPrestaShopExporter, ProductDiscountGroupExporter>();
+            service.AddScoped<IPrestaShopExporter, CustomerDiscountGroupExporter>();
 
             //service.AddSingleton<DiscoutGroupExporter>();
             //service.AddSingleton<ProductDiscountGroupExporter>();

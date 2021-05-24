@@ -38,6 +38,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private StockAvailableFactory stockAvailableFactory;
         private DiscountGroupFactory discountGroupFactory;
         private ProductDiscountGroupFactory productDiscountGroupFactory;
+        private CustomerDiscountGroupFactory customerDiscountGroupFactory;
 
         public long DefaultGroupId => defaultGroupId;
         public long[] AllGroupsIds => allGroupsIds;
@@ -260,6 +261,19 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                 }
 
                 return productDiscountGroupFactory;
+            }
+        }
+
+        public CustomerDiscountGroupFactory CustomerDiscountGroupFactory
+        {
+            get
+            {
+                if (customerDiscountGroupFactory == null)
+                {
+                    customerDiscountGroupFactory = new CustomerDiscountGroupFactory(baseUrl, key, password);
+                }
+
+                return customerDiscountGroupFactory;
             }
         }
 

@@ -3,7 +3,7 @@ using System;
 
 namespace AbakTools.Core.Domain
 {
-    public abstract class SynchronizableEntity : GuidedEntity
+    public abstract class SynchronizableEntity : GuidedEntity, ISynchronizableEntity
     {
         public virtual int? WebId { get; protected set; }
         public virtual SynchronizeType Synchronize { get; protected set; } = SynchronizeType.New;
