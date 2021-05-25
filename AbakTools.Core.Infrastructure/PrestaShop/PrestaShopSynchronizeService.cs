@@ -71,43 +71,27 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
         public async Task DoWork(CancellationToken cancellationToken)
         {
-            _ = Task.Run(async () =>
+            if (!cancellationToken.IsCancellationRequested)
+                await _prestaShopSynchronizeCustomer.DoWork(cancellationToken);
+
+            if (!cancellationToken.IsCancellationRequested)
+                SynchronizeSuppliers();
+
+            if (!cancellationToken.IsCancellationRequested)
+                SynchronizeCategories();
+
+            if (!cancellationToken.IsCancellationRequested)
+                SynchronizeProduct();
+
+            if (_prestaShopExporters?.Any() ?? false && !cancellationToken.IsCancellationRequested)
             {
-                while (!cancellationToken.IsCancellationRequested)
+                foreach (var exporter in _prestaShopExporters)
                 {
-                    if (!SynchronizationDisabled)
-                    {
-                        if (!CustomerSynchronizeDisabled)
-                        {
-                            await _prestaShopSynchronizeCustomer.DoWork(cancellationToken);
-                        }
+                    if (cancellationToken.IsCancellationRequested)
+                        break;
 
-                        await _prestaShopSynchronizeOrder.DoWork(cancellationToken);
-                    }
-
-                    await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
+                    exporter.StartExportAsync(cancellationToken).Wait();
                 }
-            });
-
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                if (!SynchronizationDisabled)
-                {
-                    //_logger.LogDebug("Synchronize suppliers, categories and products");
-                    SynchronizeSuppliers();
-                    SynchronizeCategories();
-                    SynchronizeProduct();
-
-                    if (_prestaShopExporters?.Any() ?? false)
-                    {
-                        foreach (var exporter in _prestaShopExporters)
-                        {
-                            exporter.StartExportAsync(cancellationToken).Wait();
-                        }
-                    }
-                }
-
-                await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
             }
         }
     }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace AbakTools.Core.Infrastructure.Enova.Services.Implementations
 {
+    /*
     class EnovaSynchronizeService : IEnovaSynchronizeService
     {
         private readonly IConfiguration _configuration;
@@ -46,4 +47,5 @@ namespace AbakTools.Core.Infrastructure.Enova.Services.Implementations
             });
         }
     }
+    */
 }

@@ -98,7 +98,7 @@ namespace AbakTools.Core.Domain.Customer
 
         public virtual void SetGroupDiscount(DiscountGroupEntity discountGroup, Discount discount, bool active = true)
         {
-            var customerDiscount = Discounts.SingleOrDefault(x => x.DiscountGroup.Id == discountGroup.Id);
+            var customerDiscount = Discounts.SingleOrDefault(x => x.DiscountGroup.Id == discountGroup.Id && x.Synchronize != SynchronizeType.Deleted);
 
             if (customerDiscount == null)
             {

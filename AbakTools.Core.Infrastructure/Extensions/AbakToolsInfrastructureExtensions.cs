@@ -36,7 +36,7 @@ namespace Microsoft.Extensions.DependencyInjection
             service.AddScoped<IEnovaCustomerDiscountRepository, EnovaCustomerDiscountRepository>();
             service.AddScoped<IEnovaDictionaryItemRepository, EnovaDictionaryItemRepository>();
 
-            service.AddScoped<IEnovaSynchronizeService, EnovaSynchronizeService>();
+            //service.AddScoped<IEnovaSynchronizeService, EnovaSynchronizeService>();
             service.AddScoped<EnovaPricesImporter>();
             service.AddScoped<EnovaCustomersImporter>();
             service.AddScoped<EnovaDiscountGroupsImporter>();
@@ -47,6 +47,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static void RegisterPrestaShopComponent(IServiceCollection service)
         {
+            service.AddScoped<IPrestaShopSynchronizeService, PrestaShopSynchronizeService>();
             service.AddScoped<IPrestaShopSynchronizeCustomer, PrestaShopSynchronizeCustomer>();
             service.AddScoped<IPrestaShopSynchronizeOrder, PrestaShopSynchronizeOrder>();
 

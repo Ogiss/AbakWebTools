@@ -5,6 +5,6 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
 {
     public interface IEnovaImporter
     {
-        Task RunImport(IServiceScope serviceScope);
+        Task RunImport(IServiceScope serviceScope, System.Threading.CancellationToken cancellationToken);
     }
 }

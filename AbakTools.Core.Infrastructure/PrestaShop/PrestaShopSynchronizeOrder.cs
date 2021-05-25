@@ -60,17 +60,6 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
         public async Task DoWork(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                //SynchronizeOrderStatuses();
-                SynchronizeOrder();
-
-                await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
-            }
-        }
-
-        private void SynchronizeOrder()
-        {
             try
             {
                 SynchronizeStampEntity synchronizeStamp = null;
@@ -238,7 +227,5 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         {
             row.ChangeQuantity(psRow.product_quantity);
         }
-
-
     }
 }

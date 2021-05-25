@@ -22,6 +22,7 @@ namespace AbakTools.Core.Domain.Customer
             Guard.NotNull(discountGroup, nameof(discountGroup));
             Guard.NotNull(discount, nameof(discount));
 
+            Guid = discountGroup.Guid;
             Customer = customer;
             DiscountGroup = discountGroup;
             Discount = discount;

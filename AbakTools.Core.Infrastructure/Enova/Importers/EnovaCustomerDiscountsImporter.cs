@@ -46,6 +46,7 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
 
                 if (discountGroup != null)
                 {
+                    _logger.LogDebug($"Import customer discount for {customer.Code}, group: {discountGroup.Name}, diccount: {entry.Discount:P}");
                     customer.SetGroupDiscount(discountGroup, Discount.Of(entry.Discount));
                     _customerRepository.SaveOrUpdate(customer);
                 }

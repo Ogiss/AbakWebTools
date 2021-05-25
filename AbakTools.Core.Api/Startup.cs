@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
 using AbakTools.Core.Framework;
+using AbakTools.Core.Infrastructure.RecurringTasks;
 
 namespace AbakTools.Core.Api
 {
@@ -35,6 +36,7 @@ namespace AbakTools.Core.Api
             services.AddServiceComponent();
             services.AddInfrastructureComponent();
             services.AddDomainComponent();
+            services.AddRecurringTasks();
 
             services.AddControllers().AddJsonOptions(conf=> {
                 conf.JsonSerializerOptions.PropertyNameCaseInsensitive = true;

@@ -25,8 +25,8 @@ namespace AbakTools.Core.Api
                     webBuilder.UseStartup<Startup>();
                 })
                 .ConfigureServices(services => {
-                    services.AddHostedService<ConsumeScopedServiceHostedService>();
-                    services.AddScoped<IPrestaShopSynchronizeService, PrestaShopSynchronizeService>();
+                    //services.AddHostedService<ConsumeScopedServiceHostedService>();
+                    //services.AddScoped<IPrestaShopSynchronizeService, PrestaShopSynchronizeService>();
                 });
     }
 }

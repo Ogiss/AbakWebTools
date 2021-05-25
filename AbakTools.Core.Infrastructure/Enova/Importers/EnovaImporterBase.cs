@@ -25,7 +25,7 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
         protected virtual SynchronizeDirectionType SynchronizeDirection => SynchronizeDirectionType.Unknown;
         protected abstract ILogger Logger { get; }
 
-        public Task RunImport(IServiceScope serviceScope)
+        public Task RunImport(IServiceScope serviceScope, System.Threading.CancellationToken cancellationToken)
         {
             try
             {
