@@ -33,6 +33,7 @@ namespace AbakTools.Core.Domain.Order
 
         public virtual ISet<OrderRowEntity> Rows { get; set; } = new HashSet<OrderRowEntity>();
         public virtual ISet<OrderHistoryEntity> History { get; set; } = new HashSet<OrderHistoryEntity>();
+        public virtual ISet<MessageEntity> Messages { get; set; } = new HashSet<MessageEntity>();
 
         protected OrderEntity() { }
 
@@ -108,6 +109,26 @@ namespace AbakTools.Core.Domain.Order
                 row.Synchronize = SynchronizeType.Deleted;
                 RenumerableRows();
                 RecalcTotals();
+            }
+        }
+
+        public virtual MessageEntity GetMessageByWebId(int webId)
+        {
+            return Messages.SingleOrDefault(x => x.WebId == webId);
+        }
+
+        public virtual void AddOrModifyMessage(string text, int? webId = null)
+        {
+            var message = GetMessageByWebId(webId ?? 0);
+
+            if (message == null)
+            {
+                message = new MessageEntity(this, text, webId);
+                Messages.Add(message);
+            }
+            else
+            {
+                message.SetText(text);
             }
         }
 

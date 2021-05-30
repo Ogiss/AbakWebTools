@@ -48,6 +48,11 @@ namespace AbakTools.Core.DataAccess.Mappings.Order
                 .Inverse()
                 .KeyColumn("Zamowienie")
                 .Cascade.AllDeleteOrphan();
+
+            HasMany(x => x.Messages)
+                .Inverse()
+                .KeyColumn("Zamowienie")
+                .Cascade.AllDeleteOrphan();
         }
     }
 }

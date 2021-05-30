@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace AbakTools.Core.Domain
 {
-    public abstract class Specification<T> : ISpecyfication<T>
+    public abstract class Specification<T> : ISpecification<T>
     {
         public static readonly Specification<T> All = new IdentitySpecification<T>();
 

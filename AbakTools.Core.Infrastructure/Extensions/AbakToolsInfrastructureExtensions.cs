@@ -6,13 +6,10 @@ using AbakTools.Core.Infrastructure.Cryptography;
 using AbakTools.Core.Infrastructure.Enova.Api;
 using AbakTools.Core.Infrastructure.Enova.Importers;
 using AbakTools.Core.Infrastructure.Enova.Repositories;
-using AbakTools.Core.Infrastructure.Enova.Services;
-using AbakTools.Core.Infrastructure.Enova.Services.Implementations;
 using AbakTools.Core.Infrastructure.Policies;
 using AbakTools.Core.Infrastructure.PrestaShop;
 using AbakTools.Core.Infrastructure.PrestaShop.Exporters;
 using AbakTools.Core.Infrastructure.PrestaShop.Repositories;
-using System;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -56,6 +53,7 @@ namespace Microsoft.Extensions.DependencyInjection
             service.AddScoped<IPSDiscountGroupRepository, PSDiscountGroupRepository>();
             service.AddScoped<IPSProductDiscountGroupRepository, PSProductDiscountGroupRepository>();
             service.AddScoped<IPSCustomerDiscountGroupRepository, PSCustomerDiscountGroupRepository>();
+            service.AddScoped<IPSMessageRepository, PSMessageRepository>();
 
             service.AddScoped<IPrestaShopExporter, DiscoutGroupExporter>();
             service.AddScoped<IPrestaShopExporter, ProductDiscountGroupExporter>();

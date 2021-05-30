@@ -21,42 +21,42 @@ namespace AbakTools.Core.DataAccess.Repository
             return CurrentSession.Query<TEntity>();
         }
 
-        public IReadOnlyList<TEntity> GetList(ISpecyfication<TEntity> specification)
+        public IReadOnlyList<TEntity> GetList(ISpecification<TEntity> specification)
         {
             return GetQueryBase().Where(specification.ToExpression()).ToList();
         }
 
-        public IReadOnlyList<int> GetIds(ISpecyfication<TEntity> specification)
+        public IReadOnlyList<int> GetIds(ISpecification<TEntity> specification)
         {
             return GetQueryBase().Where(specification.ToExpression()).Select(x => x.Id).ToList();
         }
 
-        public TEntity Get(ISpecyfication<TEntity> specification)
+        public TEntity Get(ISpecification<TEntity> specification)
         {
             return GetQueryBase().SingleOrDefault(specification.ToExpression());
         }
 
-        public int? GetId(ISpecyfication<TEntity> specification)
+        public int? GetId(ISpecification<TEntity> specification)
         {
             return GetQueryBase().SingleOrDefault(specification.ToExpression())?.Id;
         }
 
-        public async Task<IReadOnlyList<TEntity>> GetListAsync(ISpecyfication<TEntity> specification)
+        public async Task<IReadOnlyList<TEntity>> GetListAsync(ISpecification<TEntity> specification)
         {
             return await GetQueryBase().Where(specification.ToExpression()).ToListAsync();
         }
 
-        public async Task<IReadOnlyList<int>> GetIdsAsync(ISpecyfication<TEntity> specification)
+        public async Task<IReadOnlyList<int>> GetIdsAsync(ISpecification<TEntity> specification)
         {
             return await GetQueryBase().Where(specification.ToExpression()).Select(x => x.Id).ToListAsync();
         }
 
-        public async Task<TEntity> GetAsync(ISpecyfication<TEntity> specification)
+        public async Task<TEntity> GetAsync(ISpecification<TEntity> specification)
         {
             return await GetQueryBase().SingleOrDefaultAsync(specification.ToExpression());
         }
 
-        public async Task<int?> GetIdAsync(ISpecyfication<TEntity> specification)
+        public async Task<int?> GetIdAsync(ISpecification<TEntity> specification)
         {
             return await GetQueryBase().Where(specification.ToExpression()).Select(x => x.Id).SingleOrDefaultAsync();
         }

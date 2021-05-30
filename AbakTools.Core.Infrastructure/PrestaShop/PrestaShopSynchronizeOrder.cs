@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using PsOrder = Bukimedia.PrestaSharp.Entities.order;
@@ -32,6 +33,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private readonly IProductPricePolicy pricePolicy;
 
         private readonly IPSOrderRepository psOrderRepository;
+        private readonly IPSMessageRepository psMessageRepository;
 
         public PrestaShopSynchronizeOrder(
             ILogger<PrestaShopSynchronizeOrder> _logger,
@@ -43,6 +45,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             IProductRepository _productRepository,
             IPrestaShopClient _prestaShopClient,
             IPSOrderRepository _psOrderRepository,
+            IPSMessageRepository _psMessageRepository,
             IProductPricePolicy _pricePolicy)
         {
             logger = _logger;
@@ -55,6 +58,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             prestaShopClient = _prestaShopClient;
             psOrderRepository = _psOrderRepository;
             pricePolicy = _pricePolicy;
+            psMessageRepository = _psMessageRepository;
         }
 
 
@@ -135,6 +139,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private void UpdateOrder(OrderEntity order, Bukimedia.PrestaSharp.Entities.order psOrder)
         {
             //throw new NotImplementedException();
+            SynchronizeOrderMessages(order, psOrder);
         }
 
         private OrderEntity InsertOrder(PsOrder psOrder)
@@ -148,6 +153,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             order.DeliveryAddress = customer.GetDefaultDeliveryAddress();
             SetOrderStateToDefault(order);
             SynchronizeOrderDetails(order, psOrder);
+            SynchronizeOrderMessages(order, psOrder);
 
             return order;
         }
@@ -226,6 +232,19 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private void UpdateRow(OrderRowEntity row, PsOrderRow psRow)
         {
             row.ChangeQuantity(psRow.product_quantity);
+        }
+
+        private void SynchronizeOrderMessages(OrderEntity order, PsOrder psOrder)
+        {
+            var messages = psMessageRepository.GetByFilter(new { id_order = psOrder.id.ToString() });
+
+            if (messages.Any())
+            {
+                foreach(var msg in messages)
+                {
+                    order.AddOrModifyMessage(msg.Message, (int)msg.id);
+                }
+            }
         }
     }
 }
