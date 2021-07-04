@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AbakTools.Core.Framework
+namespace AbakTools.Core.Framework.Domain
 {
     public enum SynchronizeType
     {

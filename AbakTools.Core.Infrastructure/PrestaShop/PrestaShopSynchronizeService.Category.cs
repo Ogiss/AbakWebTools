@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 using AbakTools.Core.Domain;
+using AbakTools.Core.Framework.Domain;
 
 namespace AbakTools.Core.Infrastructure.PrestaShop
 {
@@ -117,7 +118,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                         category.WebId = (int?)psCategory?.id;
                     }
 
-                    category.Synchronize = Framework.SynchronizeType.Synchronized;
+                    category.Synchronize = SynchronizeType.Synchronized;
                     _categoryRepository.SaveOrUpdate(category);
                     uow.Commit();
                 }

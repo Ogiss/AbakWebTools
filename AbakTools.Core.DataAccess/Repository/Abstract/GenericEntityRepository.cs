@@ -3,9 +3,9 @@ using AbakTools.Core.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using NHibernate.Linq;
+using AbakTools.Core.Framework.Domain;
 
 namespace AbakTools.Core.DataAccess.Repository
 {
@@ -21,44 +21,49 @@ namespace AbakTools.Core.DataAccess.Repository
             return CurrentSession.Query<TEntity>();
         }
 
-        public IReadOnlyList<TEntity> GetList(ISpecification<TEntity> specification)
+        protected virtual IQueryable<TEntity> GetQuery(ISpecification<TEntity> specification)
         {
-            return GetQueryBase().Where(specification.ToExpression()).ToList();
+            return GetQueryBase().Where(specification.ToExpression());
         }
 
-        public IReadOnlyList<int> GetIds(ISpecification<TEntity> specification)
+        public IReadOnlyList<TEntity> GetList(ISpecification<TEntity> specification)
         {
-            return GetQueryBase().Where(specification.ToExpression()).Select(x => x.Id).ToList();
+            return GetQuery(specification).ToList();
+        }
+
+        public IReadOnlyList<TResult> GetList<TResult>(ISpecification<TEntity> specification, IProjection<TEntity, TResult> projection)
+        {
+            return GetQuery(specification).Select(projection.ToExpression()).ToList();
         }
 
         public TEntity Get(ISpecification<TEntity> specification)
         {
-            return GetQueryBase().SingleOrDefault(specification.ToExpression());
+            return GetQuery(specification).SingleOrDefault();
         }
 
-        public int? GetId(ISpecification<TEntity> specification)
+        public TResult Get<TResult>(ISpecification<TEntity> specification, IProjection<TEntity, TResult> projection)
         {
-            return GetQueryBase().SingleOrDefault(specification.ToExpression())?.Id;
+            return GetQuery(specification).Select(projection.ToExpression()).SingleOrDefault();
         }
 
         public async Task<IReadOnlyList<TEntity>> GetListAsync(ISpecification<TEntity> specification)
         {
-            return await GetQueryBase().Where(specification.ToExpression()).ToListAsync();
+            return await GetQuery(specification).ToListAsync();
         }
 
-        public async Task<IReadOnlyList<int>> GetIdsAsync(ISpecification<TEntity> specification)
+        public async Task<IReadOnlyList<TResult>> GetListAsync<TResult>(ISpecification<TEntity> specification, IProjection<TEntity, TResult> projection)
         {
-            return await GetQueryBase().Where(specification.ToExpression()).Select(x => x.Id).ToListAsync();
+            return await GetQuery(specification).Select(projection.ToExpression()).ToListAsync();
         }
 
         public async Task<TEntity> GetAsync(ISpecification<TEntity> specification)
         {
-            return await GetQueryBase().SingleOrDefaultAsync(specification.ToExpression());
+            return await GetQuery(specification).SingleOrDefaultAsync();
         }
 
-        public async Task<int?> GetIdAsync(ISpecification<TEntity> specification)
+        public async Task<TResult> GetAsync<TResult>(ISpecification<TEntity> specification, IProjection<TEntity, TResult> projection)
         {
-            return await GetQueryBase().Where(specification.ToExpression()).Select(x => x.Id).SingleOrDefaultAsync();
+            return await GetQuery(specification).Select(projection.ToExpression()).SingleOrDefaultAsync();
         }
 
         public virtual void Delete(TEntity entity)

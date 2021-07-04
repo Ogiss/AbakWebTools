@@ -33,7 +33,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private readonly IProductPricePolicy pricePolicy;
 
         private readonly IPSOrderRepository psOrderRepository;
-        private readonly IPSMessageRepository psMessageRepository;
+        private readonly IPsMessageRepository psMessageRepository;
 
         public PrestaShopSynchronizeOrder(
             ILogger<PrestaShopSynchronizeOrder> _logger,
@@ -45,7 +45,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             IProductRepository _productRepository,
             IPrestaShopClient _prestaShopClient,
             IPSOrderRepository _psOrderRepository,
-            IPSMessageRepository _psMessageRepository,
+            IPsMessageRepository _psMessageRepository,
             IProductPricePolicy _pricePolicy)
         {
             logger = _logger;

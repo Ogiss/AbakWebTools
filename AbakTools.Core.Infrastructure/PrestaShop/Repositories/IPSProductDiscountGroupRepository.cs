@@ -2,7 +2,7 @@
 
 namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories
 {
-    public interface IPSProductDiscountGroupRepository : IPSRepositoryBase<PsProductDiscountGroup>
+    public interface IPsProductDiscountGroupRepository : IPsRepositoryBase<PsProductDiscountGroup>
     {
         PsProductDiscountGroup Get(int productId, int discountGroupId);
     }

@@ -2,6 +2,7 @@
 using AbakTools.Core.Domain.Common;
 using AbakTools.Core.Domain.DiscountGroup;
 using AbakTools.Core.Framework;
+using AbakTools.Core.Framework.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;

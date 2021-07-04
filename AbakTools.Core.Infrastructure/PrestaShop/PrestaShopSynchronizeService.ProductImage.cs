@@ -1,4 +1,6 @@
-﻿using AbakTools.Core.Domain.Product;
+﻿/*
+using AbakTools.Core.Domain.Product;
+using AbakTools.Core.Framework.Domain;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
@@ -69,7 +71,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             {
                 DeletePsImage(psProduct.id.Value, localImage.WebId.Value);
             }
-            localImage.Synchronize = Framework.SynchronizeType.Synchronized;
+            localImage.Synchronize = SynchronizeType.Synchronized;
             localImage.IsDeleted = true;
         }
 
@@ -109,3 +111,4 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         }
     }
 }
+*/

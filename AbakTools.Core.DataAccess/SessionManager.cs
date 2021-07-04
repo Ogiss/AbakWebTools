@@ -16,16 +16,16 @@ namespace AbakTools.Core.DataAccess
 {
     class SessionManager : ISessionManager
     {
-        //private readonly ILogger _logger;
-
         private ISessionFactory _sessionFactory;
 
+        //private static NHibernateConfig _configuration;
         public NHibernateConfig Configuration { get; private set; }
         public bool Initialized => _sessionFactory != null;
         public ISession CurrentSession => _sessionFactory?.GetCurrentSession();
 
         public SessionManager()
         {
+            //_sessionFactory = _configuration.BuildSessionFactory();
         }
 
         public void Initialize(string connectionString)
@@ -40,6 +40,13 @@ namespace AbakTools.Core.DataAccess
 
             //_logger.LogInformation("NHibernate initialized");
         }
+
+        /*
+        public static void Configure(string connectionString)
+        {
+            _configuration = CreateConfiguration(connectionString);
+        }
+        */
 
         public ISession OpenSession()
         {
@@ -65,7 +72,7 @@ namespace AbakTools.Core.DataAccess
             }
         }
 
-        private NHibernateConfig CreateConfiguration(string connectionString)
+        private static NHibernateConfig CreateConfiguration(string connectionString)
         {
             var fluentConfig = Fluently.Configure()
                 .Database(MsSqlConfiguration.MsSql2012

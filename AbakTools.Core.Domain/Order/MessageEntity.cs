@@ -1,4 +1,5 @@
 ﻿using AbakTools.Core.Framework;
+using AbakTools.Core.Framework.Domain;
 
 namespace AbakTools.Core.Domain.Order
 {

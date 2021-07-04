@@ -9,20 +9,21 @@ using AbakTools.Core.Domain.Customer.Specifications;
 using AbakTools.Core.Infrastructure.PrestaShop.Repositories;
 using System;
 using PSCustomerDiscountGroup = Bukimedia.PrestaSharp.Entities.customer_discount_group;
+using AbakTools.Core.Domain.Common.Projections;
 
 namespace AbakTools.Core.Infrastructure.PrestaShop.Exporters
 {
     class CustomerDiscountGroupExporter : PrestaShopExporterBase<int>
     {
         private readonly ICustomerDiscountGroupRepository _customerDiscountGroupRepository;
-        private readonly IPSCustomerDiscountGroupRepository _psCustomerDiscountGroupRepository;
+        private readonly IPsCustomerDiscountGroupRepository _psCustomerDiscountGroupRepository;
 
         public CustomerDiscountGroupExporter(
             ILogger<CustomerDiscountGroupExporter> logger,
             IUnitOfWorkProvider unitOfWorkProvider,
             ISynchronizeStampService synchronizeStampService,
             ICustomerDiscountGroupRepository customerDiscountGroupRepository,
-            IPSCustomerDiscountGroupRepository psCustomerDiscountGroupRepository)
+            IPsCustomerDiscountGroupRepository psCustomerDiscountGroupRepository)
             : base(logger, unitOfWorkProvider, synchronizeStampService)
         {
             _customerDiscountGroupRepository = customerDiscountGroupRepository;
@@ -35,7 +36,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Exporters
 
             using (var uow = UnitOfWorkProvider.CreateReadOnly())
             {
-                return await _customerDiscountGroupRepository.GetIdsAsync(specification);
+                return await _customerDiscountGroupRepository.GetListAsync(specification, EntityIdProjection<CustomerDiscountEntity>.Create());
             }
         }
 

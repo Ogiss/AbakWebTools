@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace AbakTools.Core.Framework
+namespace AbakTools.Core.Framework.Domain
 {
     public interface IBusinessEntity : IGuidedEntity
     {

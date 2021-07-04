@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using PsCustomer = Bukimedia.PrestaSharp.Entities.customer;
 
-namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories
+namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories.Implementations
 {
-    internal class PSCustomerRepository : PSRepositoryBase<PsCustomer>, IPSCustomerRepository
+    internal class PSCustomerRepository : PsRepositoryBase<PsCustomer>, IPSCustomerRepository
     {
         protected override GenericFactory<PsCustomer> Factory => PrestaShopClient.CustomerFactory;
 

@@ -1,5 +1,5 @@
 ﻿using AbakTools.Core.Domain;
-using AbakTools.Core.Framework;
+using AbakTools.Core.Framework.Domain;
 using NHibernate;
 using NHibernate.Type;
 using System;

@@ -10,6 +10,9 @@ using AbakTools.Core.Infrastructure.Policies;
 using AbakTools.Core.Infrastructure.PrestaShop;
 using AbakTools.Core.Infrastructure.PrestaShop.Exporters;
 using AbakTools.Core.Infrastructure.PrestaShop.Repositories;
+using AbakTools.Core.Infrastructure.PrestaShop.Repositories.Implementations;
+using AbakTools.Core.Infrastructure.PrestaShop.Services;
+using AbakTools.Core.Infrastructure.PrestaShop.Services.Implementations;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -50,18 +53,21 @@ namespace Microsoft.Extensions.DependencyInjection
 
             service.AddScoped<IPSOrderRepository, PSOrderRepository>();
             service.AddScoped<IPSCustomerRepository, PSCustomerRepository>();
-            service.AddScoped<IPSDiscountGroupRepository, PSDiscountGroupRepository>();
-            service.AddScoped<IPSProductDiscountGroupRepository, PSProductDiscountGroupRepository>();
-            service.AddScoped<IPSCustomerDiscountGroupRepository, PSCustomerDiscountGroupRepository>();
-            service.AddScoped<IPSMessageRepository, PSMessageRepository>();
+            service.AddScoped<IPsDiscountGroupRepository, PsDiscountGroupRepository>();
+            service.AddScoped<IPsProductDiscountGroupRepository, PsProductDiscountGroupRepository>();
+            service.AddScoped<IPsCustomerDiscountGroupRepository, PsCustomerDiscountGroupRepository>();
+            service.AddScoped<IPsMessageRepository, PsMessageRepository>();
+            service.AddScoped<IPsProductRepository, PsProductRepository>();
+
+            service.AddScoped<IDiscountGroupSynchronizeService, DiscountGroupSynchronizeService>();
+            service.AddScoped<IProductDiscountGroupSynchronizeService, ProductDiscountGroupSynchronizeService>();
+            service.AddScoped<IProductSynchronizeService, ProductSynchronizeService>();
+            service.AddScoped<IProductImageSynchronizeService, ProductImageSynchronizeService>();
 
             service.AddScoped<IPrestaShopExporter, DiscoutGroupExporter>();
+            service.AddScoped<IPrestaShopExporter, ProductExporter>();
             service.AddScoped<IPrestaShopExporter, ProductDiscountGroupExporter>();
             service.AddScoped<IPrestaShopExporter, CustomerDiscountGroupExporter>();
-
-            //service.AddSingleton<DiscoutGroupExporter>();
-            //service.AddSingleton<ProductDiscountGroupExporter>();
-
         }
 
         private static void RegisterPolicies(IServiceCollection services)

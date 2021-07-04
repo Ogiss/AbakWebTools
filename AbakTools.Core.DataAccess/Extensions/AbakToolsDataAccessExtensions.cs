@@ -17,6 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static void AddDataAccsessComponent(this IServiceCollection services)
         {
             services.AddSingleton<IUnitOfWorkProvider, UnitOfWorkProvider>();
+            //services.AddScoped<IUnitOfWorkProvider, UnitOfWorkProvider>();
             services.AddTransient<ISynchronizeStampRepository, SynchronizeStampRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<ISupplierRepository, SupplierRepository>();

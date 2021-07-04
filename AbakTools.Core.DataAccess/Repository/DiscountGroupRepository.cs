@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using NHibernate.Linq;
-using AbakTools.Core.Framework;
+using AbakTools.Core.Framework.Domain;
 
 namespace AbakTools.Core.DataAccess.Repository
 {

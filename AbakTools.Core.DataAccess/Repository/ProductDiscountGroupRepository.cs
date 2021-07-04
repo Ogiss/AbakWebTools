@@ -1,10 +1,10 @@
 ﻿using AbakTools.Core.Domain.Product.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AbakTools.Core.Framework;
 using AbakTools.Core.Domain.Product;
 using System.Linq;
 using NHibernate.Linq;
+using AbakTools.Core.Framework.Domain;
 
 namespace AbakTools.Core.DataAccess.Repository
 {

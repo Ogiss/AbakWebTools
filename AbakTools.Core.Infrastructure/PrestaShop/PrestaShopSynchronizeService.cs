@@ -5,6 +5,8 @@ using AbakTools.Core.Domain.Synchronize;
 using AbakTools.Core.Domain.Tax;
 using AbakTools.Core.Framework.UnitOfWork;
 using AbakTools.Core.Infrastructure.PrestaShop.Exporters;
+using AbakTools.Core.Infrastructure.PrestaShop.Repositories;
+using AbakTools.Core.Infrastructure.PrestaShop.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
@@ -27,6 +29,8 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private readonly ICategoryRepository _categoryRepository;
         private readonly IProductRepository _productRepository;
         private readonly ITaxRepository _taxRepository;
+        private readonly IPsProductDiscountGroupRepository _psProductDiscountGroupRepository;
+        private readonly IDiscountGroupSynchronizeService _discountGroupSynchronizeService;
         private readonly IPrestaShopSynchronizeCustomer _prestaShopSynchronizeCustomer;
         private readonly IPrestaShopSynchronizeOrder _prestaShopSynchronizeOrder;
         private readonly IEnumerable<IPrestaShopExporter> _prestaShopExporters;
@@ -46,8 +50,11 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             ICategoryRepository categoryRepository,
             IProductRepository productRepository,
             ITaxRepository taxRepository,
+            IPsProductDiscountGroupRepository psProductDiscountGroupRepository,
+            IDiscountGroupSynchronizeService discountGroupSynchronizeService,
             IPrestaShopSynchronizeCustomer prestaShopSynchronizeCustomer,
             IPrestaShopSynchronizeOrder prestaShopSynchronizeOrder,
+            
             IEnumerable<IPrestaShopExporter> prestaShopExporters)
         {
             _configuration = configuration;
@@ -60,6 +67,8 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             _categoryRepository = categoryRepository;
             _productRepository = productRepository;
             _taxRepository = taxRepository;
+            _psProductDiscountGroupRepository = psProductDiscountGroupRepository;
+            _discountGroupSynchronizeService = discountGroupSynchronizeService;
             _prestaShopSynchronizeCustomer = prestaShopSynchronizeCustomer;
             _prestaShopSynchronizeOrder = prestaShopSynchronizeOrder;
             _prestaShopExporters = prestaShopExporters;
@@ -79,9 +88,6 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
             if (!cancellationToken.IsCancellationRequested)
                 SynchronizeCategories();
-
-            if (!cancellationToken.IsCancellationRequested)
-                SynchronizeProduct();
 
             if (_prestaShopExporters?.Any() ?? false && !cancellationToken.IsCancellationRequested)
             {

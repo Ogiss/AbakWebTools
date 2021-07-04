@@ -1,5 +1,5 @@
 ﻿using AbakTools.Core.Domain.Category;
-using AbakTools.Core.Framework;
+using AbakTools.Core.Framework.Domain;
 using System;
 using System.Collections.Generic;
 using System.Text;

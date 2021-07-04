@@ -2,7 +2,7 @@
 
 namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories
 {
-    public interface IPSDiscountGroupRepository : IPSRepositoryBase<discount_group>
+    public interface IPsDiscountGroupRepository : IPsRepositoryBase<discount_group>
     {
     }
 }

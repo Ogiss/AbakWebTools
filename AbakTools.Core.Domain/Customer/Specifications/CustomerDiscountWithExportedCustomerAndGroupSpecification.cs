@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AbakTools.Core.Framework.Domain;
+using System;
 using System.Linq.Expressions;
 
 namespace AbakTools.Core.Domain.Customer.Specifications

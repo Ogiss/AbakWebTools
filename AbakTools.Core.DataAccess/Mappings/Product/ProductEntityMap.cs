@@ -1,5 +1,5 @@
 ﻿using AbakTools.Core.Domain.Product;
-using AbakTools.Core.Framework;
+using AbakTools.Core.Framework.Domain;
 using System;
 using System.Security.Cryptography.X509Certificates;
 

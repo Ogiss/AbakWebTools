@@ -3,6 +3,7 @@ using AbakTools.Core.Domain.DiscountGroup;
 using AbakTools.Core.Domain.Supplier;
 using AbakTools.Core.Domain.Tax;
 using AbakTools.Core.Framework;
+using AbakTools.Core.Framework.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +58,18 @@ namespace AbakTools.Core.Domain.Product
             Name = name;
             EnovaGuid = enovaGuid;
             Synchronize = SynchronizeType.New;
+        }
+
+        public virtual void MakeSynchronized()
+        {
+            if (Synchronize == SynchronizeType.Deleted)
+            {
+                IsDeleted = true;
+            }
+
+            IsReady = false;
+
+            Synchronize = SynchronizeType.Synchronized;
         }
 
         public virtual IEnumerable<ImageEntity> GetUndeletedImages()

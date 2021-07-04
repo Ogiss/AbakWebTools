@@ -1,5 +1,5 @@
 ﻿using AbakTools.Core.Domain.Customer;
-using AbakTools.Core.Framework;
+using AbakTools.Core.Framework.Domain;
 
 namespace AbakTools.Core.Domain.Address
 {

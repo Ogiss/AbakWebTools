@@ -1,4 +1,4 @@
-﻿using AbakTools.Core.Framework;
+﻿using AbakTools.Core.Framework.Domain;
 using FluentNHibernate.Mapping;
 using System;
 using System.Collections.Generic;

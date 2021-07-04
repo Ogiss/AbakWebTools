@@ -2,13 +2,13 @@
 using System.Linq;
 using PSProductDiscountGroup = Bukimedia.PrestaSharp.Entities.product_discount_group;
 
-namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories
+namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories.Implementations
 {
-    class PSProductDiscountGroupRepository : PSRepositoryBase<PSProductDiscountGroup>, IPSProductDiscountGroupRepository
+    class PsProductDiscountGroupRepository : PsRepositoryBase<PSProductDiscountGroup>, IPsProductDiscountGroupRepository
     {
         protected override GenericFactory<PSProductDiscountGroup> Factory => PrestaShopClient.ProductDiscountGroupFactory;
 
-        public PSProductDiscountGroupRepository(IPrestaShopClient prestaShopClient) : base(prestaShopClient)
+        public PsProductDiscountGroupRepository(IPrestaShopClient prestaShopClient) : base(prestaShopClient)
         {
         }
 

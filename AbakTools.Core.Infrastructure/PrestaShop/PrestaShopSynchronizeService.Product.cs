@@ -1,7 +1,9 @@
-﻿using AbakTools.Core.Domain.Category;
+﻿/*
+using AbakTools.Core.Domain.Category;
 using AbakTools.Core.Domain.Product;
 using AbakTools.Core.Domain.Synchronize;
 using AbakTools.Core.Domain.Tax;
+using AbakTools.Core.Framework.Domain;
 using Bukimedia.PrestaSharp.Entities;
 using Bukimedia.PrestaSharp.Entities.AuxEntities;
 using Bukimedia.PrestaSharp.Lib;
@@ -76,7 +78,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                         product.WebId = null;
                     }
 
-                    if (product.Synchronize == Framework.SynchronizeType.Deleted || product.NotWebAvailable)
+                    if (product.Synchronize == SynchronizeType.Deleted || product.NotWebAvailable)
                     {
                         if (psProduct != null)
                         {
@@ -86,14 +88,13 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     else
                     {
 
-                        if (psProduct == null && product.Synchronize != Framework.SynchronizeType.Deleted)
+                        if (psProduct == null && product.Synchronize != SynchronizeType.Deleted)
                         {
                             psProduct = new Bukimedia.PrestaSharp.Entities.product();
                         }
 
                         if (psProduct != null)
                         {
-
                             psProduct.id_tax_rules_group = GetTaxRuleGroupId(product.Tax);
                             psProduct.price = product.Price;
                             psProduct.show_price = 1;
@@ -113,12 +114,13 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                             psProduct.position_in_category = 0;
                             psProduct.minimal_quantity = product.MinimumOrderQuantity > 0 ? product.MinimumOrderQuantity : 1;
                             psProduct.id_category_default = product.Categories.Where(x => x.WebId.HasValue && !x.IsDeleted &&
-                                x.Synchronize != Framework.SynchronizeType.Deleted).Max(x => x.WebId);
+                                x.Synchronize != SynchronizeType.Deleted).Max(x => x.WebId);
 
                             psProduct = SaveOrUpdatePsProduct(psProduct, product);
 
                             if (!product.IsArchived)
                             {
+                                UpdateProductDiscountGroups(product, psProduct);
                                 UpdateProductAvailability(product, psProduct);
                             }
                         }
@@ -126,12 +128,12 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
 
                     SynchronizeProductImages(product, psProduct);
 
-                    if (product.Synchronize == Framework.SynchronizeType.Deleted)
+                    if (product.Synchronize == SynchronizeType.Deleted)
                     {
                         product.IsDeleted = true;
                     }
 
-                    product.Synchronize = Framework.SynchronizeType.Synchronized;
+                    product.Synchronize = SynchronizeType.Synchronized;
                     product.IsReady = false;
 
                     _productRepository.SaveOrUpdate(product);
@@ -163,6 +165,42 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     catch (Exception ex)
                     {
                         _logger.LogError(ex.ToString());
+                    }
+                }
+            }
+        }
+
+        private void UpdateProductDiscountGroups(ProductEntity product, PsProduct psProduct)
+        {
+            var enovaProduct = _productRepository.GetEnovaProductAsync(product.EnovaGuid.Value).Result;
+            if (enovaProduct != null)
+            {
+                var productDiscountGroups = enovaProduct.ProductDiscountGroups.ToList();
+                var psProductDiscountGroups = _psProductDiscountGroupRepository.GetByFilter(new { id_product = psProduct.id });
+
+                foreach (var productDiscountGroup in productDiscountGroups)
+                {
+                    if (productDiscountGroup.DiscountGroup != null)
+                    {
+                        if (!productDiscountGroup.DiscountGroup.WebId.HasValue)
+                        {
+                            _discountGroupSynchronizeService.Synchronize(productDiscountGroup.DiscountGroup);
+                        }
+
+                        if (productDiscountGroup.DiscountGroup.WebId.HasValue)
+                        {
+                            var psProductDiscountGroup = psProductDiscountGroups.SingleOrDefault(x => x.id_discount_group == productDiscountGroup.DiscountGroup.WebId.Value);
+
+                            if(psProductDiscountGroup == null)
+                            {
+
+                            }
+                            else
+                            {
+
+                            }
+
+                        }
                     }
                 }
             }
@@ -263,3 +301,4 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         }
     }
 }
+*/

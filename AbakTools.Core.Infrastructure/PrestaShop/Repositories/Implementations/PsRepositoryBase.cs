@@ -2,18 +2,19 @@
 using Bukimedia.PrestaSharp.Factories;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
 
-namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories
+namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories.Implementations
 {
-    internal abstract class PSRepositoryBase<TEntry> : IPSRepositoryBase<TEntry>
+    internal abstract class PsRepositoryBase<TEntry> : IPsRepositoryBase<TEntry>
         where TEntry : PrestaShopEntity, IPrestaShopFactoryEntity, new()
     {
         protected IPrestaShopClient PrestaShopClient { get; private set; }
 
         protected abstract GenericFactory<TEntry> Factory { get; }
 
-        public PSRepositoryBase(IPrestaShopClient prestaShopClient)
+        public PsRepositoryBase(IPrestaShopClient prestaShopClient)
         {
             PrestaShopClient = prestaShopClient;
         }
@@ -61,7 +62,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories
 
                 foreach (var property in properties)
                 {
-                    filter.Add(property.Name, (string)property.GetValue(obj));
+                    filter.Add(property.Name, property.GetValue(obj)?.ToString());
                 }
 
                 return filter;
@@ -87,6 +88,13 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories
         public void Delete(TEntry entry)
         {
             Factory.Delete(entry);
+        }
+
+        public void SetLangValue<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> expression, string value)
+            where TEntity : PrestaShopEntity
+            where TProperty : List<Bukimedia.PrestaSharp.Entities.AuxEntities.language>
+        {
+            PrestaShopClient.SetLangValue(entity, expression, value);
         }
     }
 }

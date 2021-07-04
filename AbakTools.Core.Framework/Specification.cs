@@ -1,9 +1,11 @@
-﻿using AbakTools.Core.Framework;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace AbakTools.Core.Domain
+namespace AbakTools.Core.Framework.Domain
 {
     public abstract class Specification<T> : ISpecification<T>
     {
@@ -11,10 +13,10 @@ namespace AbakTools.Core.Domain
 
         public abstract Expression<Func<T, bool>> ToExpression();
 
-        public bool IsSatisfiedBy(T entity)
+        public Result<T> IsSatisfiedBy(T entity)
         {
             Func<T, bool> predicate = ToExpression().Compile();
-            return predicate(entity);
+            return predicate(entity) ? Result<T>.Success(entity) : Result<T>.Fail($"Object {entity} is not satisfied for {GetType().Name} specification");
         }
 
         public Specification<T> And(Specification<T> specification)
@@ -27,12 +29,22 @@ namespace AbakTools.Core.Domain
             return new AndSpecification<T>(this, specification);
         }
 
+        public Specification<T> AndIf(bool condition, Specification<T> specification)
+        {
+            return condition ? And(specification) : this;
+        }
+
         public Specification<T> Or(Specification<T> specification)
         {
             if (this == All || specification == All)
                 return All;
 
             return new OrSpecification<T>(this, specification);
+        }
+
+        public Specification<T> OrIf(bool condition, Specification<T> specification)
+        {
+            return condition ? Or(specification) : this;
         }
 
         public Specification<T> Not()
@@ -74,6 +86,7 @@ namespace AbakTools.Core.Domain
             return (Expression<Func<T, Boolean>>)Expression.Lambda(Expression.AndAlso(leftExpression.Body, invokedExpression), leftExpression.Parameters);
         }
     }
+
     internal sealed class OrSpecification<T> : Specification<T>
     {
         private readonly Specification<T> _left;

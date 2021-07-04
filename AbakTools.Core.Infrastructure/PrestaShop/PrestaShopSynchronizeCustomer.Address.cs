@@ -6,6 +6,7 @@ using PsCustomer = Bukimedia.PrestaSharp.Entities.customer;
 using PsAddress = Bukimedia.PrestaSharp.Entities.address;
 using AbakTools.Core.Domain.Address;
 using Microsoft.Extensions.Logging;
+using AbakTools.Core.Framework.Domain;
 
 namespace AbakTools.Core.Infrastructure.PrestaShop
 {
@@ -53,7 +54,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     address.WebId = (int?)psAddress?.id;
                 }
 
-                address.Synchronize = Framework.SynchronizeType.Synchronized;
+                address.Synchronize = SynchronizeType.Synchronized;
             }
         }
 

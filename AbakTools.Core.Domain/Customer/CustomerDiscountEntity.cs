@@ -1,6 +1,7 @@
 ﻿using AbakTools.Core.Domain.Common;
 using AbakTools.Core.Domain.DiscountGroup;
 using AbakTools.Core.Framework;
+using AbakTools.Core.Framework.Domain;
 
 namespace AbakTools.Core.Domain.Customer
 {

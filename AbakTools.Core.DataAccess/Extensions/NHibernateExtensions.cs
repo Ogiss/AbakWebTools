@@ -7,6 +7,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddNHibernate(this IServiceCollection services)
         {
             services.AddSingleton<ISessionManager>(new SessionManager());
+            //services.AddScoped<ISessionManager, SessionManager>();
             return services;
         }
 
@@ -14,6 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var sessionManager = services.BuildServiceProvider().GetService<ISessionManager>() as SessionManager;
             sessionManager?.Initialize(connectionString);
+            //SessionManager.Configure(connectionString);
             return services;
         }
     }

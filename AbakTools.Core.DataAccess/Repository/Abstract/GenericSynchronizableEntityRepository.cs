@@ -1,4 +1,5 @@
 ﻿using AbakTools.Core.Domain;
+using AbakTools.Core.Framework.Domain;
 using System.Linq;
 
 namespace AbakTools.Core.DataAccess.Repository
@@ -12,7 +13,7 @@ namespace AbakTools.Core.DataAccess.Repository
 
         public override IQueryable<TEntity> GetQueryBase()
         {
-            return base.GetQueryBase().Where(x => !x.IsDeleted && x.Synchronize != Framework.SynchronizeType.Deleted);
+            return base.GetQueryBase().Where(x => !x.IsDeleted && x.Synchronize != SynchronizeType.Deleted);
         }
 
         public override void Delete(TEntity entity)

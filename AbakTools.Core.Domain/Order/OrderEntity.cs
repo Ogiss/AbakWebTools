@@ -3,6 +3,7 @@ using AbakTools.Core.Domain.Customer;
 using AbakTools.Core.Domain.Policies;
 using AbakTools.Core.Domain.Product;
 using AbakTools.Core.Framework;
+using AbakTools.Core.Framework.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;

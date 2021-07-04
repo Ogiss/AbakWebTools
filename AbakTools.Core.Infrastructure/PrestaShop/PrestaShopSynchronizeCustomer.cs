@@ -1,5 +1,6 @@
 ﻿using AbakTools.Core.Domain.Customer;
 using AbakTools.Core.Domain.Synchronize;
+using AbakTools.Core.Framework.Domain;
 using AbakTools.Core.Framework.UnitOfWork;
 using AbakTools.Core.Infrastructure.PrestaShop.Repositories;
 using Bukimedia.PrestaSharp.Entities;
@@ -161,7 +162,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                             customer.WebId = (int?)psCustomer?.id;
                         }
 
-                        customer.Synchronize = Framework.SynchronizeType.Synchronized;
+                        customer.Synchronize = SynchronizeType.Synchronized;
                         customerRepository.SaveOrUpdate(customer);
                         uow.Commit();
                     }

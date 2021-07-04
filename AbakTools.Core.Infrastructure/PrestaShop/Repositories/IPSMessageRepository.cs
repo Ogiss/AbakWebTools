@@ -1,6 +1,6 @@
 ﻿namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories
 {
-    public interface IPSMessageRepository : IPSRepositoryBase<Bukimedia.PrestaSharp.Entities.message>
+    public interface IPsMessageRepository : IPsRepositoryBase<Bukimedia.PrestaSharp.Entities.message>
     {
     }
 }

@@ -1,5 +1,4 @@
-﻿using AbakTools.Core.Framework;
-using System;
+﻿using AbakTools.Core.Framework.Domain;
 
 namespace AbakTools.Core.Domain
 {

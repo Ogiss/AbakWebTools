@@ -1,4 +1,4 @@
-﻿namespace AbakTools.Core.Framework
+﻿namespace AbakTools.Core.Framework.Domain
 {
     public interface ISynchronizableEntity
     {

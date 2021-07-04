@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\EnovaApiService\EnovaApi\EnovaApi.csproj" />
+    <ProjectReference Include="..\AbakTools.Core.Framework.Domain\AbakTools.Core.Framework.Domain.csproj" />
     <ProjectReference Include="..\AbakTools.Core.Framework\AbakTools.Core.Framework.csproj" />
   </ItemGroup>
 

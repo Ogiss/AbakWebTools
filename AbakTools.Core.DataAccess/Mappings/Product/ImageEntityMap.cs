@@ -1,6 +1,6 @@
 ﻿using AbakTools.Core.Domain.Product;
 using AbakTools.Core.Domain.Synchronize;
-using AbakTools.Core.Framework;
+using AbakTools.Core.Framework.Domain;
 using System;
 using System.Collections.Generic;
 using System.Text;

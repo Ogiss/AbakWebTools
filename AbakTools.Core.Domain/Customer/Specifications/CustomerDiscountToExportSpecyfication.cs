@@ -1,4 +1,5 @@
 ﻿using AbakTools.Core.Domain.Common.Specifications;
+using AbakTools.Core.Framework.Domain;
 using System;
 using System.Linq.Expressions;
 

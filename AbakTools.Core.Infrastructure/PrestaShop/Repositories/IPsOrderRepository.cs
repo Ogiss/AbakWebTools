@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AbakTools.Core.Infrastructure.PrestaShop.Repositories
 {
-    public interface IPSOrderRepository : IPSRepositoryBase<Bukimedia.PrestaSharp.Entities.order>
+    public interface IPSOrderRepository : IPsRepositoryBase<Bukimedia.PrestaSharp.Entities.order>
     {
     }
 }

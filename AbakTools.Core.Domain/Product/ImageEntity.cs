@@ -1,5 +1,5 @@
 ﻿using AbakTools.Core.Domain.Synchronize;
-using AbakTools.Core.Framework;
+using AbakTools.Core.Framework.Domain;
 
 namespace AbakTools.Core.Domain.Product
 {

@@ -3,34 +3,32 @@ using AbakTools.Core.Domain.Product.Repositories;
 using AbakTools.Core.Domain.Services;
 using AbakTools.Core.Framework.Helpers.Extensions;
 using AbakTools.Core.Framework.UnitOfWork;
-using AbakTools.Core.Infrastructure.PrestaShop.Repositories;
+using AbakTools.Core.Infrastructure.PrestaShop.Services;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using PsProductDiscountGroup = Bukimedia.PrestaSharp.Entities.product_discount_group;
 
 namespace AbakTools.Core.Infrastructure.PrestaShop.Exporters
 {
     class ProductDiscountGroupExporter : PrestaShopExporterBase<int>
     {
+        private readonly IProductDiscountGroupSynchronizeService _productDiscountGroupSynchronizeService;
         private readonly IProductDiscountGroupRepository _productDiscountGroupRepository;
-        private readonly IPSProductDiscountGroupRepository _psProductDiscountGroupRepository;
         private readonly IProductRepository _productRepository;
 
         public ProductDiscountGroupExporter(
             ILogger<ProductDiscountGroupExporter> logger,
             IUnitOfWorkProvider unitOfWorkProvider,
             ISynchronizeStampService synchronizeStampService,
+            IProductDiscountGroupSynchronizeService productDiscountGroupSynchronizeService,
             IProductDiscountGroupRepository productDiscountGroupRepository,
-            IPSProductDiscountGroupRepository psProductDiscountGroupRepository,
             IProductRepository productRepository)
             : base(logger, unitOfWorkProvider, synchronizeStampService)
         {
+            _productDiscountGroupSynchronizeService = productDiscountGroupSynchronizeService;
             _productDiscountGroupRepository = productDiscountGroupRepository;
-            _psProductDiscountGroupRepository = psProductDiscountGroupRepository;
             _productRepository = productRepository;
         }
 
@@ -62,58 +60,15 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Exporters
                     .GetAllWebIdsByEnovaGuid(group.Product.EnovaGuid.Value)
                     .Select(x => (x, group))
                     .Foreach(ProcessProductWebId);
+
+                group.MakeSynchronized();
+                _productDiscountGroupRepository.SaveOrUpdate(group);
             }
         }
 
         private void ProcessProductWebId((int productWebId, ProductDiscountGroupEntity group) entry)
         {
-            var psProductGroups = _psProductDiscountGroupRepository.Get(entry.productWebId, entry.group.DiscountGroup.WebId.Value);
-
-            if (entry.group.IsArchived)
-            {
-                DeleteProductDiscountGroup(entry.group, psProductGroups);
-            }
-            else
-            {
-                if (psProductGroups == null)
-                {
-                    psProductGroups = InsertProductDiscountGroup(entry.productWebId, entry.group);
-                }
-                else
-                {
-                    UpdateProductDiscountGroup(entry.group, psProductGroups);
-                }
-            }
-
-            entry.group.MakeSynchronized();
-            _productDiscountGroupRepository.SaveOrUpdate(entry.group);
-        }
-
-        private PsProductDiscountGroup InsertProductDiscountGroup(int productWebId, ProductDiscountGroupEntity group)
-        {
-            Logger.LogDebug($"Insert discount group {group.DiscountGroup.Name} for product web id {productWebId}.");
-
-            var psDiscountGroup = new PsProductDiscountGroup
-            {
-                id_product = productWebId,
-                id_discount_group = group.DiscountGroup.WebId.Value
-            };
-
-            return _psProductDiscountGroupRepository.SaveOrUpdate(psDiscountGroup);
-
-        }
-
-        private void UpdateProductDiscountGroup(ProductDiscountGroupEntity group, PsProductDiscountGroup psProductGroups)
-        {
-            // TODO: product and group can't be changed
-        }
-
-        private void DeleteProductDiscountGroup(ProductDiscountGroupEntity group, PsProductDiscountGroup psProductGroups)
-        {
-            if (psProductGroups != null)
-            {
-                _psProductDiscountGroupRepository.Delete(psProductGroups);
-            }
+            _productDiscountGroupSynchronizeService.Synchronize(entry.productWebId, entry.group);
         }
     }
 }

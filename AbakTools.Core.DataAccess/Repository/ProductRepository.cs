@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NHibernate.Linq;
 using System.Threading.Tasks;
+using AbakTools.Core.Framework.Domain;
 
 namespace AbakTools.Core.DataAccess.Repository
 {
@@ -41,13 +42,13 @@ namespace AbakTools.Core.DataAccess.Repository
 
         public async Task<IList<ProductEntity>> GetEnovaProductsWithoutInDeletingProcessAsync(Guid enovaGuid)
         {
-            return await GetQueryBase().Where(x => x.Synchronize != Framework.SynchronizeType.Deleted && x.EnovaGuid == enovaGuid && x.IsEnovaProduct).ToListAsync();
+            return await GetQueryBase().Where(x => x.Synchronize != SynchronizeType.Deleted && x.EnovaGuid == enovaGuid && x.IsEnovaProduct).ToListAsync();
         }
 
         public IEnumerable<int> GetAllWebIdsByEnovaGuid(Guid enovaGuid)
         {
             return GetQueryBase()
-                .Where(x => x.Synchronize != Framework.SynchronizeType.Deleted && x.WebId > 0 && x.EnovaGuid == enovaGuid)
+                .Where(x => x.Synchronize != SynchronizeType.Deleted && x.WebId > 0 && x.EnovaGuid == enovaGuid)
                 .Select(x => x.WebId.Value)
                 .ToList();
         }

@@ -1,5 +1,5 @@
 ﻿using AbakTools.Core.Domain.Order;
-using AbakTools.Core.Framework;
+using AbakTools.Core.Framework.Domain;
 
 namespace AbakTools.Core.DataAccess.Mappings.Order
 {
