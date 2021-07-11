@@ -1,30 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <Platforms>AnyCPU;x64</Platforms>
-    <Configurations>Debug;Release;Production</Configurations>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<LangVersion>9.0</LangVersion>
+		<Platforms>AnyCPU;x64</Platforms>
+		<Configurations>Debug;Release;Production</Configurations>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Mappings\Order\Factories\**" />
-    <EmbeddedResource Remove="Mappings\Order\Factories\**" />
-    <None Remove="Mappings\Order\Factories\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Mappings\Order\Factories\**" />
+		<EmbeddedResource Remove="Mappings\Order\Factories\**" />
+		<None Remove="Mappings\Order\Factories\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FluentNHibernate" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
-    <PackageReference Include="NHibernate" Version="5.3.7" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FluentNHibernate" Version="3.1.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+		<PackageReference Include="NHibernate" Version="5.3.7" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\AbakTools.Core.Domain\AbakTools.Core.Domain.csproj" />
-    <ProjectReference Include="..\AbakTools.Core.Framework.Domain\AbakTools.Core.Framework.Domain.csproj" />
-    <ProjectReference Include="..\AbakTools.Core.Framework\AbakTools.Core.Framework.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\AbakTools.Core.Domain\AbakTools.Core.Domain.csproj" />
+		<ProjectReference Include="..\AbakTools.Core.Framework.Domain\AbakTools.Core.Framework.Domain.csproj" />
+		<ProjectReference Include="..\AbakTools.Core.Framework\AbakTools.Core.Framework.csproj" />
+	</ItemGroup>
 
 </Project>

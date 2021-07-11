@@ -1,40 +1,41 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <Platforms>AnyCPU;x64</Platforms>
-    <UserSecretsId>8a36adf3-991e-4c66-87d8-27d4aafd2736</UserSecretsId>
-    <Configurations>Debug;Release;Production</Configurations>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<LangVersion>9.0</LangVersion>
+		<Platforms>AnyCPU;x64</Platforms>
+		<UserSecretsId>8a36adf3-991e-4c66-87d8-27d4aafd2736</UserSecretsId>
+		<Configurations>Debug;Release;Production</Configurations>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="9.0.0" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="5.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="9.0.0" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="5.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+		<PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\AbakTools.Core.DataAccess\AbakTools.Core.DataAccess.csproj" />
-    <ProjectReference Include="..\AbakTools.Core.Domain\AbakTools.Core.Domain.csproj" />
-    <ProjectReference Include="..\AbakTools.Core.Dto\AbakTools.Core.Dto.csproj" />
-    <ProjectReference Include="..\AbakTools.Core.Framework\AbakTools.Core.Framework.csproj" />
-    <ProjectReference Include="..\AbakTools.Core.Infrastructure\AbakTools.Core.Infrastructure.csproj" />
-    <ProjectReference Include="..\AbakTools.Core.Service\AbakTools.Core.Service.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\AbakTools.Core.DataAccess\AbakTools.Core.DataAccess.csproj" />
+		<ProjectReference Include="..\AbakTools.Core.Domain\AbakTools.Core.Domain.csproj" />
+		<ProjectReference Include="..\AbakTools.Core.Dto\AbakTools.Core.Dto.csproj" />
+		<ProjectReference Include="..\AbakTools.Core.Framework\AbakTools.Core.Framework.csproj" />
+		<ProjectReference Include="..\AbakTools.Core.Infrastructure\AbakTools.Core.Infrastructure.csproj" />
+		<ProjectReference Include="..\AbakTools.Core.Service\AbakTools.Core.Service.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Logs\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Logs\" />
+	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Production'">
 		<Content Update="appsettings.Development.json">
 			<CopyToOutputDirectory>false</CopyToOutputDirectory>
 			<CopyToPublishDirectory>false</CopyToPublishDirectory>
 		</Content>
-    </ItemGroup>
+	</ItemGroup>
 
 </Project>
