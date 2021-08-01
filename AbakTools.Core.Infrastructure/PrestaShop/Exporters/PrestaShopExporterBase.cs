@@ -46,12 +46,24 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Exporters
 #endif
                     };
 
-                    Parallel.ForEach(entries, parallelOptions, ProcessEntry);
+                    Parallel.ForEach(entries, parallelOptions, ProcessEntryCore);
 
                     _synchronizeStampService.SaveLastStamp(GetType().Name, StampTo);
 
                     Logger.LogDebug($"[{GetType().Name}] Export entries finished in {(DateTime.Now - startDt).TotalSeconds} sec.");
                 }
+            }
+        }
+
+        protected virtual void ProcessEntryCore(TEntry entry)
+        {
+            try
+            {
+                ProcessEntry(entry);
+            }
+            catch(Exception ex)
+            {
+                Logger.LogError(ex.ToString());
             }
         }
 
