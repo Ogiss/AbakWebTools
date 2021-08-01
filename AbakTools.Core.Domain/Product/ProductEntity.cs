@@ -40,6 +40,7 @@ namespace AbakTools.Core.Domain.Product
         public virtual bool NotWebAvailable { get; set; }
         public virtual int MinimumOrderQuantity { get; set; }
         public virtual long Stamp { get; set; }
+        public virtual bool OnSale { get; protected set; }
 
         public virtual bool IsArchived => IsDeleted || Synchronize == SynchronizeType.Deleted;
 

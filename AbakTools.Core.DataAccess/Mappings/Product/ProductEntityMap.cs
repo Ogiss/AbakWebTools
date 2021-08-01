@@ -41,6 +41,7 @@ namespace AbakTools.Core.DataAccess.Mappings.Product
             Map(x => x.NotWebAvailable);
             Map(x => x.MinimumOrderQuantity);
             Map(x => x.Stamp).Formula("CONVERT(BIGINT, RowVer)");
+            Map(x => x.OnSale, "Wyprzedaz");
 
             References(x => x.Tax, "id_tax");
             References(x => x.Unit, "IDJednostki");

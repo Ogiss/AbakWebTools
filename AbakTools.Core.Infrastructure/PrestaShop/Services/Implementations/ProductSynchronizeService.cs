@@ -123,6 +123,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Services.Implementations
                 psProduct.id_tax_rules_group = product.Tax.WebId;
                 psProduct.price = product.Price;
                 psProduct.show_price = 1;
+                psProduct.on_sale = product.OnSale ? 1 : 0;
                 //psProduct.id_unit = product.Unit?.WebId;
 
                 var name = Functions.GetPrestaShopName(product.Name);
