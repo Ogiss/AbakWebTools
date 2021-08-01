@@ -58,16 +58,20 @@ namespace Microsoft.Extensions.DependencyInjection
             service.AddScoped<IPsCustomerDiscountGroupRepository, PsCustomerDiscountGroupRepository>();
             service.AddScoped<IPsMessageRepository, PsMessageRepository>();
             service.AddScoped<IPsProductRepository, PsProductRepository>();
+            //service.AddScoped<IPsUnitRepository, PsUnitRepository>();
 
             service.AddScoped<IDiscountGroupSynchronizeService, DiscountGroupSynchronizeService>();
             service.AddScoped<IProductDiscountGroupSynchronizeService, ProductDiscountGroupSynchronizeService>();
             service.AddScoped<IProductSynchronizeService, ProductSynchronizeService>();
             service.AddScoped<IProductImageSynchronizeService, ProductImageSynchronizeService>();
+            //service.AddScoped<IUnitSynchronizeService, UnitSynchronizeService>();
 
             service.AddScoped<IPrestaShopExporter, DiscoutGroupExporter>();
+            //service.AddScoped<IPrestaShopExporter, UnitExporter>();
             service.AddScoped<IPrestaShopExporter, ProductExporter>();
             service.AddScoped<IPrestaShopExporter, ProductDiscountGroupExporter>();
             service.AddScoped<IPrestaShopExporter, CustomerDiscountGroupExporter>();
+            service.AddScoped<IPrestaShopExporter, ProductAutomaticExporter>();
         }
 
         private static void RegisterPolicies(IServiceCollection services)

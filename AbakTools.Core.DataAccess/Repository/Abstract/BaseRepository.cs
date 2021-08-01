@@ -23,6 +23,13 @@ namespace AbakTools.Core.DataAccess.Repository
             CurrentSession?.Flush();
         }
 
+        public long GetDbts()
+        {
+            return CurrentSession
+                .CreateSQLQuery("SELECT CONVERT(BIGINT, @@DBTS) DBTS")
+                .UniqueResult<long>();
+        }
+
         public async Task<long> GetDbtsAsync()
         {
             return await CurrentSession

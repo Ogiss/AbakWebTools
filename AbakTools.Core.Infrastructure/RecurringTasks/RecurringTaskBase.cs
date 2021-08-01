@@ -9,8 +9,8 @@ namespace AbakTools.Core.Infrastructure.RecurringTasks
 {
     abstract class RecurringTaskBase : BackgroundService
     {
-        private readonly IConfiguration configuration;
-        private readonly ILogger logger;
+        protected readonly IConfiguration Configuration;
+        protected readonly ILogger Logger;
         private readonly IServiceProvider serviceProvider;
 
         public RecurringTaskBase(
@@ -18,8 +18,8 @@ namespace AbakTools.Core.Infrastructure.RecurringTasks
             ILogger logger,
             IServiceProvider serviceProvider)
         {
-            this.configuration = configuration;
-            this.logger = logger;
+            this.Configuration = configuration;
+            this.Logger = logger;
             this.serviceProvider = serviceProvider;
         }
 
@@ -27,12 +27,12 @@ namespace AbakTools.Core.Infrastructure.RecurringTasks
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            if (!configuration.GetRecurringTask(GetType()).Enabled)
+            if (!Configuration.GetRecurringTask(GetType()).Enabled)
             {
                 return;
             }
 
-            cancellationToken.Register(() => logger.LogDebug($"Cancelling"));
+            cancellationToken.Register(() => Logger.LogDebug($"Cancelling"));
 
             try
             {
@@ -43,7 +43,7 @@ namespace AbakTools.Core.Infrastructure.RecurringTasks
                 return;
             }
 
-            logger.LogDebug($"Starting");
+            Logger.LogDebug($"Starting");
 
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -58,31 +58,26 @@ namespace AbakTools.Core.Infrastructure.RecurringTasks
                     }
                     finally
                     {
-                        await Task.Delay(configuration.GetRecurringTask(GetType()).Interval, cancellationToken);
+                        await Task.Delay(Configuration.GetRecurringTask(GetType()).Interval, cancellationToken);
                     }
                 }
                 catch (OperationCanceledException)
                 {
-                    logger.LogDebug($"DoWork cancelled");
+                    Logger.LogDebug($"DoWork cancelled");
                 }
                 catch (Exception e)
                 {
-                    logger.LogError("DoWork exception: " + e);
+                    Logger.LogError("DoWork exception: " + e);
                 }
             }
 
-            logger.LogDebug($"Stopping");
-        }
-
-        protected int GetHourOccurency()
-        {
-            return configuration.GetRecurringTask(GetType()).TaskHourOccurence;
+            Logger.LogDebug($"Stopping");
         }
 
         private TimeSpan GetRandomStartingDelay()
         {
             var maxDelay = TimeSpan.FromSeconds(30);
-            var interval = configuration.GetRecurringTask(GetType()).Interval;
+            var interval = Configuration.GetRecurringTask(GetType()).Interval;
             var random = new Random();
             var delay = random.Next(0, Math.Min((int)interval.TotalMilliseconds, (int)maxDelay.TotalMilliseconds));
 

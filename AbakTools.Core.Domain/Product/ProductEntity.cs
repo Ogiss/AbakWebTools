@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace AbakTools.Core.Domain.Product
 {
-    public class ProductEntity : BusinessEntity
+    public class ProductEntity : BusinessEntity, IStampedEntity, ISynchronizableEntity, IWebIdHolder
     {
         public virtual int? WebId { get; set; }
         public virtual TaxEntity Tax { get; set; }
@@ -39,6 +39,7 @@ namespace AbakTools.Core.Domain.Product
         public virtual string SearchIndex { get; set; }
         public virtual bool NotWebAvailable { get; set; }
         public virtual int MinimumOrderQuantity { get; set; }
+        public virtual long Stamp { get; set; }
 
         public virtual bool IsArchived => IsDeleted || Synchronize == SynchronizeType.Deleted;
 
@@ -60,6 +61,15 @@ namespace AbakTools.Core.Domain.Product
             Synchronize = SynchronizeType.New;
         }
 
+        public override void Touch()
+        {
+            if (Synchronize == SynchronizeType.Synchronized)
+            {
+                base.Touch();
+                Synchronize = SynchronizeType.Edited;
+            }
+        }
+
         public virtual void MakeSynchronized()
         {
             if (Synchronize == SynchronizeType.Deleted)
@@ -75,6 +85,11 @@ namespace AbakTools.Core.Domain.Product
         public virtual IEnumerable<ImageEntity> GetUndeletedImages()
         {
             return Images.Where(x => x.IsDeleted == false && x.Synchronize != SynchronizeType.Deleted);
+        }
+
+        public virtual void ClearWebIdentity()
+        {
+            WebId = null;
         }
 
         public virtual void SetCode(string code)
@@ -96,7 +111,10 @@ namespace AbakTools.Core.Domain.Product
 
         public virtual void SetPrice(decimal price)
         {
-            Price = price;
+            if (Price != price)
+            {
+                Price = price;
+            }
         }
 
         public virtual void StartDeletingProcess()

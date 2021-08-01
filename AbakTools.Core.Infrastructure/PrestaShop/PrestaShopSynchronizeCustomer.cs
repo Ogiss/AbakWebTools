@@ -41,10 +41,11 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             psCustomerRepository = _psCustomerRepository;
         }
 
-        public async Task DoWork(CancellationToken stoppingToken)
+        public Task DoWork(CancellationToken stoppingToken)
         {
             //ImportCustomers();
             ExportCustomers();
+            return Task.CompletedTask;
         }
 
         private void ExportCustomers()

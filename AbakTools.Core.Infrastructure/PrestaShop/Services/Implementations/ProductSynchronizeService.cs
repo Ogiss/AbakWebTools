@@ -70,6 +70,30 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Services.Implementations
             return psProduct;
         }
 
+        public void AutomaticUpdate(ProductEntity product)
+        {
+            var psProduct = GetPsProduct(product);
+
+            if (product.IsArchived)
+            {
+                Delete(product, psProduct);
+            }
+            else if (psProduct != null)
+            {
+                if (UpdatePrice(product, psProduct))
+                {
+                    _logger.LogInformation($"Automatic update PrestaShop product {product.Code}-{product.Name} (Id: {product.Id}, WebId: {psProduct.id})");
+                    _psProductRepository.SaveOrUpdate(psProduct);
+                }
+            }
+            else if(psProduct == null)
+            {
+                product.ClearWebIdentity();
+            }
+
+            _productRepository.SaveOrUpdate(product);
+        }
+
         private product GetPsProduct(ProductEntity product)
         {
             return product.WebId.HasValue ? _psProductRepository.Get(product.WebId.Value) : null;
@@ -77,11 +101,18 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Services.Implementations
 
         private product Insert(ProductEntity product)
         {
+            _logger.LogInformation($"Insert product {product.Code} - {product.Name} (Id: {product.Id})");
             var psProduct = new product();
-            return Update(product, psProduct);
+            return UpdateCore(product, psProduct);
         }
 
         private product Update(ProductEntity product, product psProduct)
+        {
+            _logger.LogInformation($"Update product {product.Code} - {product.Name} (Id: {product.Id}, WebId: {psProduct?.id})");
+            return UpdateCore(product, psProduct);
+        }
+
+        private product UpdateCore(ProductEntity product, product psProduct)
         {
             if (product.NotWebAvailable)
             {
@@ -92,6 +123,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Services.Implementations
                 psProduct.id_tax_rules_group = product.Tax.WebId;
                 psProduct.price = product.Price;
                 psProduct.show_price = 1;
+                //psProduct.id_unit = product.Unit?.WebId;
 
                 var name = Functions.GetPrestaShopName(product.Name);
 
@@ -123,6 +155,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Services.Implementations
 
         private void Delete(ProductEntity product, product psProduct)
         {
+            _logger.LogInformation($"Delete product {product.Code} - {product.Name} (Id: {product.Id}, WebId: {psProduct?.id})");
             DeactivatePsProduct(psProduct);
         }
 
@@ -199,6 +232,18 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Services.Implementations
             }
 
             return stock;
+        }
+
+        private bool UpdatePrice(ProductEntity product, product psProduct)
+        {
+            if (psProduct.price != product.Price)
+            {
+                psProduct.price = product.Price;
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -4,19 +4,19 @@ using System.Linq.Expressions;
 
 namespace AbakTools.Core.Domain.Common.Specifications
 {
-    public class SynchronizedSpecyfication<TEntity> : Specification<TEntity>
+    public class SynchronizedSpecification<TEntity> : Specification<TEntity>
         where TEntity : ISynchronizableEntity
     {
-        private SynchronizedSpecyfication() { }
+        private SynchronizedSpecification() { }
 
         public override Expression<Func<TEntity, bool>> ToExpression()
         {
             return x => x.Synchronize == SynchronizeType.Synchronized;
         }
 
-        public static SynchronizedSpecyfication<TEntity> Create()
+        public static SynchronizedSpecification<TEntity> Create()
         {
-            return new SynchronizedSpecyfication<TEntity>();
+            return new SynchronizedSpecification<TEntity>();
         }
     }
 }

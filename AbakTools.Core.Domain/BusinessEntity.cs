@@ -9,5 +9,10 @@ namespace AbakTools.Core.Domain
         public virtual DateTime CreationDate { get; set; }
         public virtual DateTime ModificationDate { get; set; }
         public virtual bool DisableUpdateModificationDate { get; set; }
+
+        public virtual void Touch()
+        {
+            ModificationDate = DateTime.Now;
+        }
     }
 }

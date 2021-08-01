@@ -27,6 +27,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         ProductDiscountGroupFactory ProductDiscountGroupFactory { get; }
         CustomerDiscountGroupFactory CustomerDiscountGroupFactory { get; }
         MessageFactory MessageFactory { get; }
+        UnitFactory UnitFactory { get; }
 
 
         category GetRootCategory(int? shopId = null);

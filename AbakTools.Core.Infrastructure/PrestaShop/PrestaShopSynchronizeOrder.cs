@@ -62,7 +62,8 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         }
 
 
-        public async Task DoWork(CancellationToken stoppingToken)
+        //public async Task DoWork(CancellationToken stoppingToken)
+        public Task DoWork(CancellationToken stoppingToken)
         {
             try
             {
@@ -107,6 +108,8 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             {
                 logger.LogError($"Synchronize orders from PrestaShop error: {ex}");
             }
+
+            return Task.CompletedTask;
         }
 
         private void ProcessOrderId(long id, DateTime stampTo)

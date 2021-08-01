@@ -30,13 +30,13 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Exporters
             _psCustomerDiscountGroupRepository = psCustomerDiscountGroupRepository;
         }
 
-        protected override async Task<IEnumerable<int>> GetExportingEntriesAsync(CancellationToken cancelerationToken)
+        protected override IEnumerable<int> GetExportingEntries(CancellationToken cancelerationToken)
         {
             var specification = CustomerDiscountToExportSpecyfication.Of(StampFrom, StampTo);
 
             using (var uow = UnitOfWorkProvider.CreateReadOnly())
             {
-                return await _customerDiscountGroupRepository.GetListAsync(specification, EntityIdProjection<CustomerDiscountEntity>.Create());
+                return _customerDiscountGroupRepository.GetList(specification, EntityIdProjection<CustomerDiscountEntity>.Create());
             }
         }
 

@@ -32,11 +32,11 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Exporters
             _productRepository = productRepository;
         }
 
-        protected async override Task<IEnumerable<int>> GetExportingEntriesAsync(CancellationToken cancelerationToken)
+        protected override IEnumerable<int> GetExportingEntries(CancellationToken cancelerationToken)
         {
             using (UnitOfWorkProvider.CreateReadOnly())
             {
-                return await _productDiscountGroupRepository.GetEnovaProductIdsWithModifiedDiscountGroupsAsync(StampFrom, StampTo);
+                return _productDiscountGroupRepository.GetEnovaProductIdsWithModifiedDiscountGroups(StampFrom, StampTo);
             }
         }
 

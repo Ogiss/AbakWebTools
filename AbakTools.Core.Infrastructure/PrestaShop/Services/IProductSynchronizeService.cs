@@ -6,5 +6,6 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Services
     public interface IProductSynchronizeService
     {
         PsProduct Synchronize(ProductEntity product);
+        void AutomaticUpdate(ProductEntity product);
     }
 }

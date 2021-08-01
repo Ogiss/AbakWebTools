@@ -13,12 +13,12 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
 {
     internal abstract class EnovaImporterBase<TEntry, TStamp> : IEnovaImporter
     {
-        private IUnitOfWorkProvider _unitOfWorkProvider;
         private ISynchronizeStampService _synchronizeStampService;
         private IEnovaAPiClient _api;
         private TStamp _stampFrom;
         private TStamp _stampTo;
 
+        protected IUnitOfWorkProvider UnitOfWorkProvider;
         protected TStamp StampFrom => _stampFrom;
         protected TStamp StampTo => _stampTo;
         protected virtual string SynchronizeCode => GetType().Name;
@@ -29,19 +29,18 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
         {
             try
             {
-                _unitOfWorkProvider = serviceScope.ServiceProvider.GetRequiredService<IUnitOfWorkProvider>();
+                Logger.LogDebug($"Starting enova import processing: {this.GetType().Name}");
+
+                UnitOfWorkProvider = serviceScope.ServiceProvider.GetRequiredService<IUnitOfWorkProvider>();
                 _synchronizeStampService = serviceScope.ServiceProvider.GetRequiredService<ISynchronizeStampService>();
                 _api = serviceScope.ServiceProvider.GetRequiredService<IEnovaAPiClient>();
 
-                _stampFrom = GetLastStamp(_synchronizeStampService, SynchronizeCode, SynchronizeDirection).Result;
-                _stampTo = GetStampTo(_api, SynchronizeCode, SynchronizeDirection).Result;
+                _stampFrom = GetLastStamp(_synchronizeStampService, SynchronizeCode, SynchronizeDirection);
+                _stampTo = GetStampTo(_api, SynchronizeCode, SynchronizeDirection);
 
                 IEnumerable<TEntry> entries;
 
-                using (var uow = _unitOfWorkProvider.CreateReadOnly())
-                {
-                    entries = GetEntriesAsync(_stampFrom, _stampTo).Result;
-                }
+                entries = GetEntries(_stampFrom, _stampTo);
 
                 if (entries.Any())
                 {
@@ -51,11 +50,11 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
 
                     Parallel.ForEach(entries, GetParrallelOptions(), ProcessEntryCore);
 
-                    SaveLastStamp(_synchronizeStampService, SynchronizeCode, _stampTo, SynchronizeDirection).Wait();
+                    SaveLastStamp(_synchronizeStampService, SynchronizeCode, _stampTo, SynchronizeDirection);
                     Logger.LogDebug($"[{GetType().Name}]: Import finished in {(DateTime.Now - startDt).TotalSeconds} sec.");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 HandleImportExeception(ex);
             }
@@ -67,11 +66,11 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
         {
             try
             {
-                using var uow = _unitOfWorkProvider.Create();
+                //using var uow = _unitOfWorkProvider.Create();
                 ProcessEntry(entry);
-                uow.Commit();
+                //uow.Commit();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 HandleProcessEntryException(entry, ex);
             }
@@ -99,9 +98,9 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
         }
 
         protected abstract void ProcessEntry(TEntry entry);
-        protected abstract Task<IEnumerable<TEntry>> GetEntriesAsync(TStamp stampFrom, TStamp stampTo);
-        protected abstract Task<TStamp> GetLastStamp(ISynchronizeStampService synchronizeStampService, string code, SynchronizeDirectionType synchronizeDirection);
-        protected abstract Task<TStamp> GetStampTo(IEnovaAPiClient api, string code, SynchronizeDirectionType synchronizeDirection);
-        protected abstract Task SaveLastStamp(ISynchronizeStampService synchronizeStampService, string code, TStamp stamp, SynchronizeDirectionType synchronizeDirection);
+        protected abstract IEnumerable<TEntry> GetEntries(TStamp stampFrom, TStamp stampTo);
+        protected abstract TStamp GetLastStamp(ISynchronizeStampService synchronizeStampService, string code, SynchronizeDirectionType synchronizeDirection);
+        protected abstract TStamp GetStampTo(IEnovaAPiClient api, string code, SynchronizeDirectionType synchronizeDirection);
+        protected abstract void SaveLastStamp(ISynchronizeStampService synchronizeStampService, string code, TStamp stamp, SynchronizeDirectionType synchronizeDirection);
     }
 }

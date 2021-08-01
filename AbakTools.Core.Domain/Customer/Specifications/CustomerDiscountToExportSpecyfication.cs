@@ -18,7 +18,7 @@ namespace AbakTools.Core.Domain.Customer.Specifications
 
         public override Expression<Func<CustomerDiscountEntity, bool>> ToExpression()
         {
-            var specification = SynchronizedSpecyfication<CustomerDiscountEntity>.Create().Not()
+            var specification = SynchronizedSpecification<CustomerDiscountEntity>.Create().Not()
                 .And(NewOrModifiedSpecification<CustomerDiscountEntity>.Of(_stampFrom, _stampTo))
                 .And(new CustomerDiscountWithExportedCustomerAndGroupSpecification());
 

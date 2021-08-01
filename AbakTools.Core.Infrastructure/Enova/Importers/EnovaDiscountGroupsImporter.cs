@@ -24,14 +24,16 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
             IDiscountGroupRepository discountGroupRepository)
             => (_logger, _configuration, _enovaDiscountGroupRepository, _discountGroupRepository) = (logger, configuration, enovaDiscountGroupRepository, discountGroupRepository);
 
-        protected override async Task<IEnumerable<DiscountGroup>> GetEntriesAsync(long stampFrom, long stampTo)
+        protected override IEnumerable<DiscountGroup> GetEntries(long stampFrom, long stampTo)
         {
+            using var uow = UnitOfWorkProvider.CreateReadOnly();
             int defaultPriceDefId = int.Parse(_configuration.GetSection("EnovaSynchronization:DefaultPriceDefId").Value);
-            return await _enovaDiscountGroupRepository.GetModifiedDiscountGroupAsync(defaultPriceDefId, stampFrom, stampTo);
+            return _enovaDiscountGroupRepository.GetModifiedDiscountGroupAsync(defaultPriceDefId, stampFrom, stampTo).Result;
         }
 
         protected override void ProcessEntry(DiscountGroup entry)
         {
+            using var uow = UnitOfWorkProvider.Create();
             var entity = _discountGroupRepository.Get(entry.Guid);
 
             if(entity == null)

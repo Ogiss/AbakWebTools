@@ -31,7 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrestaSharp", "PrestaSharp\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{602AEE0E-FB64-4775-A043-AA134917D4A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbakTools.Core.Framework.Domain", "AbakTools.Core.Framework.Domain\AbakTools.Core.Framework.Domain.csproj", "{E6DE1C83-6FDE-495A-9A93-A4231C0E9E07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbakTools.Core.Framework.Domain", "AbakTools.Core.Framework.Domain\AbakTools.Core.Framework.Domain.csproj", "{E6DE1C83-6FDE-495A-9A93-A4231C0E9E07}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{DE556580-3A04-45A6-B4A6-2A1194F7CCB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

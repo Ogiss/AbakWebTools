@@ -6,9 +6,14 @@ namespace AbakTools.Core.Infrastructure.RecurringTasks
     {
         public static IServiceCollection AddRecurringTasks(this IServiceCollection services)
         {
-            services.AddHostedService<PrestaShopOrderSynchronizer>();
-            services.AddHostedService<EnovaSynchronizer>();
-            services.AddHostedService<PrestaShopSynchronizer>();
+            services.AddHostedService<SynchronizeHostedService>();
+            services.AddScoped<PrestaShopOrderSynchronizer>();
+            services.AddScoped<EnovaSynchronizer>();
+            services.AddScoped<PrestaShopSynchronizer>();
+
+            //services.AddHostedService<PrestaShopOrderSynchronizer>();
+            //services.AddHostedService<EnovaSynchronizer>();
+            //services.AddHostedService<PrestaShopSynchronizer>();
 
             return services;
         }

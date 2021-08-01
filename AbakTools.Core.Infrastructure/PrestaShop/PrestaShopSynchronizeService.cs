@@ -78,10 +78,10 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
             CustomerSynchronizeDisabled = bool.TryParse(_configuration["PrestaShop:Synchronization:Customers:Disabled"], out b) ? b : false;
         }
 
-        public async Task DoWork(CancellationToken cancellationToken)
+        public Task DoWork(CancellationToken cancellationToken)
         {
             if (!cancellationToken.IsCancellationRequested)
-                await _prestaShopSynchronizeCustomer.DoWork(cancellationToken);
+                _prestaShopSynchronizeCustomer.DoWork(cancellationToken).Wait();
 
             if (!cancellationToken.IsCancellationRequested)
                 SynchronizeSuppliers();
@@ -96,9 +96,11 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                     if (cancellationToken.IsCancellationRequested)
                         break;
 
-                    exporter.StartExportAsync(cancellationToken).Wait();
+                    exporter.StartExport(cancellationToken);
                 }
             }
+
+            return Task.CompletedTask;
         }
     }
 }

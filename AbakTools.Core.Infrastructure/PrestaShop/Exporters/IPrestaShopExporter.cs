@@ -5,6 +5,6 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Exporters
 {
     public interface IPrestaShopExporter
     {
-        Task StartExportAsync(CancellationToken cancelerationToken);
+        void StartExport(CancellationToken cancelerationToken);
     }
 }

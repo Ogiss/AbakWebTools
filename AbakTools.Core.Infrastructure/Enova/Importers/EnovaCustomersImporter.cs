@@ -22,13 +22,15 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
             ICustomerRepository customerRepository)
             => (_logger, _enovaCustomerRepository, _customerRepository) = (logger, enovaCustomerRepository, customerRepository);
 
-        protected async override Task<IEnumerable<Guid>> GetEntriesAsync(long stampFrom, long stampTo)
+        protected override IEnumerable<Guid> GetEntries(long stampFrom, long stampTo)
         {
-            return await _enovaCustomerRepository.GetModifiedCustomersGuidsAsync(stampFrom, stampTo);
+            using var uow = UnitOfWorkProvider.CreateReadOnly();
+            return _enovaCustomerRepository.GetModifiedCustomersGuidsAsync(stampFrom, stampTo).Result;
         }
 
         protected override void ProcessEntry(Guid guid)
         {
+            using var uow = UnitOfWorkProvider.Create();
             var entry = _enovaCustomerRepository.Get(guid);
 
             if(entry != null && entry.Stamp <= StampTo)
@@ -46,6 +48,8 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
 
                 _customerRepository.SaveOrUpdate(entity);
             }
+
+            uow.Commit();
         }
 
         private void UpdateCustomer(CustomerEntity entity, EnovaApi.Models.Customer.Customer entry)

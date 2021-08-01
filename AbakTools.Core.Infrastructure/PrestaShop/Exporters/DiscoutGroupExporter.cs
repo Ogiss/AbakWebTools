@@ -32,11 +32,11 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Exporters
             _discountGroupSynchronizeService = discountGroupSynchronizeService;
         }
 
-        protected override async Task<IEnumerable<int>> GetExportingEntriesAsync(CancellationToken cancelerationToken)
+        protected override IEnumerable<int> GetExportingEntries(CancellationToken cancelerationToken)
         {
             using (UnitOfWorkProvider.CreateReadOnly())
             {
-                return await _discountGroupRepository.GetNewOrModifiedGroupsIdsAsync(StampFrom, StampTo, cancelerationToken);
+                return _discountGroupRepository.GetNewOrModifiedGroupsIds(StampFrom, StampTo);
             }
         }
 

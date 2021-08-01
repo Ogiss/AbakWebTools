@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace AbakTools.Core.Infrastructure.PrestaShop.Exporters
 {
-    class ProductExporter : PrestaShopExporterBase<int>
+    class ProductAutomaticExporter : PrestaShopExporterBase<int>
     {
         private readonly IProductRepository _productRepository;
         private readonly IProductSynchronizeService _productSynchronizeService;
 
-        public ProductExporter(
+        public ProductAutomaticExporter(
             ILogger<ProductExporter> logger,
             IUnitOfWorkProvider unitOfWorkProvider,
             ISynchronizeStampService synchronizeStampService,
@@ -32,7 +32,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Exporters
         {
             using (UnitOfWorkProvider.CreateReadOnly())
             {
-                return _productRepository.GetList(ProductToExportSpecification.Instance, EntityIdProjection<ProductEntity>.Create());
+                return _productRepository.GetList(ProductToAutomaticExportSpecification.Of(StampFrom, StampTo), EntityIdProjection<ProductEntity>.Create());
             }
         }
 
@@ -40,7 +40,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Exporters
         {
             using var uow = UnitOfWorkProvider.Create();
             var product = _productRepository.Get(id);
-            _productSynchronizeService.Synchronize(product);
+            _productSynchronizeService.AutomaticUpdate(product);
             uow.Commit();
         }
     }

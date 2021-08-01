@@ -27,15 +27,16 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
             => (_logger, _configuration, _enovaProductRepository, _productRepository) 
             = (logger, configuration, enovaProductRepository, productRepository);
 
-        protected override async Task<IEnumerable<Price>> GetEntriesAsync(long stampFrom, long stampTo)
+        protected override IEnumerable<Price> GetEntries(long stampFrom, long stampTo)
         {
+            using var uow = UnitOfWorkProvider.CreateReadOnly();
             var priceDefGuid = Guid.Parse(_configuration.GetSection("EnovaSynchronization:DefaultPriceGuid").Value);
-
-            return await _enovaProductRepository.GetModifiedPricesAsync(priceDefGuid, stampFrom, stampTo);
+            return _enovaProductRepository.GetModifiedPricesAsync(priceDefGuid, stampFrom, stampTo).Result;
         }
 
         protected override void ProcessEntry(Price entry)
         {
+            using var uow = UnitOfWorkProvider.Create();
             var products = _productRepository.GetAllByEnovaGuid(entry.ProductGuid);
 
             foreach(var product in products)
@@ -44,6 +45,8 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
                 product.SetPrice(entry.PriceWithoutTax);
                 _productRepository.SaveOrUpdate(product);
             }
+
+            uow.Commit();
         }
 
         protected override void HandleProcessEntryException(Price entry, Exception exception)

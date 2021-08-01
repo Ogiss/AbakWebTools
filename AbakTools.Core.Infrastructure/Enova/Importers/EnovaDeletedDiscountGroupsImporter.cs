@@ -19,13 +19,15 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
             IDiscountGroupRepository discountGroupRepository) =>
             (Logger, _enovaDictionaryItemRepository, _discountGroupRepository) = (logger, enovaDictionaryItemRepository, discountGroupRepository);
 
-        protected async override Task<IEnumerable<Guid>> GetEntriesAsync(DateTime stampFrom, DateTime stampTo)
+        protected override IEnumerable<Guid> GetEntries(DateTime stampFrom, DateTime stampTo)
         {
-            return await _enovaDictionaryItemRepository.GetDeletedItemsGuidsAsync(stampFrom, stampTo);
+            using var uow = UnitOfWorkProvider.CreateReadOnly();
+            return _enovaDictionaryItemRepository.GetDeletedItemsGuidsAsync(stampFrom, stampTo).Result;
         }
 
         protected override void ProcessEntry(Guid guid)
         {
+            using var uow = UnitOfWorkProvider.CreateReadOnly();
             var entity = _discountGroupRepository.Get(guid);
 
             if (entity != null)
@@ -33,6 +35,8 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
                 Logger.LogDebug($"Delete discount group {entity.Name}");
                 _discountGroupRepository.Delete(entity);
             }
+
+            uow.Commit();
         }
     }
 }

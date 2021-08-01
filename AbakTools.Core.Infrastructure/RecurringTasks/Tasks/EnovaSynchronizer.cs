@@ -8,36 +8,41 @@ using System.Threading.Tasks;
 
 namespace AbakTools.Core.Infrastructure.RecurringTasks
 {
-    internal class EnovaSynchronizer : RecurringTaskBase
+    //internal class EnovaSynchronizer : RecurringTaskBase
+    internal class EnovaSynchronizer
     {
         private readonly ILogger _logger;
 
-        public EnovaSynchronizer(IConfiguration configuration, ILogger<EnovaSynchronizer> logger, IServiceProvider serviceProvider) : base(configuration, logger, serviceProvider)
+        //public EnovaSynchronizer(IConfiguration configuration, ILogger<EnovaSynchronizer> logger, IServiceProvider serviceProvider) : base(configuration, logger, serviceProvider)
+        public EnovaSynchronizer(IConfiguration configuration, ILogger<EnovaSynchronizer> logger, IServiceProvider serviceProvider)
         {
             _logger = logger;
         }
 
-        protected override async Task DoWorkAsync(IServiceScope scope, CancellationToken cancellationToken)
+        //protected override Task DoWorkAsync(IServiceScope scope, CancellationToken cancellationToken)
+        public Task DoWorkAsync(IServiceScope scope, CancellationToken cancellationToken)
         {
             _logger.LogDebug("Processing Enova synchronization");
 
             if (!cancellationToken.IsCancellationRequested)
-                await scope.ServiceProvider.GetRequiredService<EnovaPricesImporter>().RunImport(scope, cancellationToken);
+                scope.ServiceProvider.GetRequiredService<EnovaPricesImporter>().RunImport(scope, cancellationToken).Wait();
 
             if (!cancellationToken.IsCancellationRequested)
-                await scope.ServiceProvider.GetRequiredService<EnovaCustomersImporter>().RunImport(scope, cancellationToken);
+                scope.ServiceProvider.GetRequiredService<EnovaCustomersImporter>().RunImport(scope, cancellationToken).Wait();
 
             if (!cancellationToken.IsCancellationRequested)
-                await scope.ServiceProvider.GetRequiredService<EnovaDeletedDiscountGroupsImporter>().RunImport(scope, cancellationToken);
+                scope.ServiceProvider.GetRequiredService<EnovaDeletedDiscountGroupsImporter>().RunImport(scope, cancellationToken).Wait();
 
             if (!cancellationToken.IsCancellationRequested)
-                await scope.ServiceProvider.GetRequiredService<EnovaDiscountGroupsImporter>().RunImport(scope, cancellationToken);
+                scope.ServiceProvider.GetRequiredService<EnovaDiscountGroupsImporter>().RunImport(scope, cancellationToken).Wait();
 
             if (!cancellationToken.IsCancellationRequested)
-                await scope.ServiceProvider.GetRequiredService<EnovaCustomerDiscountsImporter>().RunImport(scope, cancellationToken);
+                scope.ServiceProvider.GetRequiredService<EnovaCustomerDiscountsImporter>().RunImport(scope, cancellationToken).Wait();
 
             if (!cancellationToken.IsCancellationRequested)
-                await scope.ServiceProvider.GetRequiredService<EnovaProductImporter>().RunImport(scope, cancellationToken);
+                scope.ServiceProvider.GetRequiredService<EnovaProductImporter>().RunImport(scope, cancellationToken).Wait();
+
+            return Task.CompletedTask;
         }
     }
 }

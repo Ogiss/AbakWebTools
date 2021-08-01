@@ -22,14 +22,14 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Exporters
         protected PrestaShopExporterBase(ILogger logger, IUnitOfWorkProvider unitOfWorkProvider, ISynchronizeStampService synchronizeStampService)
             => (Logger, UnitOfWorkProvider, _synchronizeStampService) = (logger, unitOfWorkProvider, synchronizeStampService);
 
-        public async Task StartExportAsync(CancellationToken cancelerationToken)
+        public void StartExport(CancellationToken cancelerationToken)
         {
-            StampFrom = await _synchronizeStampService.GetLastStampAsync(GetType().Name);
-            StampTo = await _synchronizeStampService.GetDbtsAsync();
+            StampFrom = _synchronizeStampService.GetLastStamp(GetType().Name);
+            StampTo = _synchronizeStampService.GetDbts();
 
             if (StampFrom < StampTo)
             {
-                var entries = await GetExportingEntriesAsync(cancelerationToken);
+                var entries = GetExportingEntries(cancelerationToken);
 
                 if (entries?.Any() ?? false)
                 {
@@ -48,14 +48,14 @@ namespace AbakTools.Core.Infrastructure.PrestaShop.Exporters
 
                     Parallel.ForEach(entries, parallelOptions, ProcessEntry);
 
-                    await _synchronizeStampService.SaveLastStampAsync(GetType().Name, StampTo);
+                    _synchronizeStampService.SaveLastStamp(GetType().Name, StampTo);
 
                     Logger.LogDebug($"[{GetType().Name}] Export entries finished in {(DateTime.Now - startDt).TotalSeconds} sec.");
                 }
             }
         }
 
-        protected abstract Task<IEnumerable<TEntry>> GetExportingEntriesAsync(CancellationToken cancelerationToken);
+        protected abstract IEnumerable<TEntry> GetExportingEntries(CancellationToken cancelerationToken);
         protected abstract void ProcessEntry(TEntry entry);
     }
 }

@@ -6,6 +6,6 @@ namespace AbakTools.Core.Domain.DiscountGroup
 {
     public interface IDiscountGroupRepository : IGenericSynchronizableEntityRepository<DiscountGroupEntity>
     {
-        Task<IEnumerable<int>> GetNewOrModifiedGroupsIdsAsync(long stampFrom, long stampTo, CancellationToken cancellationToken = default);
+        IEnumerable<int> GetNewOrModifiedGroupsIds(long stampFrom, long stampTo);
     }
 }

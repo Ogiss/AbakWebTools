@@ -30,14 +30,16 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
             => (_logger, _configuration, _enovaCustomerDiscountRepository, _customerRepository, _discountGroupRepository)
             = (logger, configuration, enovaCustomerDiscountRepository, customerRepository, discountGroupRepository);
 
-        protected override async Task<IEnumerable<CustomerDiscountGroup>> GetEntriesAsync(long stampFrom, long stampTo)
+        protected override IEnumerable<CustomerDiscountGroup> GetEntries(long stampFrom, long stampTo)
         {
+            using var uow = UnitOfWorkProvider.CreateReadOnly();
             int defaultPriceDefId = int.Parse(_configuration.GetSection("EnovaSynchronization:DefaultPriceDefId").Value);
-            return await _enovaCustomerDiscountRepository.GetModifiedCustomerDiscountsAsync(defaultPriceDefId, stampFrom, stampTo);
+            return _enovaCustomerDiscountRepository.GetModifiedCustomerDiscountsAsync(defaultPriceDefId, stampFrom, stampTo).Result;
         }
 
         protected override void ProcessEntry(CustomerDiscountGroup entry)
         {
+            using var uow = UnitOfWorkProvider.Create();
             var customer = _customerRepository.Get(entry.CustomerGuid);
 
             if (customer != null)
@@ -51,6 +53,8 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
                     _customerRepository.SaveOrUpdate(customer);
                 }
             }
+
+            uow.Commit();
         }
     }
 }

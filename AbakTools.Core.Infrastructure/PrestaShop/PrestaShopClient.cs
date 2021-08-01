@@ -40,6 +40,7 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
         private ProductDiscountGroupFactory productDiscountGroupFactory;
         private CustomerDiscountGroupFactory customerDiscountGroupFactory;
         private MessageFactory messageFactory;
+        private UnitFactory unitFactory;
 
         public long DefaultGroupId => defaultGroupId;
         public long[] AllGroupsIds => allGroupsIds;
@@ -288,6 +289,19 @@ namespace AbakTools.Core.Infrastructure.PrestaShop
                 }
 
                 return messageFactory;
+            }
+        }
+
+        public UnitFactory UnitFactory
+        {
+            get
+            {
+                if(unitFactory == null)
+                {
+                    unitFactory = new UnitFactory(baseUrl, key, password);
+                }
+
+                return unitFactory;
             }
         }
 

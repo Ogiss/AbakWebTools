@@ -69,6 +69,7 @@ namespace Bukimedia.PrestaSharp.Entities
         public decimal wholesale_price { get; set; }
         public string unity { get; set; }
         public decimal unit_price_ratio { get; set; }
+        //public int? id_unit { get; set; }
         public decimal additional_shipping_cost { get; set; }   
         public sbyte customizable { get; set; }
         public sbyte text_fields { get; set; }

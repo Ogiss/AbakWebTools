@@ -23,7 +23,7 @@ namespace AbakTools.Core.DataAccess.Repository
                 .ToList();
         }
 
-        public async Task<IEnumerable<int>> GetEnovaProductIdsWithModifiedDiscountGroupsAsync(long stampFrom, long stampTo)
+        public IEnumerable<int> GetEnovaProductIdsWithModifiedDiscountGroups(long stampFrom, long stampTo)
         {
             var sql =
                 "SELECT DISTINCT pdg.Towar " +
@@ -32,8 +32,8 @@ namespace AbakTools.Core.DataAccess.Repository
                 $"WHERE CONVERT(BIGINT, pdg.Stamp) > {stampFrom} AND CONVERT(BIGINT, pdg.Stamp) <= {stampTo} " +
                 $"AND pdg.Synchronize <> {(int)SynchronizeType.Synchronized} AND t.TowarEnova = 1";
 
-            return await CurrentSession.CreateSQLQuery(sql)
-                .ListAsync<int>();
+            return CurrentSession.CreateSQLQuery(sql)
+                .List<int>();
         }
 
         public void SaveOrUpdate(ProductDiscountGroupEntity group)

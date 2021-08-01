@@ -8,20 +8,22 @@ using System.Threading.Tasks;
 
 namespace AbakTools.Core.Infrastructure.RecurringTasks
 {
-    internal class PrestaShopSynchronizer : RecurringTaskBase
+    internal class PrestaShopSynchronizer
     {
         private readonly ILogger _logger;
 
-        public PrestaShopSynchronizer(IConfiguration configuration, ILogger<PrestaShopSynchronizer> logger, IServiceProvider serviceProvider) : base(configuration, logger, serviceProvider)
+        public PrestaShopSynchronizer(IConfiguration configuration, ILogger<PrestaShopSynchronizer> logger, IServiceProvider serviceProvider)
         {
             _logger = logger;
         }
 
-        protected override async Task DoWorkAsync(IServiceScope scope, CancellationToken cancellationToken)
+        public Task DoWorkAsync(IServiceScope scope, CancellationToken cancellationToken)
         {
-            _logger.LogDebug("Processing synchronize with PrestaShop");
+            _logger.LogDebug("Processing export data to PrestaShop");
             var synchronizer = scope.ServiceProvider.GetRequiredService<IPrestaShopSynchronizeService>();
-            await synchronizer.DoWork(cancellationToken);
+            synchronizer.DoWork(cancellationToken).Wait();
+
+            return Task.CompletedTask;
         }
     }
 }

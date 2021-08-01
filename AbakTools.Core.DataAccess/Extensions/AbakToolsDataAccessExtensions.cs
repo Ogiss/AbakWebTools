@@ -29,6 +29,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<IDiscountGroupRepository, DiscountGroupRepository>();
             services.AddTransient<IProductDiscountGroupRepository, ProductDiscountGroupRepository>();
             services.AddTransient<ICustomerDiscountGroupRepository, CustomerDiscountGroupRepository>();
+            services.AddTransient<IUnitRepository, UnitRepository>();
         }
     }
 }

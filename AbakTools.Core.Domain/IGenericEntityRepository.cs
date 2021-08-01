@@ -17,6 +17,7 @@ namespace AbakTools.Core.Domain
         Task<TEntity> GetAsync(ISpecification<TEntity> specification);
         Task<TResult> GetAsync<TResult>(ISpecification<TEntity> specification, IProjection<TEntity, TResult> projection);
         Task<long> GetDbtsAsync();
+        long GetDbts();
         TEntity Get(int id);
         void SaveOrUpdate(TEntity entity);
         Task SaveOrUpdateAsync(TEntity entity);

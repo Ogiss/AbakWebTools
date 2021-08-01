@@ -13,13 +13,13 @@ namespace AbakTools.Core.DataAccess.Repository
         {
         }
 
-        public async Task<IEnumerable<int>> GetNewOrModifiedGroupsIdsAsync(long stampFrom, long stampTo, CancellationToken cancellationToken = default)
+        public IEnumerable<int> GetNewOrModifiedGroupsIds(long stampFrom, long stampTo)
         {
-            return await CurrentSession.CreateQuery(
+            return CurrentSession.CreateQuery(
                 $"SELECT {nameof(DiscountGroupEntity.Id)} " +
                 $"FROM {nameof(DiscountGroupEntity)} " +
                 $"WHERE {nameof(DiscountGroupEntity.Synchronize)} <> {(int)SynchronizeType.Synchronized} AND CONVERT(BIGINT, Stamp) > {stampFrom} AND CONVERT(BIGINT, Stamp) <= {stampTo}")
-                .ListAsync<int>(cancellationToken);
+                .List<int>();
         }
     }
 }

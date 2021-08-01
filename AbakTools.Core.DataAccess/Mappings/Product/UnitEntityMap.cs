@@ -13,6 +13,7 @@ namespace AbakTools.Core.DataAccess.Mappings.Product
             Map(x => x.Default, "Domyslna");
             Map(x => x.Multiplier, "Mnoznik");
             Map(x => x.Name, "Nazwa");
+            Map(x => x.WebId, "PSID");
             Map(x => x.Stamp).Formula("CONVERT(BIGINT, Stamp)").Generated.Always();
         }
     }

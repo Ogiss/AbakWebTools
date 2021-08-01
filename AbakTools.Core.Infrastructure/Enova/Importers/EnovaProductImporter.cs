@@ -24,13 +24,15 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
         public EnovaProductImporter(ILogger<EnovaProductImporter> logger, IEnovaProductRepository enovaProductRepository, IProductRepository productRepository, IDiscountGroupRepository discountGroupRepository)
             => (_logger, _enovaProductRepository, _productRepository, _discountGroupRepository) = (logger, enovaProductRepository, productRepository, discountGroupRepository);
 
-        protected override async Task<IEnumerable<Guid>> GetEntriesAsync(DateTime stampFrom, DateTime stampTo)
+        protected override IEnumerable<Guid> GetEntries(DateTime stampFrom, DateTime stampTo)
         {
-            return await _enovaProductRepository.GetModifiedProductsGuidsAsync(StampFrom, stampTo);
+            using var uow = UnitOfWorkProvider.CreateReadOnly();
+            return _enovaProductRepository.GetModifiedProductsGuidsAsync(StampFrom, stampTo).Result;
         }
 
         protected override void ProcessEntry(Guid guid)
         {
+            using var uow = UnitOfWorkProvider.Create();
             var enovaProduct = GetProductFromEnovaApi(guid);
             var products = _productRepository.GetEnovaProductsWithoutInDeletingProcessAsync(guid).Result;
             var idx = 0;
@@ -46,6 +48,8 @@ namespace AbakTools.Core.Infrastructure.Enova.Importers
             {
                 // TODO: INSERT PRODUCT
             }
+
+            uow.Commit();
         }
 
         private Product GetProductFromEnovaApi(Guid guid)
